@@ -1,11 +1,14 @@
 package br.unitins.topicos2.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 @Entity
 public class Telefone extends DefaultEntity {
 
+    @Column(length = 100)
     private String ddd;
+    @Column(length = 100)
     private String numero;
 
     public String getDdd() {

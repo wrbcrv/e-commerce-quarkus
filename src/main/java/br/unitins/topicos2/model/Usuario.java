@@ -12,11 +12,11 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Usuario extends DefaultEntity {
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String nome;
-    @Column(length = 50)
+    @Column(length = 100)
     private String login;
-    @Column(length = 50)
+    @Column(length = 100)
     private String senha;
     @Column(length = 14)
     private String cpf;

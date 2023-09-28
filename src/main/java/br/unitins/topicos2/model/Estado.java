@@ -8,7 +8,6 @@ public class Estado extends DefaultEntity {
 
     @Column(nullable = false, length = 50)
     private String nome;
-
     @Column(nullable = false, length = 2)
     private String sigla;
 

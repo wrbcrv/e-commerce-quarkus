@@ -20,5 +20,4 @@ public interface EstadoService {
         List<EstadoResponseDTO> findByNome(String nome);
 
         long count();
-
 }

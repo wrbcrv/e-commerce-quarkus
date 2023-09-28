@@ -1,10 +1,12 @@
 package br.unitins.topicos2.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 @Entity
 public class Produto extends DefaultEntity {
 
+    @Column(length = 100)
     private String nome;
     private Float preco;
 
