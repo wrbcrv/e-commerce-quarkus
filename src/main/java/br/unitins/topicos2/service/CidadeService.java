@@ -20,5 +20,4 @@ public interface CidadeService {
         List<CidadeResponseDTO> findByNome(String nome);
 
         long count();
-
 }

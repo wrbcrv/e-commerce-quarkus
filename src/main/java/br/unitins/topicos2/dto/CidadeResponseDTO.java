@@ -13,5 +13,4 @@ public record CidadeResponseDTO(
                 cidade.getNome(),
                 EstadoResponseDTO.valueOf(cidade.getEstado()));
     }
-
 }

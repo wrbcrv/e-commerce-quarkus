@@ -49,6 +49,7 @@ public class CidadeServiceImpl implements CidadeService {
         validar(cidadeDTO);
 
         Cidade entity = new Cidade();
+        
         entity.setNome(cidadeDTO.nome());
         entity.setEstado(estadoRepository.findById(cidadeDTO.idEstado()));
 

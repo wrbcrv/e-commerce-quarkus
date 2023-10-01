@@ -45,6 +45,7 @@ public class EstadoServiceImpl implements EstadoService {
         validar(estadoDTO);
 
         Estado entity = new Estado();
+        
         entity.setNome(estadoDTO.nome());
         entity.setSigla(estadoDTO.sigla());
 
