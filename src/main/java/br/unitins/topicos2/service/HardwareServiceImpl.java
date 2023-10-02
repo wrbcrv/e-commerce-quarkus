@@ -1,0 +1,99 @@
+package br.unitins.topicos2.service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import br.unitins.topicos2.dto.HardwareDTO;
+import br.unitins.topicos2.dto.HardwareResponseDTO;
+import br.unitins.topicos2.model.Hardware;
+import br.unitins.topicos2.repository.HardwareRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.NotFoundException;
+
+@ApplicationScoped
+public class HardwareServiceImpl implements HardwareService {
+
+    @Inject
+    HardwareRepository estadoRepository;
+
+    @Inject
+    Validator validator;
+
+    @Override
+    public List<HardwareResponseDTO> getAll() {
+        List<Hardware> list = estadoRepository.listAll();
+        return list.stream().map(e -> HardwareResponseDTO.valueOf(e)).collect(Collectors.toList());
+    }
+
+    @Override
+    public HardwareResponseDTO findById(Long id) {
+        Hardware estado = estadoRepository.findById(id);
+        if (estado == null)
+            throw new NotFoundException("Hardware não encontrado.");
+        return HardwareResponseDTO.valueOf(estado);
+    }
+
+    @Override
+    @Transactional
+    public HardwareResponseDTO create(HardwareDTO hardwareDTO) throws ConstraintViolationException {
+        validar(hardwareDTO);
+
+        Hardware entity = new Hardware();
+
+        entity.setModelo(hardwareDTO.modelo());
+        entity.setLancamento(hardwareDTO.lancamento());
+        entity.setNome(hardwareDTO.nome());
+        entity.setPreco(hardwareDTO.preco());
+        entity.setEstoque(hardwareDTO.estoque());
+
+        estadoRepository.persist(entity);
+
+        return HardwareResponseDTO.valueOf(entity);
+    }
+
+    @Override
+    @Transactional
+    public HardwareResponseDTO update(Long id, HardwareDTO hardwareDTO) throws ConstraintViolationException {
+        validar(hardwareDTO);
+
+        Hardware entity = estadoRepository.findById(id);
+
+        entity.setModelo(hardwareDTO.modelo());
+        entity.setLancamento(hardwareDTO.lancamento());
+        entity.setNome(hardwareDTO.nome());
+        entity.setPreco(hardwareDTO.preco());
+        entity.setEstoque(hardwareDTO.estoque());
+
+        return HardwareResponseDTO.valueOf(entity);
+    }
+
+    private void validar(HardwareDTO hardwareDTO) throws ConstraintViolationException {
+        Set<ConstraintViolation<HardwareDTO>> violations = validator.validate(hardwareDTO);
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        estadoRepository.deleteById(id);
+    }
+
+    @Override
+    public List<HardwareResponseDTO> findByNome(String nome) {
+        List<Hardware> list = estadoRepository.findByNome(nome);
+        return list.stream().map(e -> HardwareResponseDTO.valueOf(e)).collect(Collectors.toList());
+    }
+
+    @Override
+    public long count() {
+        return estadoRepository.count();
+    }
+}

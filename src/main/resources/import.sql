@@ -17,3 +17,6 @@ INSERT INTO usuario_telefone (id_usuario, id_telefone) VALUES (2, 2);
 -- Inserir dados na tabela de junção "usuario_endereco"
 INSERT INTO usuario_endereco (id_usuario, id_endereco) VALUES (1, 1);
 INSERT INTO usuario_endereco (id_usuario, id_endereco) VALUES (2, 2);
+
+INSERT INTO estado (nome, sigla) VALUES ('Tocantins', 'TO');
+INSERT INTO cidade (nome, id_estado) VALUES ('Palmas', 1);

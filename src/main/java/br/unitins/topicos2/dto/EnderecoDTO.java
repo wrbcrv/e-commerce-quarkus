@@ -22,7 +22,7 @@ public record EnderecoDTO(
             endereco.getId(),
             endereco.getLogradouro(),
             endereco.getNumero(),
-            endereco.getNumero(),
+            endereco.getComplemento(),
             endereco.getBairro(),
             endereco.getCep()
         );

@@ -5,9 +5,9 @@ import java.util.List;
 import org.jboss.logging.Logger;
 
 import br.unitins.topicos2.application.Result;
-import br.unitins.topicos2.dto.EstadoDTO;
-import br.unitins.topicos2.dto.EstadoResponseDTO;
-import br.unitins.topicos2.service.EstadoService;
+import br.unitins.topicos2.dto.HardwareDTO;
+import br.unitins.topicos2.dto.HardwareResponseDTO;
+import br.unitins.topicos2.service.HardwareService;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -22,39 +22,39 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/estados")
+@Path("/hardwares")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class EstadoResource {
+public class HardwareResource {
 
     @Inject
-    EstadoService estadoService;
+    HardwareService hardwareService;
 
-    private static final Logger LOG = Logger.getLogger(EstadoResource.class);
+    private static final Logger LOG = Logger.getLogger(HardwareResource.class);
 
     @GET
-    public List<EstadoResponseDTO> getAll() {
-        LOG.info("Buscando todos os estados.");
+    public List<HardwareResponseDTO> getAll() {
+        LOG.info("Buscando todos os hardwares.");
         LOG.debug("ERRO DE DEBUG.");
-        return estadoService.getAll();
+        return hardwareService.getAll();
     }
 
     @GET
     @Path("/{id}")
-    public EstadoResponseDTO findById(@PathParam("id") Long id) {
-        return estadoService.findById(id);
+    public HardwareResponseDTO findById(@PathParam("id") Long id) {
+        return hardwareService.findById(id);
     }
 
     @POST
-    public Response insert(EstadoDTO dto) {
-        LOG.infof("Inserindo um estado: %s", dto.nome());
+    public Response insert(HardwareDTO dto) {
+        LOG.infof("Inserindo um hardware: %s", dto.nome());
         Result result = null;
         try {
-            EstadoResponseDTO estado = estadoService.create(dto);
-            LOG.infof("Estado (%d) criado com sucesso.", estado.id());
-            return Response.status(Status.CREATED).entity(estado).build();
+            HardwareResponseDTO hardware = hardwareService.create(dto);
+            LOG.infof("Hardware (%d) criado com sucesso.", hardware.id());
+            return Response.status(Status.CREATED).entity(hardware).build();
         } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um estado.");
+            LOG.error("Erro ao incluir um hardware.");
             LOG.debug(e.getMessage());
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
@@ -67,10 +67,10 @@ public class EstadoResource {
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, EstadoDTO dto) {
+    public Response update(@PathParam("id") Long id, HardwareDTO dto) {
         try {
-            EstadoResponseDTO estado = estadoService.update(id, dto);
-            return Response.ok(estado).build();
+            HardwareResponseDTO hardware = hardwareService.update(id, dto);
+            return Response.ok(hardware).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
             return Response.status(Status.NOT_FOUND).entity(result).build();
@@ -80,20 +80,19 @@ public class EstadoResource {
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
-        estadoService.delete(id);
+        hardwareService.delete(id);
         return Response.status(Status.NO_CONTENT).build();
     }
 
     @GET
     @Path("/count")
     public long count() {
-        return estadoService.count();
+        return hardwareService.count();
     }
 
     @GET
     @Path("/search/{nome}")
-    public List<EstadoResponseDTO> search(@PathParam("nome") String nome) {
-        return estadoService.findByNome(nome);
-
+    public List<HardwareResponseDTO> search(@PathParam("nome") String nome) {
+        return hardwareService.findByNome(nome);
     }
 }
