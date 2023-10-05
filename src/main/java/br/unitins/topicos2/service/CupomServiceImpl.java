@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import br.unitins.topicos2.dto.CupomDTO;
 import br.unitins.topicos2.dto.CupomResponseDTO;
 import br.unitins.topicos2.model.Cupom;
+import br.unitins.topicos2.model.Hardware;
 import br.unitins.topicos2.repository.CupomRepository;
+import br.unitins.topicos2.repository.HardwareRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -23,11 +25,14 @@ public class CupomServiceImpl implements CupomService {
     CupomRepository cupomRepository;
 
     @Inject
+    HardwareRepository hardwareRepository;
+
+    @Inject
     Validator validator;
 
     @Override
-    public List<CupomResponseDTO> getAll() {
-        List<Cupom> list = cupomRepository.listAll();
+    public List<CupomResponseDTO> getAll(int page, int pageSize) {
+        List<Cupom> list = cupomRepository.findAll().page(page, pageSize).list();
         return list.stream().map(e -> CupomResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
@@ -45,7 +50,7 @@ public class CupomServiceImpl implements CupomService {
         validar(cupomDTO);
 
         Cupom entity = new Cupom();
-        
+
         entity.setDescricao(cupomDTO.descricao());
         entity.setCodigo(cupomDTO.codigo());
         entity.setInicio(cupomDTO.inicio());
@@ -87,13 +92,37 @@ public class CupomServiceImpl implements CupomService {
     }
 
     @Override
-    public List<CupomResponseDTO> findByCodigo(String codigo) {
-        List<Cupom> list = cupomRepository.findByCodigo(codigo);
+    public List<CupomResponseDTO> findByCodigo(String codigo, int page, int pageSize) {
+        List<Cupom> list = cupomRepository.findByCodigo(codigo).page(page, pageSize).list();
         return list.stream().map(e -> CupomResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public long count() {
         return cupomRepository.count();
+    }
+
+    @Override
+    public long countByCodigo(String codigo) {
+        return cupomRepository.findByCodigo(codigo).count();
+    }
+
+    @Transactional
+    public CupomResponseDTO associarHardware(Long cupomId, Long hardwareId) {
+        Cupom cupom = cupomRepository.findById(cupomId);
+        if (cupom == null)
+            throw new NotFoundException("Cupom não encontrado.");
+
+        Hardware hardware = hardwareRepository.findById(hardwareId);
+        if (hardware == null)
+            throw new NotFoundException("Hardware não encontrado.");
+
+        List<Hardware> hardwares = cupom.getHardwares();
+        if (!hardwares.contains(hardware))
+            hardwares.add(hardware);
+
+        hardwareRepository.persist(hardware);
+
+        return CupomResponseDTO.valueOf(cupom);
     }
 }

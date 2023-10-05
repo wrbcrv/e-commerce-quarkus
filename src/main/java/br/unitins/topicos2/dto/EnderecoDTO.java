@@ -4,7 +4,6 @@ import br.unitins.topicos2.model.Endereco;
 import jakarta.validation.constraints.NotBlank;
 
 public record EnderecoDTO(
-    
         Long id,
         @NotBlank(message = "O campo deve ser informado.")
         String logradouro,

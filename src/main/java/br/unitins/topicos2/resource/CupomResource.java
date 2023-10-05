@@ -12,12 +12,14 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -33,10 +35,12 @@ public class CupomResource {
     private static final Logger LOG = Logger.getLogger(CupomResource.class);
 
     @GET
-    public List<CupomResponseDTO> getAll() {
+    public List<CupomResponseDTO> getAll(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
         LOG.info("Buscando todas os cupons.");
         LOG.debug("ERRO DE DEBUG.");
-        return cupomService.getAll();
+        return cupomService.getAll(page, pageSize);
     }
 
     @GET
@@ -91,8 +95,26 @@ public class CupomResource {
     }
 
     @GET
+    @Path("/search/{codigo}/count")
+    public long count(@PathParam("codigo") String codigo) {
+        return cupomService.countByCodigo(codigo);
+    }
+
+    @GET
     @Path("/search/{codigo}")
-    public List<CupomResponseDTO> search(@PathParam("codigo") String codigo) {
-        return cupomService.findByCodigo(codigo);
+    public List<CupomResponseDTO> search(
+        @PathParam("codigo") String codigo,
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        return cupomService.findByCodigo(codigo, page, pageSize);
+    }
+
+    @POST
+    @Path("/{cupomId}/associar-hardware/{hardwareId}")
+    public Response associarCupom(
+            @PathParam("cupomId") Long cupomId,
+            @PathParam("hardwareId") Long hardwareId) {
+        CupomResponseDTO hardware = cupomService.associarHardware(cupomId, hardwareId);
+        return Response.ok(hardware).build();
     }
 }

@@ -7,7 +7,7 @@ import br.unitins.topicos2.dto.CupomResponseDTO;
 
 public interface CupomService {
 
-        List<CupomResponseDTO> getAll();
+        List<CupomResponseDTO> getAll(int page, int pageSize);
 
         CupomResponseDTO findById(Long id);
 
@@ -17,7 +17,11 @@ public interface CupomService {
 
         void delete(Long id);
 
-        List<CupomResponseDTO> findByCodigo(String codigo);
+        List<CupomResponseDTO> findByCodigo(String codigo, int page, int pageSize);
 
         long count();
+
+        long countByCodigo(String codigo);
+
+        public CupomResponseDTO associarHardware(Long cupomId, Long hardwareId);
 }

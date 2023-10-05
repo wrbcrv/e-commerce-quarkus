@@ -20,23 +20,23 @@ import jakarta.ws.rs.NotFoundException;
 public class HardwareServiceImpl implements HardwareService {
 
     @Inject
-    HardwareRepository estadoRepository;
+    HardwareRepository hardwareRepository;
 
     @Inject
     Validator validator;
 
     @Override
     public List<HardwareResponseDTO> getAll() {
-        List<Hardware> list = estadoRepository.listAll();
+        List<Hardware> list = hardwareRepository.listAll();
         return list.stream().map(e -> HardwareResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public HardwareResponseDTO findById(Long id) {
-        Hardware estado = estadoRepository.findById(id);
-        if (estado == null)
+        Hardware hardware = hardwareRepository.findById(id);
+        if (hardware == null)
             throw new NotFoundException("Hardware não encontrado.");
-        return HardwareResponseDTO.valueOf(estado);
+        return HardwareResponseDTO.valueOf(hardware);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setPreco(hardwareDTO.preco());
         entity.setEstoque(hardwareDTO.estoque());
 
-        estadoRepository.persist(entity);
+        hardwareRepository.persist(entity);
 
         return HardwareResponseDTO.valueOf(entity);
     }
@@ -62,7 +62,7 @@ public class HardwareServiceImpl implements HardwareService {
     public HardwareResponseDTO update(Long id, HardwareDTO hardwareDTO) throws ConstraintViolationException {
         validar(hardwareDTO);
 
-        Hardware entity = estadoRepository.findById(id);
+        Hardware entity = hardwareRepository.findById(id);
 
         entity.setModelo(hardwareDTO.modelo());
         entity.setLancamento(hardwareDTO.lancamento());
@@ -83,17 +83,17 @@ public class HardwareServiceImpl implements HardwareService {
     @Override
     @Transactional
     public void delete(Long id) {
-        estadoRepository.deleteById(id);
+        hardwareRepository.deleteById(id);
     }
 
     @Override
     public List<HardwareResponseDTO> findByNome(String nome) {
-        List<Hardware> list = estadoRepository.findByNome(nome);
+        List<Hardware> list = hardwareRepository.findByNome(nome);
         return list.stream().map(e -> HardwareResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public long count() {
-        return estadoRepository.count();
+        return hardwareRepository.count();
     }
 }

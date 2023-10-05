@@ -10,7 +10,7 @@ public record HardwareResponseDTO(
         Float preco,
         int estoque,
         String modelo,
-        String lancamento) {
+        String lancamento) { 
 
     public static HardwareResponseDTO valueOf(Hardware hardware) {
         String formattedLancamento = hardware.getLancamento() != null

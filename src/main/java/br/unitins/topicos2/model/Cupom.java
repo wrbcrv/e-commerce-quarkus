@@ -1,8 +1,12 @@
 package br.unitins.topicos2.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Cupom extends DefaultEntity {
@@ -12,6 +16,13 @@ public class Cupom extends DefaultEntity {
     private LocalDate inicio;
     private LocalDate termino;
     private int desconto;
+    @ManyToMany
+    @JoinTable(
+        name = "produto_cupom",
+        joinColumns = @JoinColumn(name = "produto_id"),
+        inverseJoinColumns = @JoinColumn(name = "cupom_id")
+    )
+    private List<Hardware> hardwares;
 
     public String getDescricao() {
         return descricao;
@@ -51,5 +62,13 @@ public class Cupom extends DefaultEntity {
 
     public void setDesconto(int desconto) {
         this.desconto = desconto;
+    }
+
+    public List<Hardware> getHardwares() {
+        return hardwares;
+    }
+
+    public void setHardwares(List<Hardware> hardwares) {
+        this.hardwares = hardwares;
     }
 }

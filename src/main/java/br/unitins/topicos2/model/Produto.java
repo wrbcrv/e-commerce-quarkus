@@ -7,7 +7,7 @@ public class Produto extends DefaultEntity {
 
     private String nome;
     private Float preco;
-    private int estoque;
+    private int estoque;  
 
     public String getNome() {
         return nome;

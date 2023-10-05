@@ -22,11 +22,18 @@ public class Usuario extends DefaultEntity {
     private String cpf;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_telefone"))
+    @JoinTable(name = "usuario_telefone", 
+        joinColumns = @JoinColumn(name = "id_usuario"), 
+        inverseJoinColumns = @JoinColumn(name = "id_telefone")
+    )
     private List<Telefone> telefones;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_endereco"))
+    @JoinTable(
+        name = "usuario_endereco", 
+        joinColumns = @JoinColumn(name = "id_usuario"), 
+        inverseJoinColumns = @JoinColumn(name = "id_endereco")
+    )
     private List<Endereco> enderecos;
 
     public String getNome() {
