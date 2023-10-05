@@ -29,12 +29,14 @@ public record CupomResponseDTO(
         List<HardwareDTO> hardwaresDTO = null;
         if (hardwares != null && !hardwares.isEmpty()) {
             hardwaresDTO = hardwares.stream().map(hardware -> new HardwareDTO(
+                hardware.getMarca().getId(),
                 hardware.getNome(),
                 hardware.getPreco(),
                 hardware.getEstoque(),
                 hardware.getModelo(),
                 hardware.getLancamento(),
-                hardware.getMarca().getId()
+                hardware.getIntegridade().getId(),
+                hardware.getCategoria().getId()
             )).collect(Collectors.toList());
         }
 

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record HardwareDTO(
+        @NotNull (message = "O campo deve ser informado.")
+        Long idMarca,
         @NotBlank(message = "O campo deve ser informado.")
         String nome,
         @NotNull (message = "O campo deve ser informado.")
@@ -17,5 +19,8 @@ public record HardwareDTO(
         @NotNull (message = "O campo deve ser informado.")
         LocalDate lancamento,
         @NotNull (message = "O campo deve ser informado.")
-        Long idMarca) {
+        Integer idCategoria,
+        @NotNull (message = "O campo deve ser informado.")
+        Integer idIntegridade
+        ) {
 }

@@ -2,16 +2,20 @@ package br.unitins.topicos2.dto;
 
 import java.time.format.DateTimeFormatter;
 
+import br.unitins.topicos2.model.Categoria;
 import br.unitins.topicos2.model.Hardware;
+import br.unitins.topicos2.model.Integridade;
 
 public record HardwareResponseDTO(
         Long id,
+        MarcaResponseDTO marca,
         String nome,
         Float preco,
         int estoque,
         String modelo,
         String lancamento,
-        MarcaResponseDTO marca) { 
+        Integridade integridade,
+        Categoria categoria) { 
 
     public static HardwareResponseDTO valueOf(Hardware hardware) {
         String formattedLancamento = hardware.getLancamento() != null
@@ -20,12 +24,14 @@ public record HardwareResponseDTO(
 
         return new HardwareResponseDTO(
                 hardware.getId(),
+                MarcaResponseDTO.valueOf(hardware.getMarca()),
                 hardware.getNome(),
                 hardware.getPreco(),
                 hardware.getEstoque(),
                 hardware.getModelo(),
                 formattedLancamento,
-                MarcaResponseDTO.valueOf(hardware.getMarca())
+                hardware.getIntegridade(),
+                hardware.getCategoria()
         );
     }
 }

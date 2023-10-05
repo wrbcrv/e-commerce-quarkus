@@ -37,9 +37,12 @@ public class CupomResource {
     @GET
     public List<CupomResponseDTO> getAll(
             @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+
         LOG.info("Buscando todas os cupons.");
         LOG.debug("ERRO DE DEBUG.");
+
         return cupomService.getAll(page, pageSize);
     }
 
@@ -103,9 +106,11 @@ public class CupomResource {
     @GET
     @Path("/search/{codigo}")
     public List<CupomResponseDTO> search(
-        @PathParam("codigo") String codigo,
-        @QueryParam("page") @DefaultValue("0") int page,
-        @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+            @PathParam("codigo") String codigo,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+
         return cupomService.findByCodigo(codigo, page, pageSize);
     }
 
@@ -113,8 +118,11 @@ public class CupomResource {
     @Path("/{cupomId}/associar-hardware/{hardwareId}")
     public Response associarCupom(
             @PathParam("cupomId") Long cupomId,
-            @PathParam("hardwareId") Long hardwareId) {
+            @PathParam("hardwareId") Long hardwareId
+        ) {
+
         CupomResponseDTO hardware = cupomService.associarHardware(cupomId, hardwareId);
+        
         return Response.ok(hardware).build();
     }
 }

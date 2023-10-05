@@ -26,14 +26,12 @@ public enum Categoria {
     }
 
     public static Categoria valueOf(Integer id) throws IllegalArgumentException {
-        if (id == null) {
+        if (id == null)
             return null;
-        }
 
         for (Categoria nivel : Categoria.values()) {
-            if (id.equals(nivel.getId())) {
+            if (id.equals(nivel.getId()))
                 return nivel;
-            }
         }
 
         throw new IllegalArgumentException("Id inválido:" + id);

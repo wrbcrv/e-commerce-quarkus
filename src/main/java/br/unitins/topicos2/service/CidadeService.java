@@ -7,7 +7,7 @@ import br.unitins.topicos2.dto.CidadeResponseDTO;
 
 public interface CidadeService {
 
-        List<CidadeResponseDTO> getAll();
+        List<CidadeResponseDTO> getAll(int page, int pageSize);
 
         CidadeResponseDTO findById(Long id);
 
@@ -17,7 +17,9 @@ public interface CidadeService {
 
         void delete(Long id);
 
-        List<CidadeResponseDTO> findByNome(String nome);
+        List<CidadeResponseDTO> findByNome(String nome, int page, int pageSize);
 
         long count();
+
+        long countByNome(String nome);
 }

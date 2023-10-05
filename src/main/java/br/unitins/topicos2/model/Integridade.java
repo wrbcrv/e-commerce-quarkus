@@ -26,14 +26,12 @@ public enum Integridade {
     }
 
     public static Integridade valueOf(Integer id) throws IllegalArgumentException {
-        if (id == null) {
+        if (id == null)
             return null;
-        }
 
         for (Integridade integridade : Integridade.values()) {
-            if (id.equals(integridade.getId())) {
+            if (id.equals(integridade.getId())) 
                 return integridade;
-            }
         }
 
         throw new IllegalArgumentException("Id inválido:" + id);

@@ -30,8 +30,8 @@ public class CidadeServiceImpl implements CidadeService {
     Validator validator;
 
     @Override
-    public List<CidadeResponseDTO> getAll() {
-        List<Cidade> list = cidadeRepository.listAll();
+    public List<CidadeResponseDTO> getAll(int page, int pageSize) {
+        List<Cidade> list = cidadeRepository.findAll().page(page, pageSize).list();
         return list.stream().map(e -> CidadeResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
@@ -85,13 +85,18 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
-    public List<CidadeResponseDTO> findByNome(String nome) {
-        List<Cidade> list = cidadeRepository.findByNome(nome);
+    public List<CidadeResponseDTO> findByNome(String nome, int page, int pageSize) {
+        List<Cidade> list = cidadeRepository.findByNome(nome).page(page, pageSize).list();
         return list.stream().map(e -> CidadeResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public long count() {
         return cidadeRepository.count();
+    }
+
+    @Override
+    public long countByNome(String nome) {
+        return cidadeRepository.findByNome(nome).count();
     }
 }

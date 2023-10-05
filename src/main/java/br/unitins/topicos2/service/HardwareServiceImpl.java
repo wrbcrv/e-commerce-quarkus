@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import br.unitins.topicos2.dto.HardwareDTO;
 import br.unitins.topicos2.dto.HardwareResponseDTO;
+import br.unitins.topicos2.model.Categoria;
 import br.unitins.topicos2.model.Hardware;
+import br.unitins.topicos2.model.Integridade;
 import br.unitins.topicos2.repository.HardwareRepository;
 import br.unitins.topicos2.repository.MarcaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -50,12 +52,14 @@ public class HardwareServiceImpl implements HardwareService {
 
         Hardware entity = new Hardware();
 
+        entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
         entity.setModelo(hardwareDTO.modelo());
         entity.setLancamento(hardwareDTO.lancamento());
+        entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
+        entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
         entity.setNome(hardwareDTO.nome());
         entity.setPreco(hardwareDTO.preco());
         entity.setEstoque(hardwareDTO.estoque());
-        entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
 
         hardwareRepository.persist(entity);
 
@@ -69,12 +73,14 @@ public class HardwareServiceImpl implements HardwareService {
 
         Hardware entity = hardwareRepository.findById(id);
 
+        entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
         entity.setModelo(hardwareDTO.modelo());
         entity.setLancamento(hardwareDTO.lancamento());
+        entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
+        entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
         entity.setNome(hardwareDTO.nome());
         entity.setPreco(hardwareDTO.preco());
         entity.setEstoque(hardwareDTO.estoque());
-        entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
 
         return HardwareResponseDTO.valueOf(entity);
     }
