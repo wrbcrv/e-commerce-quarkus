@@ -10,7 +10,8 @@ public record HardwareResponseDTO(
         Float preco,
         int estoque,
         String modelo,
-        String lancamento) { 
+        String lancamento,
+        MarcaResponseDTO marca) { 
 
     public static HardwareResponseDTO valueOf(Hardware hardware) {
         String formattedLancamento = hardware.getLancamento() != null
@@ -23,7 +24,8 @@ public record HardwareResponseDTO(
                 hardware.getPreco(),
                 hardware.getEstoque(),
                 hardware.getModelo(),
-                formattedLancamento
+                formattedLancamento,
+                MarcaResponseDTO.valueOf(hardware.getMarca())
         );
     }
 }

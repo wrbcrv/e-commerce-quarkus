@@ -8,6 +8,7 @@ import br.unitins.topicos2.dto.HardwareDTO;
 import br.unitins.topicos2.dto.HardwareResponseDTO;
 import br.unitins.topicos2.model.Hardware;
 import br.unitins.topicos2.repository.HardwareRepository;
+import br.unitins.topicos2.repository.MarcaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,9 @@ public class HardwareServiceImpl implements HardwareService {
 
     @Inject
     HardwareRepository hardwareRepository;
+
+    @Inject
+    MarcaRepository marcaRepository;
 
     @Inject
     Validator validator;
@@ -51,6 +55,7 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setNome(hardwareDTO.nome());
         entity.setPreco(hardwareDTO.preco());
         entity.setEstoque(hardwareDTO.estoque());
+        entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
 
         hardwareRepository.persist(entity);
 
@@ -69,6 +74,7 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setNome(hardwareDTO.nome());
         entity.setPreco(hardwareDTO.preco());
         entity.setEstoque(hardwareDTO.estoque());
+        entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
 
         return HardwareResponseDTO.valueOf(entity);
     }

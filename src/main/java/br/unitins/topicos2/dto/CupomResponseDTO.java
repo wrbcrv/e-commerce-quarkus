@@ -33,7 +33,8 @@ public record CupomResponseDTO(
                 hardware.getPreco(),
                 hardware.getEstoque(),
                 hardware.getModelo(),
-                hardware.getLancamento()
+                hardware.getLancamento(),
+                hardware.getMarca().getId()
             )).collect(Collectors.toList());
         }
 
