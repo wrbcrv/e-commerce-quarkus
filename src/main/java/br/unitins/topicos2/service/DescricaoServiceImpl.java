@@ -8,6 +8,7 @@ import br.unitins.topicos2.dto.DescricaoDTO;
 import br.unitins.topicos2.dto.DescricaoResponseDTO;
 import br.unitins.topicos2.model.Descricao;
 import br.unitins.topicos2.repository.DescricaoRepository;
+import br.unitins.topicos2.repository.HardwareRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,9 @@ public class DescricaoServiceImpl implements DescricaoService {
 
     @Inject
     DescricaoRepository descricaoRepository;
+
+    @Inject
+    HardwareRepository hardwareRepository;
 
     @Inject
     Validator validator;
@@ -48,6 +52,7 @@ public class DescricaoServiceImpl implements DescricaoService {
 
         Descricao entity = new Descricao();
         
+        entity.setHardware(hardwareRepository.findById(descricaoDTO.idHardware()));
         entity.setConteudo(descricaoDTO.conteudo());
 
         descricaoRepository.persist(entity);
@@ -62,6 +67,7 @@ public class DescricaoServiceImpl implements DescricaoService {
 
         Descricao entity = descricaoRepository.findById(id);
 
+        entity.setHardware(hardwareRepository.findById(descricaoDTO.idHardware()));
         entity.setConteudo(descricaoDTO.conteudo());
         
         return DescricaoResponseDTO.valueOf(entity);
