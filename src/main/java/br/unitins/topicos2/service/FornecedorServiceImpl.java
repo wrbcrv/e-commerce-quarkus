@@ -11,8 +11,10 @@ import br.unitins.topicos2.dto.FornecedorDTO;
 import br.unitins.topicos2.dto.FornecedorResponseDTO;
 import br.unitins.topicos2.model.Endereco;
 import br.unitins.topicos2.model.Fornecedor;
+import br.unitins.topicos2.model.Hardware;
 import br.unitins.topicos2.repository.EstadoRepository;
 import br.unitins.topicos2.repository.FornecedorRepository;
+import br.unitins.topicos2.repository.HardwareRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -29,6 +31,9 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Inject
     EstadoRepository estadoRepository;
+
+     @Inject
+    HardwareRepository hardwareRepository;
 
     @Inject
     Validator validator;
@@ -262,5 +267,24 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     public long countByNome(String nome) {
         return fornecedorRepository.findByNome(nome).count();
+    }
+
+    @Transactional
+    public FornecedorResponseDTO associarHardware(Long fornecedorId, Long hardwareId) {
+        Fornecedor fornecedor = fornecedorRepository.findById(fornecedorId);
+        if (fornecedor == null)
+            throw new NotFoundException("Fornecedor não encontrado.");
+
+        Hardware hardware = hardwareRepository.findById(hardwareId);
+        if (hardware == null)
+            throw new NotFoundException("Hardware não encontrado.");
+
+        List<Hardware> hardwares = fornecedor.getHardwares();
+        if (!hardwares.contains(hardware))
+            hardwares.add(hardware);
+
+        hardwareRepository.persist(hardware);
+
+        return FornecedorResponseDTO.valueOf(fornecedor);
     }
 }

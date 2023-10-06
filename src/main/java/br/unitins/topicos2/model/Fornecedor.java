@@ -18,9 +18,11 @@ public class Fornecedor extends DefaultEntity {
     @JoinTable(
         name = "fornecedor_endereco", 
         joinColumns = @JoinColumn(name = "id_fornecedor"), 
-        inverseJoinColumns = @JoinColumn(name = "id_endereco")
-    )
+        inverseJoinColumns = @JoinColumn(name = "id_endereco"))
     List<Endereco> enderecos;
+
+    @OneToMany
+    List<Hardware> hardwares;
 
     public String getNome() {
         return nome;
@@ -36,5 +38,13 @@ public class Fornecedor extends DefaultEntity {
 
     public void setEnderecos(List<Endereco> enderecos) {
         this.enderecos = enderecos;
+    }
+
+    public List<Hardware> getHardwares() {
+        return hardwares;
+    }
+
+    public void setHardwares(List<Hardware> hardwares) {
+        this.hardwares = hardwares;
     }
 }

@@ -8,7 +8,9 @@ import jakarta.validation.constraints.NotNull;
 public record FornecedorDTO(
         @NotBlank(message = "O campo nome deve ser informado.")
         String nome,
-        @NotNull (message = "Informe o endereço")
-        List<EnderecoDTO> enderecos
+        @NotNull (message = "Informe o(s) endereço(s)")
+        List<EnderecoDTO> enderecos,
+        
+        List<HardwareDTO> hardwares
     ) {    
 }

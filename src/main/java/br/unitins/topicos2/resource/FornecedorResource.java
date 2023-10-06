@@ -152,4 +152,16 @@ public class FornecedorResource {
 
         return fornecedorService.findByNome(nome, page, pageSize);
     }
+
+    @POST
+    @Path("/{fornecedorId}/associar-hardware/{hardwareId}")
+    public Response associarHardware(
+            @PathParam("fornecedorId") Long fornecedorId,
+            @PathParam("hardwareId") Long hardwareId
+        ) {
+
+        FornecedorResponseDTO hardware = fornecedorService.associarHardware(fornecedorId, hardwareId);
+        
+        return Response.ok(hardware).build();
+    }
 }

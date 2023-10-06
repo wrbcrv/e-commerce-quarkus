@@ -20,8 +20,7 @@ public class Cupom extends DefaultEntity {
     @JoinTable(
         name = "produto_cupom",
         joinColumns = @JoinColumn(name = "produto_id"),
-        inverseJoinColumns = @JoinColumn(name = "cupom_id")
-    )
+        inverseJoinColumns = @JoinColumn(name = "cupom_id"))
     private List<Hardware> hardwares;
 
     public String getDescricao() {

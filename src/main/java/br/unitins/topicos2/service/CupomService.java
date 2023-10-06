@@ -23,5 +23,5 @@ public interface CupomService {
 
         long countByCodigo(String codigo);
 
-        public CupomResponseDTO associarHardware(Long cupomId, Long hardwareId);
+        CupomResponseDTO associarHardware(Long cupomId, Long hardwareId);
 }

@@ -35,8 +35,8 @@ public record CupomResponseDTO(
                 hardware.getEstoque(),
                 hardware.getModelo(),
                 hardware.getLancamento(),
-                hardware.getIntegridade().getId(),
-                hardware.getCategoria().getId()
+                null,
+                null
             )).collect(Collectors.toList());
         }
 
