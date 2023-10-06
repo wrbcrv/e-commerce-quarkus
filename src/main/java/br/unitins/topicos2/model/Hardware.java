@@ -17,6 +17,9 @@ public class Hardware extends Produto {
     
     private String modelo;
     private LocalDate lancamento;
+    @JoinColumn(name = "id_descricao")
+    @ManyToOne
+    private Descricao descricao;
 
     @Enumerated(EnumType.STRING)
     private Integridade integridade;
@@ -46,6 +49,14 @@ public class Hardware extends Produto {
 
     public void setLancamento(LocalDate lancamento) {
         this.lancamento = lancamento;
+    }
+
+    public Descricao getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(Descricao descricao) {
+        this.descricao = descricao;
     }
 
     public Integridade getIntegridade() {

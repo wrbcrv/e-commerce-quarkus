@@ -14,6 +14,7 @@ public record HardwareResponseDTO(
         int estoque,
         String modelo,
         String lancamento,
+        DescricaoResponseDTO descricao,
         Integridade integridade,
         Categoria categoria) { 
 
@@ -30,6 +31,7 @@ public record HardwareResponseDTO(
                 hardware.getEstoque(),
                 hardware.getModelo(),
                 formattedLancamento,
+                DescricaoResponseDTO.valueOf(hardware.getDescricao()),
                 hardware.getIntegridade(),
                 hardware.getCategoria()
         );

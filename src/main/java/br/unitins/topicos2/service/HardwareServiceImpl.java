@@ -9,6 +9,7 @@ import br.unitins.topicos2.dto.HardwareResponseDTO;
 import br.unitins.topicos2.model.Categoria;
 import br.unitins.topicos2.model.Hardware;
 import br.unitins.topicos2.model.Integridade;
+import br.unitins.topicos2.repository.DescricaoRepository;
 import br.unitins.topicos2.repository.HardwareRepository;
 import br.unitins.topicos2.repository.MarcaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -27,6 +28,9 @@ public class HardwareServiceImpl implements HardwareService {
 
     @Inject
     MarcaRepository marcaRepository;
+
+    @Inject
+    DescricaoRepository descricaoRepository;
 
     @Inject
     Validator validator;
@@ -57,6 +61,7 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
         entity.setModelo(hardwareDTO.modelo());
         entity.setLancamento(hardwareDTO.lancamento());
+        entity.setDescricao(descricaoRepository.findById(hardwareDTO.idDescricao()));
         entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
         entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
         entity.setNome(hardwareDTO.nome());
@@ -78,6 +83,7 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
         entity.setModelo(hardwareDTO.modelo());
         entity.setLancamento(hardwareDTO.lancamento());
+        entity.setDescricao(descricaoRepository.findById(hardwareDTO.idDescricao()));
         entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
         entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
         entity.setNome(hardwareDTO.nome());
