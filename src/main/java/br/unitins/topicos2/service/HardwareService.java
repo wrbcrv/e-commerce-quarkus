@@ -7,7 +7,7 @@ import br.unitins.topicos2.dto.HardwareResponseDTO;
 
 public interface HardwareService {
 
-    List<HardwareResponseDTO> getAll();
+    List<HardwareResponseDTO> getAll(int page, int pageSize);
 
     HardwareResponseDTO findById(Long id);
 
@@ -17,7 +17,9 @@ public interface HardwareService {
 
     void delete(Long id);
 
-    List<HardwareResponseDTO> findByNome(String nome);
+    List<HardwareResponseDTO> findByNome(String nome, int page, int pageSize);
 
     long count();
+    
+    long countByNome(String nome);
 }

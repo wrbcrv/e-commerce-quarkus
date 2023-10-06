@@ -12,12 +12,14 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -33,10 +35,15 @@ public class HardwareResource {
     private static final Logger LOG = Logger.getLogger(HardwareResource.class);
 
     @GET
-    public List<HardwareResponseDTO> getAll() {
+    public List<HardwareResponseDTO> getAll(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+
         LOG.info("Buscando todos os hardwares.");
         LOG.debug("ERRO DE DEBUG.");
-        return hardwareService.getAll();
+
+        return hardwareService.getAll(page, pageSize);
     }
 
     @GET
@@ -91,8 +98,19 @@ public class HardwareResource {
     }
 
     @GET
+    @Path("/search/{nome}/count")
+    public long count(@PathParam("nome") String nome) {
+        return hardwareService.countByNome(nome);
+    }
+
+    @GET
     @Path("/search/{nome}")
-    public List<HardwareResponseDTO> search(@PathParam("nome") String nome) {
-        return hardwareService.findByNome(nome);
+    public List<HardwareResponseDTO> search(
+            @PathParam("nome") String nome,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+
+        return hardwareService.findByNome(nome, page, pageSize);
     }
 }

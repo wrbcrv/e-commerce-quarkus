@@ -32,8 +32,9 @@ public class HardwareServiceImpl implements HardwareService {
     Validator validator;
 
     @Override
-    public List<HardwareResponseDTO> getAll() {
-        List<Hardware> list = hardwareRepository.listAll();
+    public List<HardwareResponseDTO> getAll(int page, int pageSize) {
+        List<Hardware> list = hardwareRepository.findAll().page(page, pageSize).list();
+
         return list.stream().map(e -> HardwareResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
@@ -42,6 +43,7 @@ public class HardwareServiceImpl implements HardwareService {
         Hardware hardware = hardwareRepository.findById(id);
         if (hardware == null)
             throw new NotFoundException("Hardware não encontrado.");
+            
         return HardwareResponseDTO.valueOf(hardware);
     }
 
@@ -89,7 +91,6 @@ public class HardwareServiceImpl implements HardwareService {
         Set<ConstraintViolation<HardwareDTO>> violations = validator.validate(hardwareDTO);
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
-
     }
 
     @Override
@@ -99,13 +100,19 @@ public class HardwareServiceImpl implements HardwareService {
     }
 
     @Override
-    public List<HardwareResponseDTO> findByNome(String nome) {
-        List<Hardware> list = hardwareRepository.findByNome(nome);
+    public List<HardwareResponseDTO> findByNome(String nome, int page, int pageSize) {
+        List<Hardware> list = hardwareRepository.findByNome(nome).page(page, pageSize).list();
+
         return list.stream().map(e -> HardwareResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public long count() {
         return hardwareRepository.count();
+    }
+
+    @Override
+    public long countByNome(String nome) {
+        return hardwareRepository.findByNome(nome).count();
     }
 }

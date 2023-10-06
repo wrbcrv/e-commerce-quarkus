@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public record TelefoneDTO(
         Long id,
-        @NotBlank(message = "O campo deve ser informado.")
+        @NotBlank(message = "O campo DDD deve ser informado.")
         String ddd,
-        @NotBlank(message = "O campo deve ser informado.")
+        @NotBlank(message = "O campo número deve ser informado.")
         String numero) {
 
     public static TelefoneDTO valueOf(Telefone telefone) {
