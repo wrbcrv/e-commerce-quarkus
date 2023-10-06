@@ -16,6 +16,8 @@ public record HardwareDTO(
         int estoque,
         @NotBlank(message = "O campo modelo deve ser informado.")
         String modelo,
+        @NotNull (message = "O campo idFabricante deve ser informado.")
+        Long idFabricante,
         @NotNull (message = "O campo lançamento deve ser informado.")
         LocalDate lancamento,
         

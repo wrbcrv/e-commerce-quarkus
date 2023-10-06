@@ -9,6 +9,7 @@ import br.unitins.topicos2.dto.HardwareResponseDTO;
 import br.unitins.topicos2.model.Categoria;
 import br.unitins.topicos2.model.Hardware;
 import br.unitins.topicos2.model.Integridade;
+import br.unitins.topicos2.repository.FabricanteRepository;
 import br.unitins.topicos2.repository.HardwareRepository;
 import br.unitins.topicos2.repository.MarcaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,6 +31,9 @@ public class HardwareServiceImpl implements HardwareService {
 
     @Inject
     Validator validator;
+
+    @Inject
+    FabricanteRepository fabricanteRepository;
 
     @Override
     public List<HardwareResponseDTO> getAll(int page, int pageSize) {
@@ -56,6 +60,7 @@ public class HardwareServiceImpl implements HardwareService {
 
         entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
         entity.setModelo(hardwareDTO.modelo());
+        entity.setFabricante(fabricanteRepository.findById(hardwareDTO.idFabricante()));
         entity.setLancamento(hardwareDTO.lancamento());
         entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
         entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
@@ -77,6 +82,7 @@ public class HardwareServiceImpl implements HardwareService {
 
         entity.setMarca(marcaRepository.findById(hardwareDTO.idMarca()));
         entity.setModelo(hardwareDTO.modelo());
+        entity.setFabricante(fabricanteRepository.findById(hardwareDTO.idFabricante()));
         entity.setLancamento(hardwareDTO.lancamento());
         entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
         entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));

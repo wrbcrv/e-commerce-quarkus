@@ -23,6 +23,7 @@ public record FornecedorResponseDTO(
                     hardware.getPreco(),
                     hardware.getEstoque(),
                     hardware.getModelo(),
+                    hardware.getFabricante().getId(),
                     hardware.getLancamento(),
                     null,
                     null)).collect(Collectors.toList());

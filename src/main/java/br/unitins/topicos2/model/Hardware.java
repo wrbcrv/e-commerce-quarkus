@@ -14,10 +14,11 @@ public class Hardware extends Produto {
     @JoinColumn(name = "id_marca")
     @ManyToOne
     private Marca marca;
-    
     private String modelo;
+    @JoinColumn(name = "id_fabricante")
+    @ManyToOne
+    private Fabricante fabricante;
     private LocalDate lancamento;
-
     @Enumerated(EnumType.STRING)
     private Integridade integridade;
 
@@ -40,6 +41,14 @@ public class Hardware extends Produto {
         this.modelo = modelo;
     }
 
+    public Fabricante getFabricante() {
+        return fabricante;
+    }
+
+    public void setFabricante(Fabricante fabricante) {
+        this.fabricante = fabricante;
+    }
+
     public LocalDate getLancamento() {
         return lancamento;
     }
@@ -47,7 +56,7 @@ public class Hardware extends Produto {
     public void setLancamento(LocalDate lancamento) {
         this.lancamento = lancamento;
     }
-    
+
     public Integridade getIntegridade() {
         return integridade;
     }

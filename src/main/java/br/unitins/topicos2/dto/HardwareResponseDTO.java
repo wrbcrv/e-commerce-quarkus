@@ -13,6 +13,7 @@ public record HardwareResponseDTO(
         Float preco,
         int estoque,
         String modelo,
+        FabricanteResponseDTO fabricante,
         String lancamento,
         Integridade integridade,
         Categoria categoria) { 
@@ -29,6 +30,7 @@ public record HardwareResponseDTO(
                 hardware.getPreco(),
                 hardware.getEstoque(),
                 hardware.getModelo(),
+                FabricanteResponseDTO.valueOf(hardware.getFabricante()),
                 formattedLancamento,
                 hardware.getIntegridade(),
                 hardware.getCategoria()
