@@ -68,6 +68,7 @@ public class CupomResource {
             LOG.fatal("Erro sem identificacao: " + e.getMessage());
             result = new Result(e.getMessage(), false);
         }
+        
         return Response.status(Status.NOT_FOUND).entity(result).build();
 
     }
@@ -80,6 +81,7 @@ public class CupomResource {
             return Response.ok(cupom).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
+
             return Response.status(Status.NOT_FOUND).entity(result).build();
         }
     }

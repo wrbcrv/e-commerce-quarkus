@@ -2,6 +2,8 @@ package br.unitins.topicos2.resource;
 
 import java.util.List;
 
+import org.jboss.logging.Logger;
+
 import br.unitins.topicos2.application.Result;
 import br.unitins.topicos2.dto.EnderecoDTO;
 import br.unitins.topicos2.dto.TelefoneDTO;
@@ -13,6 +15,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
@@ -20,6 +23,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -31,6 +35,20 @@ public class UsuarioResource {
 
     @Inject
     UsuarioService service;
+
+    private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
+
+    @GET
+    public List<UsuarioResponseDTO> getAll(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+
+        LOG.info("Buscando todas os usuários.");
+        LOG.debug("ERRO DE DEBUG.");
+
+        return service.getAll(page, pageSize);
+    }
 
     @POST
     public UsuarioResponseDTO insert(UsuarioDTO dto) {
@@ -58,20 +76,9 @@ public class UsuarioResource {
     }
 
     @GET
-    public List<UsuarioResponseDTO> findAll() {
-        return service.findByAll();
-    }
-
-    @GET
     @Path("/{id}")
     public UsuarioResponseDTO findById(@PathParam("id") Long id) {
         return service.findById(id);
-    }
-
-    @GET
-    @Path("/search/nome/{nome}")
-    public List<UsuarioResponseDTO> findByNome(@PathParam("nome") String nome) {
-        return service.findByNome(nome);
     }
 
     @POST
@@ -144,5 +151,27 @@ public class UsuarioResource {
         } catch (NotFoundException e) {
             return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
         }
+    }
+
+    @GET
+    @Path("/count")
+    public long count() {
+        return service.count();
+    }
+
+    @GET
+    @Path("/search/{nome}/count")
+    public long count(@PathParam("nome") String nome) {
+        return service.countByNome(nome);
+    }
+
+    @GET
+    @Path("/search/{nome}")
+    public List<UsuarioResponseDTO> search(
+            @PathParam("nome") String nome,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+
+        return service.findByNome(nome, page, pageSize);
     }
 }

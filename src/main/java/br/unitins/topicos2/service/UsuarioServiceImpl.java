@@ -26,6 +26,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     UsuarioRepository repository;
 
     @Override
+    public List<UsuarioResponseDTO> getAll(int page, int pageSize) {
+        List<Usuario> list = repository.findAll().page(page, pageSize).list();
+
+        return list.stream().map(e -> UsuarioResponseDTO.valueOf(e)).collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public UsuarioResponseDTO insert(UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
@@ -61,6 +68,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         repository.persist(usuario);
+
+        return UsuarioResponseDTO.valueOf(usuario);
+    }
+
+    @Override
+    public UsuarioResponseDTO findById(Long id) {
+        Usuario usuario = repository.findById(id);
+        if (usuario == null)
+            throw new NotFoundException("Usuario não encontrado.");
 
         return UsuarioResponseDTO.valueOf(usuario);
     }
@@ -135,26 +151,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public UsuarioResponseDTO findById(Long id) {
-        Usuario usuario = repository.findById(id);
-        if (usuario == null)
-            throw new NotFoundException("Usuario não encontrado.");
-        return UsuarioResponseDTO.valueOf(usuario);
-    }
-
-    @Override
-    public List<UsuarioResponseDTO> findByNome(String nome) {
-        List<Usuario> list = repository.findByNome(nome);
-        return list.stream().map(e -> UsuarioResponseDTO.valueOf(e)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UsuarioResponseDTO> findByAll() {
-        return repository.listAll().stream()
-                .map(e -> UsuarioResponseDTO.valueOf(e)).toList();
     }
 
     @Override
@@ -377,5 +373,22 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         throw new NotFoundException("Endereco não encontrado para este usuário.");
+    }
+
+    @Override
+    public List<UsuarioResponseDTO> findByNome(String nome, int page, int pageSize) {
+        List<Usuario> list = repository.findByNome(nome).page(page, pageSize).list();
+
+        return list.stream().map(e -> UsuarioResponseDTO.valueOf(e)).collect(Collectors.toList());
+    }
+
+    @Override
+    public long count() {
+        return repository.count();
+    }
+
+    @Override
+    public long countByNome(String nome) {
+        return repository.findByNome(nome).count();
     }
 }

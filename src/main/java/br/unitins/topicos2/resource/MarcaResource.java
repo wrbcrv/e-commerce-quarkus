@@ -37,7 +37,8 @@ public class MarcaResource {
     @GET
     public List<MarcaResponseDTO> getAll(
             @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
 
         LOG.info("Buscando todas as marcas.");
         LOG.debug("ERRO DE DEBUG.");
@@ -67,8 +68,8 @@ public class MarcaResource {
             LOG.fatal("Erro sem identificacao: " + e.getMessage());
             result = new Result(e.getMessage(), false);
         }
-        return Response.status(Status.NOT_FOUND).entity(result).build();
 
+        return Response.status(Status.NOT_FOUND).entity(result).build();
     }
 
     @PUT
@@ -79,6 +80,7 @@ public class MarcaResource {
             return Response.ok(marca).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
+            
             return Response.status(Status.NOT_FOUND).entity(result).build();
         }
     }

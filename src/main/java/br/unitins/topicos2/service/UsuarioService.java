@@ -9,27 +9,31 @@ import br.unitins.topicos2.dto.UsuarioResponseDTO;
 
 public interface UsuarioService {
 
-    public UsuarioResponseDTO insert(UsuarioDTO dto);
+    List<UsuarioResponseDTO> getAll(int page, int pageSize);
 
-    public UsuarioResponseDTO update(UsuarioDTO dto, Long id);
+    UsuarioResponseDTO findById(Long id);
 
-    public void delete(Long id);
+    UsuarioResponseDTO insert(UsuarioDTO dto);
 
-    public UsuarioResponseDTO findById(Long id);
+    UsuarioResponseDTO update(UsuarioDTO dto, Long id);
 
-    public List<UsuarioResponseDTO> findByNome(String nome);
+    void delete(Long id);
 
-    public List<UsuarioResponseDTO> findByAll();
+    UsuarioResponseDTO createTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
 
-    public UsuarioResponseDTO createTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
+    UsuarioResponseDTO updateTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
 
-    public UsuarioResponseDTO updateTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
+    UsuarioResponseDTO removeTelefones(Long usuarioId, Long telefoneId);
 
-    public UsuarioResponseDTO removeTelefones(Long usuarioId, Long telefoneId);
+    UsuarioResponseDTO createEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
 
-    public UsuarioResponseDTO createEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
+    UsuarioResponseDTO updateEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
 
-    public UsuarioResponseDTO updateEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
+    UsuarioResponseDTO removeEnderecos(Long usuarioId, Long enderecoId);
 
-    public UsuarioResponseDTO removeEnderecos(Long usuarioId, Long enderecoId);
+    List<UsuarioResponseDTO> findByNome(String nome, int page, int pageSize);
+
+    long count();
+
+    long countByNome(String nome);
 }

@@ -37,9 +37,12 @@ public class CidadeResource {
     @GET
     public List<CidadeResponseDTO> getAll(
             @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+            
         LOG.info("Buscando todas os cidades.");
         LOG.debug("ERRO DE DEBUG.");
+
         return cidadeService.getAll(page, pageSize);
     }
 
@@ -77,6 +80,7 @@ public class CidadeResource {
             return Response.ok(cidade).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
+
             return Response.status(Status.NOT_FOUND).entity(result).build();
         }
     }

@@ -68,6 +68,7 @@ public class HardwareResource {
             LOG.fatal("Erro sem identificacao: " + e.getMessage());
             result = new Result(e.getMessage(), false);
         }
+
         return Response.status(Status.NOT_FOUND).entity(result).build();
 
     }
@@ -80,6 +81,7 @@ public class HardwareResource {
             return Response.ok(hardware).build();
         } catch (ConstraintViolationException e) {
             Result result = new Result(e.getConstraintViolations());
+            
             return Response.status(Status.NOT_FOUND).entity(result).build();
         }
     }
