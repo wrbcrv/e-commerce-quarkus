@@ -26,8 +26,9 @@ public class EstadoServiceImpl implements EstadoService {
     Validator validator;
 
     @Override
-    public List<EstadoResponseDTO> getAll() {
-        List<Estado> list = estadoRepository.listAll();
+    public List<EstadoResponseDTO> getAll(int page, int pageSize) {
+        List<Estado> list = estadoRepository.findAll().page(page, pageSize).list();
+
         return list.stream().map(e -> EstadoResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
@@ -36,6 +37,7 @@ public class EstadoServiceImpl implements EstadoService {
         Estado estado = estadoRepository.findById(id);
         if (estado == null)
             throw new NotFoundException("Estado não encontrado.");
+
         return EstadoResponseDTO.valueOf(estado);
     }
 
@@ -45,7 +47,7 @@ public class EstadoServiceImpl implements EstadoService {
         validar(estadoDTO);
 
         Estado entity = new Estado();
-        
+
         entity.setNome(estadoDTO.nome());
         entity.setSigla(estadoDTO.sigla());
 
@@ -71,7 +73,6 @@ public class EstadoServiceImpl implements EstadoService {
         Set<ConstraintViolation<EstadoDTO>> violations = validator.validate(estadoDTO);
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
-
     }
 
     @Override
@@ -81,13 +82,19 @@ public class EstadoServiceImpl implements EstadoService {
     }
 
     @Override
-    public List<EstadoResponseDTO> findByNome(String nome) {
-        List<Estado> list = estadoRepository.findByNome(nome);
+    public List<EstadoResponseDTO> findByNome(String nome, int page, int pageSize) {
+        List<Estado> list = estadoRepository.findByNome(nome).page(page, pageSize).list();
+        
         return list.stream().map(e -> EstadoResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public long count() {
         return estadoRepository.count();
+    }
+
+    @Override
+    public long countByNome(String nome) {
+        return estadoRepository.findByNome(nome).count();
     }
 }
