@@ -7,7 +7,7 @@ import br.unitins.topicos2.dto.MarcaResponseDTO;
 
 public interface MarcaService {
 
-    List<MarcaResponseDTO> getAll();
+    List<MarcaResponseDTO> getAll(int page, int pageSize);
 
     MarcaResponseDTO findById(Long id);
 
@@ -17,7 +17,9 @@ public interface MarcaService {
 
     void delete(Long id);
 
-    List<MarcaResponseDTO> findByNome(String nome);
+    List<MarcaResponseDTO> findByNome(String nome, int page, int pageSize);
 
     long count();
+
+    long countByNome(String nome);
 }

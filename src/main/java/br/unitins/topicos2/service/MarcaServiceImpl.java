@@ -26,8 +26,9 @@ public class MarcaServiceImpl implements MarcaService {
     Validator validator;
 
     @Override
-    public List<MarcaResponseDTO> getAll() {
-        List<Marca> list = marcaRepository.listAll();
+    public List<MarcaResponseDTO> getAll(int page, int pageSize) {
+        List<Marca> list = marcaRepository.findAll().page(page, pageSize).list();
+
         return list.stream().map(e -> MarcaResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
@@ -85,13 +86,19 @@ public class MarcaServiceImpl implements MarcaService {
     }
 
     @Override
-    public List<MarcaResponseDTO> findByNome(String nome) {
-        List<Marca> list = marcaRepository.findByNome(nome);
+    public List<MarcaResponseDTO> findByNome(String nome, int page, int pageSize) {
+        List<Marca> list = marcaRepository.findByNome(nome).page(page, pageSize).list();
+
         return list.stream().map(e -> MarcaResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
     @Override
     public long count() {
         return marcaRepository.count();
+    }
+
+    @Override
+    public long countByNome(String nome) {
+        return marcaRepository.findByNome(nome).count();
     }
 }

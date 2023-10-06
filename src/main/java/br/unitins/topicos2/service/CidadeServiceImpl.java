@@ -32,6 +32,7 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     public List<CidadeResponseDTO> getAll(int page, int pageSize) {
         List<Cidade> list = cidadeRepository.findAll().page(page, pageSize).list();
+
         return list.stream().map(e -> CidadeResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 
@@ -40,6 +41,7 @@ public class CidadeServiceImpl implements CidadeService {
         Cidade cidade = cidadeRepository.findById(id);
         if (cidade == null)
             throw new NotFoundException("Cidade não encontrada.");
+
         return CidadeResponseDTO.valueOf(cidade);
     }
 
@@ -75,7 +77,6 @@ public class CidadeServiceImpl implements CidadeService {
         Set<ConstraintViolation<CidadeDTO>> violations = validator.validate(cidadeDTO);
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
-
     }
 
     @Override
@@ -87,6 +88,7 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     public List<CidadeResponseDTO> findByNome(String nome, int page, int pageSize) {
         List<Cidade> list = cidadeRepository.findByNome(nome).page(page, pageSize).list();
+
         return list.stream().map(e -> CidadeResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
 

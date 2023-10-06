@@ -12,12 +12,14 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -33,10 +35,15 @@ public class EstadoResource {
     private static final Logger LOG = Logger.getLogger(EstadoResource.class);
 
     @GET
-    public List<EstadoResponseDTO> getAll() {
+    public List<EstadoResponseDTO> getAll(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+
         LOG.info("Buscando todos os estados.");
         LOG.debug("ERRO DE DEBUG.");
-        return estadoService.getAll();
+
+        return estadoService.getAll(page, pageSize);
     }
 
     @GET
@@ -91,9 +98,19 @@ public class EstadoResource {
     }
 
     @GET
-    @Path("/search/{nome}")
-    public List<EstadoResponseDTO> search(@PathParam("nome") String nome) {
-        return estadoService.findByNome(nome);
+    @Path("/search/{nome}/count")
+    public long count(@PathParam("nome") String nome) {
+        return estadoService.countByNome(nome);
+    }
 
+    @GET
+    @Path("/search/{nome}")
+    public List<EstadoResponseDTO> search(
+            @PathParam("nome") String nome,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize
+        ) {
+
+        return estadoService.findByNome(nome, page, pageSize);
     }
 }
