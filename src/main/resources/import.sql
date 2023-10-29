@@ -1,3 +1,4 @@
+/* 
 INSERT INTO estado (nome, sigla) 
 VALUES ('Maranhão', 'MA');
 INSERT INTO estado (nome, sigla) 
@@ -168,4 +169,5 @@ VALUES ('Corsair', 'https://www.corsair.com', '1994-01-01', 'Fremont, California
 INSERT INTO marca (nome, site, fundacao, sede) 
 VALUES ('Logitech', 'https://www.logitech.com', '1981-10-02', 'Lausanne, Switzerland');
 INSERT INTO marca (nome, site, fundacao, sede) 
-VALUES ('Razer', 'https://www.razer.com', '2005-11-01', 'Singapore');
+VALUES ('Razer', 'https://www.razer.com', '2005-11-01', 'Singapore'); 
+*/
