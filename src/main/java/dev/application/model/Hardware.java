@@ -14,16 +14,20 @@ public class Hardware extends Produto {
     @JoinColumn(name = "id_marca")
     @ManyToOne
     private Marca marca;
+
     private String modelo;
+
     @JoinColumn(name = "id_fabricante")
     @ManyToOne
     private Fabricante fabricante;
+
     private LocalDate lancamento;
-    @Enumerated(EnumType.STRING)
-    private Integridade integridade;
 
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     public String getModelo() {
         return modelo;
@@ -57,19 +61,19 @@ public class Hardware extends Produto {
         this.lancamento = lancamento;
     }
 
-    public Integridade getIntegridade() {
-        return integridade;
-    }
-
-    public void setIntegridade(Integridade integridade) {
-        this.integridade = integridade;
-    }
-
     public Categoria getCategoria() {
         return categoria;
     }
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

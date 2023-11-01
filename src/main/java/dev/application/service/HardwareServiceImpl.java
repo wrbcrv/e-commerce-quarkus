@@ -8,7 +8,7 @@ import dev.application.dto.HardwareDTO;
 import dev.application.dto.HardwareResponseDTO;
 import dev.application.model.Categoria;
 import dev.application.model.Hardware;
-import dev.application.model.Integridade;
+import dev.application.model.Status;
 import dev.application.repository.FabricanteRepository;
 import dev.application.repository.HardwareRepository;
 import dev.application.repository.MarcaRepository;
@@ -46,11 +46,11 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setModelo(hardwareDTO.modelo());
         entity.setFabricante(fabricanteRepository.findById(hardwareDTO.idFabricante()));
         entity.setLancamento(hardwareDTO.lancamento());
-        entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
-        entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
         entity.setNome(hardwareDTO.nome());
         entity.setPreco(hardwareDTO.preco());
         entity.setEstoque(hardwareDTO.estoque());
+        entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
+        entity.setStatus(Status.valueOf(hardwareDTO.idStatus()));
 
         hardwareRepository.persist(entity);
 
@@ -68,11 +68,11 @@ public class HardwareServiceImpl implements HardwareService {
         entity.setModelo(hardwareDTO.modelo());
         entity.setFabricante(fabricanteRepository.findById(hardwareDTO.idFabricante()));
         entity.setLancamento(hardwareDTO.lancamento());
-        entity.setIntegridade(Integridade.valueOf(hardwareDTO.idIntegridade()));
-        entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
         entity.setNome(hardwareDTO.nome());
         entity.setPreco(hardwareDTO.preco());
         entity.setEstoque(hardwareDTO.estoque());
+        entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
+        entity.setStatus(Status.valueOf(hardwareDTO.idStatus()));
 
         return HardwareResponseDTO.valueOf(entity);
     }

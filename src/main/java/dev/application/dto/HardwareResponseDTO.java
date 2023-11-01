@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 import dev.application.model.Categoria;
 import dev.application.model.Hardware;
-import dev.application.model.Integridade;
+import dev.application.model.Status;
 
 public record HardwareResponseDTO(
         Long id,
@@ -15,8 +15,8 @@ public record HardwareResponseDTO(
         String modelo,
         FabricanteResponseDTO fabricante,
         String lancamento,
-        Integridade integridade,
-        Categoria categoria) { 
+        Categoria categoria,
+        Status status) { 
 
     public static HardwareResponseDTO valueOf(Hardware hardware) {
         String formattedLancamento = hardware.getLancamento() != null
@@ -32,8 +32,8 @@ public record HardwareResponseDTO(
                 hardware.getModelo(),
                 FabricanteResponseDTO.valueOf(hardware.getFabricante()),
                 formattedLancamento,
-                hardware.getIntegridade(),
-                hardware.getCategoria()
+                hardware.getCategoria(),
+                hardware.getStatus()
         );
     }
 }

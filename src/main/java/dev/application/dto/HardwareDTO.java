@@ -27,7 +27,9 @@ public record HardwareDTO(
         @NotNull (message = "O campo lançamento deve ser informado.")
         LocalDate lancamento,
         
+        @NotNull(message = "O campo idCategoria deve ser informado.")
         Integer idCategoria,
 
-        Integer idIntegridade) {
+        @NotNull(message = "O campo idStatus deve ser informado.")
+        Integer idStatus) {
 }
