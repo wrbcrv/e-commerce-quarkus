@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record DescricaoDTO(
-        @NotNull (message = "O campo idHardware deve ser informado.")
+        @NotNull (message = "O campo Hardware deve ser informado.")
         Long idHardware,
         
-        @NotBlank(message = "O campo conteúdo deve ser informado.")
+        @NotBlank(message = "O campo Conteúdo deve ser informado.")
         String conteudo) { 
 }

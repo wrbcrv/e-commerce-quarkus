@@ -1,3 +1,93 @@
+INSERT INTO fornecedor (nome) 
+VALUES ('NVidia');
+
+INSERT INTO fornecedor (nome) 
+VALUES ('Samsung');
+
+INSERT INTO fornecedor (nome) 
+VALUES ('Corsair');
+
+INSERT INTO fornecedor (nome) 
+VALUES ('ASUS');
+
+INSERT INTO fornecedor (nome) 
+VALUES ('Crucial');
+
+/* INSERT INTO fornecedor (nome) 
+VALUES ('Logitech'); */
+
+INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('Galax', 'https://www.galax.com/', '01-01-1994', 'Hong Kong');
+
+INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('Samsung', 'https://www.samsung.com/', '01-03-1938', 'Seul, Coreia do Sul');
+
+INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('Corsair', 'https://www.corsair.com/', '01-01-1994', 'Fremont, Califórnia, EUA');
+
+INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('ASUS', 'https://www.asus.com/', '02-04-1989', 'Taipé, Taiwan');
+
+INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('Crucial', 'https://www.crucial.com/', '01-01-1996', 'Meridian, Idaho, EUA');
+
+/* INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('Logitech', 'https://www.logitech.com/', '02-10-1981', 'Lausanne, Suíça'); */
+
+INSERT INTO fabricante (nome, site) 
+VALUES ('NVidia', 'https://www.nvidia.com/');
+
+INSERT INTO fabricante (nome, site) 
+VALUES ('Samsung Electronics', 'https://www.samsung.com/br/');
+
+INSERT INTO fabricante (nome, site) 
+VALUES ('Corsair', 'https://www.corsair.com/br/');
+
+INSERT INTO fabricante (nome, site) 
+VALUES ('ASUS', 'https://www.asus.com/br/');
+
+INSERT INTO fabricante (nome, site) 
+VALUES ('Crucial', 'https://www.crucial.com/');
+
+/* INSERT INTO fabricante (nome, site) 
+VALUES ('Logitech', 'https://www.logitech.com/br-br/'); */
+
+INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('Placa de Vídeo', 1799.99, 10, 1);
+
+INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('SSD 1TB Samsung EVO', 249.99, 20, 2);
+
+INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('Fonte de Alimentação Corsair 750W', 199.99, 15, 3);
+
+INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('Placa Mãe ASUS ROG Strix Z590', 299.99, 5, 4);
+
+INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('Memória RAM DDR4 Crucial 16GB', 79.99, 30, 5);
+
+/* INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('Mouse Logitech G Pro Wireless', 149.99, 25, 7); */
+
+INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (1, 1, 'Placa de Vídeo RTX 3060 1-Click OC PCI-e Galax, 8 GB GDDR6, 128BIT', 1, '2021-02-25', 3, 1, '3060_gx_box_p_oc_600_1.png');
+
+INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (2, 2, 'SSD 1TB Samsung EVO SATA III 2.5"', 2, '2021-04-15', 2, 1, 'pt-860-evo-sata-3-2-5-ssd-mz-76e1t0b-eu-frontblack-90605299.png');
+
+INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (3, 3, 'Fonte de Alimentação Corsair 750W 80 PLUS Bronze', 3, '2022-05-10', 1, 1, 'CX750_02.png');
+
+INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (4, 4, 'Placa Mãe ASUS ROG Strix Z590 LGA 1200', 4, '2022-07-20', 3, 1, 'h525.png');
+
+INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (5, 5, 'Memória RAM DDR4 Crucial 16GB 2400MHz DIMM', 5, '2022-08-15', 3, 1, 'image.png');
+
+/* INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (6, 6, 'Mouse Logitech G Pro Wireless Gaming', 6, '2022-09-05', 3, 1, 'pro-wireless.png'); */
+
 /* 
 INSERT INTO estado (nome, sigla) 
 VALUES ('Maranhão', 'MA');

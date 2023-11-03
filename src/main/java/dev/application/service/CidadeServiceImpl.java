@@ -14,6 +14,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
@@ -31,11 +32,11 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     @Transactional
-    public CidadeResponseDTO create(CidadeDTO cidadeDTO) throws ConstraintViolationException {
+    public CidadeResponseDTO create(@Valid CidadeDTO cidadeDTO) throws ConstraintViolationException {
         validate(cidadeDTO);
 
         Cidade entity = new Cidade();
-        
+
         entity.setNome(cidadeDTO.nome());
         entity.setEstado(estadoRepository.findById(cidadeDTO.idEstado()));
 
@@ -53,7 +54,7 @@ public class CidadeServiceImpl implements CidadeService {
 
         entity.setNome(cidadeDTO.nome());
         entity.setEstado(estadoRepository.findById(cidadeDTO.idEstado()));
-        
+
         return CidadeResponseDTO.valueOf(entity);
     }
 

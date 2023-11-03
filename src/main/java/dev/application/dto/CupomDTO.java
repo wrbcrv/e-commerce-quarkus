@@ -7,20 +7,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CupomDTO(
-        @NotBlank(message = "O campo descrição deve ser informado.")
+        @NotBlank(message = "O campo Descrição deve ser informado.")
         String descricao,
 
-        @NotBlank(message = "O campo código deve ser informado.")
+        @NotBlank(message = "O campo Código deve ser informado.")
         String codigo,
 
-        @NotNull(message = "O campo início deve ser informado.")
+        @NotNull(message = "O campo Início deve ser informado.")
         LocalDate inicio,
 
-        @NotNull(message = "O campo término deve ser informado.")
+        @NotNull(message = "O campo Término deve ser informado.")
         LocalDate termino,
 
-        @NotNull(message = "O campo desconto deve ser informado.")
+        @NotNull(message = "O campo Desconto deve ser informado.")
         int desconto,
 
+        @NotNull(message = "Informe o(s) hardware(s) associados")
         List<HardwareDTO> hardwares) {
 }

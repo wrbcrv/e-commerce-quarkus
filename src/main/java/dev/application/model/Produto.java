@@ -1,17 +1,20 @@
 package dev.application.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Produto extends DefaultEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Produto extends DefaultEntity {
 
     private String nome;
     private Float preco;
     private int estoque; 
-    @JoinColumn(name = "id_fornecedor")
     @ManyToOne
+    @JoinColumn(name = "id_fornecedor")
     private Fornecedor fornecedor;
 
     public String getNome() {

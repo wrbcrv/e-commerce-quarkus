@@ -38,23 +38,11 @@ public class EstadoResource {
     public Response create(EstadoDTO dto) {
         LOG.infof("Cadastrando um novo estado: %s", dto.nome());
 
-        Result result = null;
+        EstadoResponseDTO estado = estadoService.create(dto);
         
-        try {
-            EstadoResponseDTO estado = estadoService.create(dto);
-            LOG.infof("Estado (%d) cadastrado com sucesso.", estado.id());
+        LOG.infof("Estado (%d) cadastrado com sucesso.", estado.id());
 
-            return Response.status(Status.CREATED).entity(estado).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao cadastrar um estado.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        return Response.status(Status.CREATED).entity(estado).build();
     }
 
     @PUT

@@ -1,7 +1,6 @@
 package dev.application.service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import dev.application.dto.EstadoDTO;
@@ -11,8 +10,8 @@ import dev.application.repository.EstadoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
@@ -27,9 +26,7 @@ public class EstadoServiceImpl implements EstadoService {
 
     @Override
     @Transactional
-    public EstadoResponseDTO create(EstadoDTO estadoDTO) throws ConstraintViolationException {
-        validate(estadoDTO);
-
+    public EstadoResponseDTO create(@Valid EstadoDTO estadoDTO) throws ConstraintViolationException {
         Estado entity = new Estado();
 
         entity.setNome(estadoDTO.nome());
@@ -43,8 +40,6 @@ public class EstadoServiceImpl implements EstadoService {
     @Override
     @Transactional
     public EstadoResponseDTO update(Long id, EstadoDTO estadoDTO) throws ConstraintViolationException {
-        validate(estadoDTO);
-
         Estado entity = estadoRepository.findById(id);
 
         entity.setNome(estadoDTO.nome());
@@ -90,11 +85,5 @@ public class EstadoServiceImpl implements EstadoService {
     @Override
     public long countByNome(String nome) {
         return estadoRepository.findByNome(nome).count();
-    }
-
-    private void validate(EstadoDTO estadoDTO) throws ConstraintViolationException {
-        Set<ConstraintViolation<EstadoDTO>> violations = validator.validate(estadoDTO);
-        if (!violations.isEmpty())
-            throw new ConstraintViolationException(violations);
     }
 }

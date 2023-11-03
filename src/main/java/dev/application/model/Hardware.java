@@ -3,31 +3,23 @@ package dev.application.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Hardware extends Produto {
 
+    @ManyToOne
     @JoinColumn(name = "id_marca")
-    @ManyToOne
     private Marca marca;
-
     private String modelo;
-
-    @JoinColumn(name = "id_fabricante")
     @ManyToOne
+    @JoinColumn(name = "id_fabricante")
     private Fabricante fabricante;
-
     private LocalDate lancamento;
-
-    @Enumerated(EnumType.STRING)
     private Categoria categoria;
-
-    @Enumerated(EnumType.STRING)
     private Status status;
+    private String imageName;
 
     public String getModelo() {
         return modelo;
@@ -75,5 +67,13 @@ public class Hardware extends Produto {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

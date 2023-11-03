@@ -37,7 +37,8 @@ public record CupomResponseDTO(
                 hardware.getFabricante().getId(),
                 hardware.getLancamento(),
                 null,
-                null
+                null,
+                hardware.getImageName()
             )).collect(Collectors.toList());
         }
 

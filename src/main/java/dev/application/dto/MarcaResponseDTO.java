@@ -13,7 +13,7 @@ public record MarcaResponseDTO(
 
     public static MarcaResponseDTO valueOf(Marca marca) {
         String formattedFundacao = marca.getFundacao() != null
-                ? marca.getFundacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                ? marca.getFundacao().format(DateTimeFormatter.ofPattern("yyyy"))
                 : null;
 
         return new MarcaResponseDTO(

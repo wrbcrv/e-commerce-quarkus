@@ -5,16 +5,16 @@ import jakarta.validation.constraints.NotBlank;
 
 public record EnderecoDTO(
         Long id,
-        @NotBlank(message = "O campo logradouro deve ser informado.")
+        @NotBlank(message = "O campo Logradouro deve ser informado.")
         String logradouro,
 
-        @NotBlank(message = "O campo número deve ser informado.")
+        @NotBlank(message = "O campo Número deve ser informado.")
         String numero,
 
-        @NotBlank(message = "O campo complemento deve ser informado.")
+        @NotBlank(message = "O campo Complemento deve ser informado.")
         String complemento,
 
-        @NotBlank(message = "O campo bairro deve ser informado.")
+        @NotBlank(message = "O campo Bairro deve ser informado.")
         String bairro,
         
         @NotBlank(message = "O campo CEP deve ser informado.")

@@ -16,7 +16,8 @@ public record HardwareResponseDTO(
         FabricanteResponseDTO fabricante,
         String lancamento,
         Categoria categoria,
-        Status status) { 
+        Status status,
+        String imageName) { 
 
     public static HardwareResponseDTO valueOf(Hardware hardware) {
         String formattedLancamento = hardware.getLancamento() != null
@@ -33,7 +34,8 @@ public record HardwareResponseDTO(
                 FabricanteResponseDTO.valueOf(hardware.getFabricante()),
                 formattedLancamento,
                 hardware.getCategoria(),
-                hardware.getStatus()
+                hardware.getStatus(),
+                hardware.getImageName()
         );
     }
 }

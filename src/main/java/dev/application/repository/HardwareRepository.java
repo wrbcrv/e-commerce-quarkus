@@ -13,4 +13,10 @@ public class HardwareRepository implements PanacheRepository<Hardware> {
             return null;
         return find("UPPER(nome) LIKE ?1 ", "%" + nome.toUpperCase() + "%");
     }
+
+    public PanacheQuery<Hardware> findByModelo(String modelo) {
+        if (modelo == null)
+            return null;
+        return find("UPPER(modelo) LIKE ?1 ", "%" + modelo.toUpperCase() + "%");
+    }
 }

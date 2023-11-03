@@ -26,7 +26,8 @@ public record FornecedorResponseDTO(
                     hardware.getFabricante().getId(),
                     hardware.getLancamento(),
                     null,
-                    null)).collect(Collectors.toList());
+                    null,
+                    hardware.getImageName())).collect(Collectors.toList());
         }
         return new FornecedorResponseDTO(
                 fornecedor.getId(),

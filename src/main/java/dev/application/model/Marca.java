@@ -12,7 +12,6 @@ public class Marca extends DefaultEntity {
     private String nome;
     @Column(length = 100)
     private String site;
-    
     private LocalDate fundacao;
     @Column(length = 100)
     private String sede;

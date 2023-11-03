@@ -107,6 +107,22 @@ public class HardwareServiceImpl implements HardwareService {
     }
 
     @Override
+    public List<HardwareResponseDTO> findByModelo(String modelo, int page, int pageSize) {
+        List<Hardware> list = hardwareRepository.findByModelo(modelo).page(page, pageSize).list();
+
+        return list.stream().map(e -> HardwareResponseDTO.valueOf(e)).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public HardwareResponseDTO saveImage(Long id, String imageName) {
+        Hardware entity = hardwareRepository.findById(id);
+        entity.setImageName(imageName);
+
+        return HardwareResponseDTO.valueOf(entity);
+    }
+
+    @Override
     public long count() {
         return hardwareRepository.count();
     }

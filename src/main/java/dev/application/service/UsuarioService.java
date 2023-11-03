@@ -6,10 +6,11 @@ import dev.application.dto.EnderecoDTO;
 import dev.application.dto.TelefoneDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
+import jakarta.validation.Valid;
 
 public interface UsuarioService {
 
-    UsuarioResponseDTO create(UsuarioDTO dto);
+    UsuarioResponseDTO create(@Valid UsuarioDTO dto);
 
     UsuarioResponseDTO update(UsuarioDTO dto, Long id);
 

@@ -4,10 +4,11 @@ import java.util.List;
 
 import dev.application.dto.CidadeDTO;
 import dev.application.dto.CidadeResponseDTO;
+import jakarta.validation.Valid;
 
 public interface CidadeService {
 
-        CidadeResponseDTO create(CidadeDTO dto);
+        CidadeResponseDTO create(@Valid CidadeDTO dto);
 
         CidadeResponseDTO update(Long id, CidadeDTO dto);
 

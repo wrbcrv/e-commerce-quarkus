@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.unitins.topicos2</groupId>
-  <artifactId>topicos-2-2023-2</artifactId>
+  <artifactId>e-commerce-quarkus</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>

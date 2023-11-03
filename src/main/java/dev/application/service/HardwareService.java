@@ -19,6 +19,10 @@ public interface HardwareService {
 
     List<HardwareResponseDTO> findByNome(String nome, int page, int pageSize);
 
+    List<HardwareResponseDTO> findByModelo(String modelo, int page, int pageSize);
+
+    HardwareResponseDTO saveImage(Long id, String imageName);
+
     long count();
 
     long countByNome(String nome);

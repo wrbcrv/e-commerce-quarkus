@@ -17,6 +17,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
@@ -27,7 +28,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) {
+    public UsuarioResponseDTO create(@Valid UsuarioDTO usuarioDTO) throws ConstraintViolationException {
         Usuario usuario = new Usuario();
 
         usuario.setNome(usuarioDTO.nome());

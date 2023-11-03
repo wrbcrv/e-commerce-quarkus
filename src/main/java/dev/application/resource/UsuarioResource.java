@@ -42,23 +42,11 @@ public class UsuarioResource {
     public Response create(UsuarioDTO dto) {
         LOG.info("Cadastrando um novo usuário: " + dto.nome());
 
-        Result result = null;
+        UsuarioResponseDTO usuario = service.create(dto);
 
-        try {
-            UsuarioResponseDTO usuario = service.create(dto);
-            LOG.infof("Usuário (%d) cadastrado com sucesso.", usuario.id());
+        LOG.infof("Usuário (%d) cadastrado com sucesso.", usuario.id());
 
-            return Response.status(Status.CREATED).entity(usuario).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao cadastrar um usuário.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificação: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        return Response.status(Status.CREATED).entity(usuario).build();
     }
 
     @PUT
@@ -253,7 +241,7 @@ public class UsuarioResource {
             @PathParam("nome") String nome,
             @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-                
+
         LOG.info("Buscando usuários com o nome: " + nome);
         LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
 

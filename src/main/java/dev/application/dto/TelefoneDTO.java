@@ -8,7 +8,7 @@ public record TelefoneDTO(
         @NotBlank(message = "O campo DDD deve ser informado.")
         String ddd,
         
-        @NotBlank(message = "O campo número deve ser informado.")
+        @NotBlank(message = "O campo Número deve ser informado.")
         String numero) {
 
     public static TelefoneDTO valueOf(Telefone telefone) {

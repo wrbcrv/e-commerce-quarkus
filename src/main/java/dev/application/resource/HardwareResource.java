@@ -7,6 +7,7 @@ import org.jboss.logging.Logger;
 import dev.application.dto.HardwareDTO;
 import dev.application.application.Result;
 import dev.application.dto.HardwareResponseDTO;
+import dev.application.service.FileService;
 import dev.application.service.HardwareService;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -22,6 +23,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
 @Path("/hardwares")
@@ -31,6 +33,9 @@ public class HardwareResource {
 
     @Inject
     HardwareService hardwareService;
+
+    @Inject
+    FileService fileService;
 
     private static final Logger LOG = Logger.getLogger(HardwareResource.class);
 
@@ -140,7 +145,7 @@ public class HardwareResource {
 
     @GET
     @Path("/search/{nome}")
-    public List<HardwareResponseDTO> search(
+    public List<HardwareResponseDTO> searchByNome(
             @PathParam("nome") String nome,
             @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
@@ -149,5 +154,28 @@ public class HardwareResource {
         LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
 
         return hardwareService.findByNome(nome, page, pageSize);
+    }
+
+    @GET
+    @Path("/search/{modelo}")
+    public List<HardwareResponseDTO> searchByModelo(
+            @PathParam("modelo") String modelo,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+
+        LOG.info("Buscando hardwares com o modelo: " + modelo);
+        LOG.debug("Método search chamado com modelo=" + modelo + ", page=" + page + " e pageSize=" + pageSize);
+
+        return hardwareService.findByModelo(modelo, page, pageSize);
+    }
+
+    @GET
+    @Path("/image/download/{imageName}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response download(@PathParam("imageName") String imageName) {
+        ResponseBuilder responseBuilder = Response.ok(fileService.download(imageName));
+        responseBuilder.header("Content-Disposition", "attachment;filename=" + imageName);
+
+        return responseBuilder.build();
     }
 }

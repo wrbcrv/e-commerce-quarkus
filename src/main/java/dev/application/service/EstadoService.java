@@ -4,10 +4,11 @@ import java.util.List;
 
 import dev.application.dto.EstadoDTO;
 import dev.application.dto.EstadoResponseDTO;
+import jakarta.validation.Valid;
 
 public interface EstadoService {
 
-        EstadoResponseDTO create(EstadoDTO dto);
+        EstadoResponseDTO create(@Valid EstadoDTO dto);
 
         EstadoResponseDTO update(Long id, EstadoDTO dto);
 
