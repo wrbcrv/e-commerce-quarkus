@@ -13,8 +13,14 @@ VALUES ('ASUS');
 INSERT INTO fornecedor (nome) 
 VALUES ('Crucial');
 
+INSERT INTO fornecedor (nome) 
+VALUES ('Logitech');
+
+INSERT INTO fornecedor (nome) 
+VALUES ('AMD');
+
 /* INSERT INTO fornecedor (nome) 
-VALUES ('Logitech'); */
+VALUES ('Western Digital'); */
 
 INSERT INTO marca (nome, site, fundacao, sede) 
 VALUES ('Galax', 'https://www.galax.com/', '01-01-1994', 'Hong Kong');
@@ -31,8 +37,14 @@ VALUES ('ASUS', 'https://www.asus.com/', '02-04-1989', 'Taipé, Taiwan');
 INSERT INTO marca (nome, site, fundacao, sede) 
 VALUES ('Crucial', 'https://www.crucial.com/', '01-01-1996', 'Meridian, Idaho, EUA');
 
+INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('Logitech', 'https://www.logitech.com/', '02-10-1981', 'Lausanne, Suíça');
+
+INSERT INTO marca (nome, site, fundacao, sede) 
+VALUES ('AMD', 'https://www.amd.com/', '01-05-1969', 'Santa Clara, Califórnia, EUA');
+
 /* INSERT INTO marca (nome, site, fundacao, sede) 
-VALUES ('Logitech', 'https://www.logitech.com/', '02-10-1981', 'Lausanne, Suíça'); */
+VALUES ('WD', 'https://www.westerndigital.com/', '23-04-1970', 'San Jose, Califórnia, EUA'); */
 
 INSERT INTO fabricante (nome, site) 
 VALUES ('NVidia', 'https://www.nvidia.com/');
@@ -49,8 +61,14 @@ VALUES ('ASUS', 'https://www.asus.com/br/');
 INSERT INTO fabricante (nome, site) 
 VALUES ('Crucial', 'https://www.crucial.com/');
 
+INSERT INTO fabricante (nome, site) 
+VALUES ('Logitech', 'https://www.logitech.com/br-br/');
+
+INSERT INTO fabricante (nome, site) 
+VALUES ('AMD', 'https://www.amd.com/pt');
+
 /* INSERT INTO fabricante (nome, site) 
-VALUES ('Logitech', 'https://www.logitech.com/br-br/'); */
+VALUES ('Western Digital', 'https://www.westerndigital.com/'); */
 
 INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
 VALUES ('Placa de Vídeo', 1799.99, 10, 1);
@@ -67,8 +85,14 @@ VALUES ('Placa Mãe ASUS ROG Strix Z590', 299.99, 5, 4);
 INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
 VALUES ('Memória RAM DDR4 Crucial 16GB', 79.99, 30, 5);
 
+INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('Mouse Logitech G Pro Wireless', 149.99, 25, 6);
+
+INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
+VALUES ('Processador AMD Ryzen 9 5900X', 349.99, 15, 7);
+
 /* INSERT INTO produto (nome, preco, estoque, id_fornecedor) 
-VALUES ('Mouse Logitech G Pro Wireless', 149.99, 25, 7); */
+VALUES ('HD Externo WD Elements 2TB', 99.99, 12, 8); */
 
 INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
 VALUES (1, 1, 'Placa de Vídeo RTX 3060 1-Click OC PCI-e Galax, 8 GB GDDR6, 128BIT', 1, '2021-02-25', 3, 1, '3060_gx_box_p_oc_600_1.png');
@@ -85,8 +109,14 @@ VALUES (4, 4, 'Placa Mãe ASUS ROG Strix Z590 LGA 1200', 4, '2022-07-20', 3, 1, 
 INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
 VALUES (5, 5, 'Memória RAM DDR4 Crucial 16GB 2400MHz DIMM', 5, '2022-08-15', 3, 1, 'image.png');
 
+INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (6, 6, 'Mouse Logitech G Pro Wireless Gaming', 6, '2022-09-05', 3, 1, 'pro-wireless.png');
+
+INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
+VALUES (7, 7, 'Processador AMD Ryzen 9 5900X 12-core, 24-thread', 7, '2022-10-10', 2, 1, 'processador-amd-ryzen-9-5900x-cache-70mb-3-8ghz-4-7ghz-max-turbo-am4-100-100000061wof_1604585280_gg.jpg');
+
 /* INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
-VALUES (6, 6, 'Mouse Logitech G Pro Wireless Gaming', 6, '2022-09-05', 3, 1, 'pro-wireless.png'); */
+VALUES (8, 8, 'HD Externo WD Elements 2TB USB 3.0', 8, '2022-11-15', 2, 1, 'wd_elements_2tb_external_hdd.png'); */
 
 /* 
 INSERT INTO estado (nome, sigla) 
