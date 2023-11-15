@@ -1,9 +1,12 @@
 package dev.application.model;
 
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -13,28 +16,26 @@ import jakarta.persistence.OneToMany;
 public class Usuario extends DefaultEntity {
 
     @Column(length = 100)
-    private String nome;
-    @Column(length = 100)
-    private String login;
+    private String email;
     @Column(length = 100)
     private String senha;
+    @Column(length = 100)
+    private String nome;
     @Column(length = 14)
     private String cpf;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "usuario_telefone", 
-        joinColumns = @JoinColumn(name = "id_usuario"), 
-        inverseJoinColumns = @JoinColumn(name = "id_telefone")
-    )
+    @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_telefone"))
     private List<Telefone> telefones;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-        name = "usuario_endereco", 
-        joinColumns = @JoinColumn(name = "id_usuario"), 
-        inverseJoinColumns = @JoinColumn(name = "id_endereco")
-    )
+    @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_endereco"))
     private List<Endereco> enderecos;
+
+    @ElementCollection
+    @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"))
+    @Column(name = "perfil", length = 30)
+    private Set<Perfil> perfis;
 
     public String getNome() {
         return nome;
@@ -44,12 +45,12 @@ public class Usuario extends DefaultEntity {
         this.nome = nome;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {
@@ -82,5 +83,13 @@ public class Usuario extends DefaultEntity {
 
     public void setEnderecos(List<Endereco> enderecos) {
         this.enderecos = enderecos;
+    }
+
+    public Set<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public void setPerfis(Set<Perfil> perfis) {
+        this.perfis = perfis;
     }
 }

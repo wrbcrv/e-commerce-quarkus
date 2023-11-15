@@ -26,14 +26,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Inject
     UsuarioRepository usuarioRepository;
 
+    @Inject
+    HashServiceImpl hashServiceImpl;
+
     @Override
     @Transactional
     public UsuarioResponseDTO create(@Valid UsuarioDTO usuarioDTO) throws ConstraintViolationException {
         Usuario usuario = new Usuario();
 
         usuario.setNome(usuarioDTO.nome());
-        usuario.setLogin(usuarioDTO.login());
-        usuario.setSenha(usuarioDTO.senha());
+        usuario.setEmail(usuarioDTO.email());
+        usuario.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
         usuario.setCpf(usuarioDTO.cpf());
 
         if (usuarioDTO.telefones() != null && !usuarioDTO.telefones().isEmpty()) {
@@ -73,7 +76,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuarioExistente.setNome(usuarioDTO.nome());
         usuarioExistente.setNome(usuarioDTO.nome());
-        usuarioExistente.setLogin(usuarioDTO.login());
+        usuarioExistente.setEmail(usuarioDTO.email());
         usuarioExistente.setSenha(usuarioDTO.senha());
         usuarioExistente.setCpf(usuarioDTO.cpf());
 
@@ -155,11 +158,27 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public UsuarioResponseDTO findByEmail(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        
+        if (usuario == null)
+            throw new NotFoundException("Usuário não encontrado.");
+        
+        return UsuarioResponseDTO.valueOf(usuario);
+    }
+
+    @Override
+    public Usuario findByEmailAndSenha(String email, String nome) {
+        return usuarioRepository.findByEmailAndSenha(email, nome);
+    }
+
+    @Override
     public List<UsuarioResponseDTO> findByNome(String nome, int page, int pageSize) {
         List<Usuario> list = usuarioRepository.findByNome(nome).page(page, pageSize).list();
 
         return list.stream().map(e -> UsuarioResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
+    
 
     @Override
     @Transactional

@@ -118,6 +118,12 @@ VALUES (7, 7, 'Processador AMD Ryzen 9 5900X 12-core, 24-thread', 7, '2022-10-10
 /* INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
 VALUES (8, 8, 'HD Externo WD Elements 2TB USB 3.0', 8, '2022-11-15', 2, 1, 'wd_elements_2tb_external_hdd.png'); */
 
+INSERT INTO usuario (email, senha)
+VALUES ('admin', '670O1PvrZN/9M4jaH8LZGBXvu+O2HeAPE1IAH8iSzSY+JbkNaFdyizUFaKOZMNRhDzj97kONYDRA8ZsuA9/6pg==');
+
+INSERT INTO perfis (id_usuario, perfil) 
+VALUES (1, 'Admin');
+
 /* 
 INSERT INTO estado (nome, sigla) 
 VALUES ('Maranhão', 'MA');
