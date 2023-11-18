@@ -32,4 +32,9 @@ public class HashServiceImpl implements HashService {
             throw new RuntimeException(e);
         }
     }
+
+    public static void main(String[] args) {
+        HashServiceImpl hashServiceImpl = new HashServiceImpl();
+        System.out.println(hashServiceImpl.getHashSenha("admin"));
+    }
 }

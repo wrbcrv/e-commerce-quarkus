@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 public record UsuarioDTO(
     @NotBlank(message = "O campo Email deve ser informado.")
-    String email,
+    String login,
 
     @NotBlank(message = "O campo Senha deve ser informado.")
     String senha,

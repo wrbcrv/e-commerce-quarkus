@@ -8,7 +8,7 @@ import dev.application.model.Usuario;
 
 public record UsuarioResponseDTO(
         Long id,
-        String email,
+        String login,
         String senha,
         String nome,
         String cpf,
@@ -17,9 +17,12 @@ public record UsuarioResponseDTO(
         Set<Perfil> perfis) {
 
     public static UsuarioResponseDTO valueOf(Usuario usuario) {
+        if (usuario == null)
+            return null;
+            
         return new UsuarioResponseDTO(
                 usuario.getId(),
-                usuario.getEmail(),
+                usuario.getLogin(),
                 usuario.getSenha(),
                 usuario.getNome(),
                 usuario.getCpf(),

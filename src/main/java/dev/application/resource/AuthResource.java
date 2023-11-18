@@ -1,7 +1,7 @@
 package dev.application.resource;
 
 import dev.application.dto.AuthDTO;
-import dev.application.model.Usuario;
+import dev.application.dto.UsuarioResponseDTO;
 import dev.application.service.HashService;
 import dev.application.service.JwtService;
 import dev.application.service.UsuarioService;
@@ -26,22 +26,22 @@ public class AuthResource {
     UsuarioService usuarioService;
 
     @Inject
-    JwtService tokenJwtService;
+    JwtService jwtService;
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response login(AuthDTO authDTO) {
         String hash = hashService.getHashSenha(authDTO.senha());
 
-        Usuario usuario = usuarioService.findByEmailAndSenha(authDTO.email(), hash);
+        UsuarioResponseDTO usuario = usuarioService.findByLoginAndSenha(authDTO.login(), hash);
 
         if (usuario == null)
-            return Response.status(Status.NO_CONTENT)
+            return Response.status(Status.NOT_FOUND)
                     .entity("Usuário não encontrado.")
                     .build();
 
         return Response.ok()
-                .header("Authorization", tokenJwtService.generateJwt(usuario))
+                .header("Authorization", jwtService.generateJwt(usuario))
                 .build();
     }
 }

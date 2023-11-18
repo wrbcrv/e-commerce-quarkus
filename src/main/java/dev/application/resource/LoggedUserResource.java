@@ -27,9 +27,9 @@ public class LoggedUserResource {
     @GET
     @RolesAllowed({ "Admin", "User" })
     public Response getUsuario() {
-        String email = jsonWebToken.getSubject();
+        String login = jsonWebToken.getSubject();
 
-        UsuarioResponseDTO usuarioResponseDTO = usuarioService.findByEmail(email);
+        UsuarioResponseDTO usuarioResponseDTO = usuarioService.findByLogin(login);
 
         return Response.ok(usuarioResponseDTO).build();
     }

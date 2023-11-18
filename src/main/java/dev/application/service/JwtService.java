@@ -1,8 +1,8 @@
 package dev.application.service;
 
-import dev.application.model.Usuario;
+import dev.application.dto.UsuarioResponseDTO;
 
 public interface JwtService {
     
-    public String generateJwt(Usuario usuario);
+    public String generateJwt(UsuarioResponseDTO usuario);
 }

@@ -6,7 +6,6 @@ import dev.application.dto.EnderecoDTO;
 import dev.application.dto.TelefoneDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
-import dev.application.model.Usuario;
 import jakarta.validation.Valid;
 
 public interface UsuarioService {
@@ -21,9 +20,9 @@ public interface UsuarioService {
 
     UsuarioResponseDTO findById(Long id);
     
-    UsuarioResponseDTO findByEmail(String email);
+    UsuarioResponseDTO findByLogin(String login);
 
-    Usuario findByEmailAndSenha(String email, String nome);
+    UsuarioResponseDTO findByLoginAndSenha(String login, String nome);
 
     List<UsuarioResponseDTO> findByNome(String nome, int page, int pageSize);
 

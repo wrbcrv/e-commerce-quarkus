@@ -29,9 +29,9 @@ public enum Status {
         if (id == null)
             return null;
 
-        for (Status integridade : Status.values()) {
-            if (id.equals(integridade.getId())) 
-                return integridade;
+        for (Status status : Status.values()) {
+            if (id.equals(status.getId())) 
+                return status;
         }
 
         throw new IllegalArgumentException("Id inválido:" + id);

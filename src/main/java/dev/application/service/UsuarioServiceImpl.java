@@ -1,8 +1,10 @@
 package dev.application.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import dev.application.dto.EnderecoDTO;
@@ -10,6 +12,7 @@ import dev.application.dto.TelefoneDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
 import dev.application.model.Endereco;
+import dev.application.model.Perfil;
 import dev.application.model.Telefone;
 import dev.application.model.Usuario;
 import dev.application.repository.UsuarioRepository;
@@ -35,7 +38,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = new Usuario();
 
         usuario.setNome(usuarioDTO.nome());
-        usuario.setEmail(usuarioDTO.email());
+        usuario.setLogin(usuarioDTO.login());
         usuario.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
         usuario.setCpf(usuarioDTO.cpf());
 
@@ -49,6 +52,16 @@ public class UsuarioServiceImpl implements UsuarioService {
                 usuario.getTelefones().add(telefone);
             }
         }
+
+        Integer idPerfil = usuarioDTO.idPerfis();
+        Set<Perfil> perfis = new HashSet<>();
+
+        if (idPerfil != null) {
+            Perfil perfil = Perfil.valueOf(idPerfil);
+            perfis.add(perfil);
+        }
+
+        usuario.setPerfis(perfis);
 
         if (usuarioDTO.enderecos() != null && !usuarioDTO.enderecos().isEmpty()) {
             usuario.setEnderecos(new ArrayList<Endereco>());
@@ -76,8 +89,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuarioExistente.setNome(usuarioDTO.nome());
         usuarioExistente.setNome(usuarioDTO.nome());
-        usuarioExistente.setEmail(usuarioDTO.email());
-        usuarioExistente.setSenha(usuarioDTO.senha());
+        usuarioExistente.setLogin(usuarioDTO.login());
+        usuarioExistente.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
         usuarioExistente.setCpf(usuarioDTO.cpf());
 
         List<Telefone> telefonesExistente = usuarioExistente.getTelefones();
@@ -158,18 +171,20 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioResponseDTO findByEmail(String email) {
-        Usuario usuario = usuarioRepository.findByEmail(email);
-        
+    public UsuarioResponseDTO findByLogin(String login) {
+        Usuario usuario = usuarioRepository.findByLogin(login);
+
         if (usuario == null)
             throw new NotFoundException("Usuário não encontrado.");
-        
+
         return UsuarioResponseDTO.valueOf(usuario);
     }
 
     @Override
-    public Usuario findByEmailAndSenha(String email, String nome) {
-        return usuarioRepository.findByEmailAndSenha(email, nome);
+    public UsuarioResponseDTO findByLoginAndSenha(String login, String nome) {
+        Usuario usuario = usuarioRepository.findByLoginAndSenha(login, nome);
+
+        return UsuarioResponseDTO.valueOf(usuario);
     }
 
     @Override
@@ -178,7 +193,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return list.stream().map(e -> UsuarioResponseDTO.valueOf(e)).collect(Collectors.toList());
     }
-    
 
     @Override
     @Transactional

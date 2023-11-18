@@ -29,9 +29,9 @@ public enum Categoria {
         if (id == null)
             return null;
 
-        for (Categoria nivel : Categoria.values()) {
-            if (id.equals(nivel.getId()))
-                return nivel;
+        for (Categoria categoria : Categoria.values()) {
+            if (id.equals(categoria.getId()))
+                return categoria;
         }
 
         throw new IllegalArgumentException("Id inválido:" + id);
