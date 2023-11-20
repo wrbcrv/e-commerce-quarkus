@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ValidationError extends dev.application.util.Error {
 
-    record FieldError(String fieldName, String message) {
+    record FieldError(String field, String message) {
         
     }
 
@@ -15,10 +15,10 @@ public class ValidationError extends dev.application.util.Error {
         super(code, message);
     }
 
-    public void addFieldError(String fieldName, String message) {
+    public void addFieldError(String field, String message) {
         if (errors == null)
             errors = new ArrayList<FieldError>();
-        errors.add(new FieldError(fieldName, message));
+        errors.add(new FieldError(field, message));
     }
 
     public List<FieldError> getErrors() {

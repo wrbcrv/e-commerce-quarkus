@@ -2,14 +2,14 @@ package dev.application.validation;
 
 public class ValidationException extends RuntimeException {
 
-    private String fieldName;
+    private String field;
 
-    public ValidationException(String fieldName, String message) {
+    public ValidationException(String field, String message) {
         super(message);
-        this.fieldName = fieldName;
+        this.field = field;
     }
 
     public String getFieldName() {
-        return fieldName;
+        return field;
     }
 }

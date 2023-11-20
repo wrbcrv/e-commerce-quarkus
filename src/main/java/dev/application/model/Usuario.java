@@ -15,14 +15,12 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Usuario extends DefaultEntity {
 
-    @Column(length = 100)
-    private String login;
-    @Column(length = 100)
-    private String senha;
-    @Column(length = 100)
     private String nome;
-    @Column(length = 14)
+    private String sobrenome;
     private String cpf;
+    private String rg;
+    private String login;
+    private String senha;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_telefone"))
@@ -45,6 +43,30 @@ public class Usuario extends DefaultEntity {
         this.nome = nome;
     }
 
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -59,14 +81,6 @@ public class Usuario extends DefaultEntity {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public List<Telefone> getTelefones() {

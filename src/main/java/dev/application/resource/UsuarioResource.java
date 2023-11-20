@@ -9,6 +9,7 @@ import dev.application.dto.EnderecoDTO;
 import dev.application.dto.TelefoneDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
+import dev.application.model.Perfil;
 import dev.application.service.UsuarioService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -246,5 +247,11 @@ public class UsuarioResource {
         LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
 
         return service.findByNome(nome, page, pageSize);
+    }
+
+    @GET
+    @Path("/perfis")
+    public Response getPerfis() {
+        return Response.ok(Perfil.values()).build();
     }
 }

@@ -4,28 +4,32 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 public record UsuarioDTO(
-    @NotBlank(message = "O campo Email deve ser informado.")
-    String login,
-
-    @NotBlank(message = "O campo Senha deve ser informado.")
-    String senha,
-    
-    @NotBlank(message = "O campo Nome deve ser informado.")
-    @Size(max = 60, message = "O campo nome deve possuir no máximo 60 caracteres.")
+    @NotBlank(message = "Nome é obrigatório")
     String nome,
 
-    @NotBlank(message = "O campo CPF deve ser informado.")
-    String cpf, 
+    @NotBlank(message = "Sobrenome é obrigatório")
+    String sobrenome,
 
-    @NotNull(message = "Informe o(s) telefone(s).")
+    @NotBlank(message = "CPF é obrigatório")
+    String cpf,
+    
+    @NotBlank(message = "RG é obrigatório")
+    String rg,
+
+    @NotBlank(message = "Login é obrigatório")
+    String login,
+
+    @NotBlank(message = "Senha é obrigatório")
+    String senha,
+    
+//  @NotNull(message = "Informe o(s) telefone(s).")
     List<TelefoneDTO> telefones,
 
-    @NotNull(message = "Informe o(s) endereço(s).")
+//  @NotNull(message = "Informe o(s) endereço(s).")
     List<EnderecoDTO> enderecos,
     
-    @NotNull(message = "O campo idPerfis não pode ser nulo.")
+    @NotNull(message = "idPerfis não pode ser nulo.")
     Integer idPerfis) {
 }

@@ -38,9 +38,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = new Usuario();
 
         usuario.setNome(usuarioDTO.nome());
+        usuario.setSobrenome(usuarioDTO.sobrenome());
+        usuario.setCpf(usuarioDTO.cpf());
+        usuario.setRg(usuarioDTO.rg());
         usuario.setLogin(usuarioDTO.login());
         usuario.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
-        usuario.setCpf(usuarioDTO.cpf());
 
         if (usuarioDTO.telefones() != null && !usuarioDTO.telefones().isEmpty()) {
             usuario.setTelefones(new ArrayList<Telefone>());
@@ -52,16 +54,6 @@ public class UsuarioServiceImpl implements UsuarioService {
                 usuario.getTelefones().add(telefone);
             }
         }
-
-        Integer idPerfil = usuarioDTO.idPerfis();
-        Set<Perfil> perfis = new HashSet<>();
-
-        if (idPerfil != null) {
-            Perfil perfil = Perfil.valueOf(idPerfil);
-            perfis.add(perfil);
-        }
-
-        usuario.setPerfis(perfis);
 
         if (usuarioDTO.enderecos() != null && !usuarioDTO.enderecos().isEmpty()) {
             usuario.setEnderecos(new ArrayList<Endereco>());
@@ -77,6 +69,16 @@ public class UsuarioServiceImpl implements UsuarioService {
             }
         }
 
+        Integer idPerfil = usuarioDTO.idPerfis();
+        Set<Perfil> perfis = new HashSet<>();
+
+        if (idPerfil != null) {
+            Perfil perfil = Perfil.valueOf(idPerfil);
+            perfis.add(perfil);
+        }
+
+        usuario.setPerfis(perfis);
+
         usuarioRepository.persist(usuario);
 
         return UsuarioResponseDTO.valueOf(usuario);
@@ -88,10 +90,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuarioExistente = usuarioRepository.findById(id);
 
         usuarioExistente.setNome(usuarioDTO.nome());
-        usuarioExistente.setNome(usuarioDTO.nome());
+        usuarioExistente.setSobrenome(usuarioDTO.sobrenome());
+        usuarioExistente.setCpf(usuarioDTO.cpf());
+        usuarioExistente.setRg(usuarioDTO.rg());
         usuarioExistente.setLogin(usuarioDTO.login());
         usuarioExistente.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
-        usuarioExistente.setCpf(usuarioDTO.cpf());
 
         List<Telefone> telefonesExistente = usuarioExistente.getTelefones();
         List<TelefoneDTO> telefonesDTO = usuarioDTO.telefones();
@@ -199,9 +202,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO createTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO) {
         Usuario usuarioExistente = usuarioRepository.findById(usuarioId);
 
-        if (usuarioExistente == null) {
+        if (usuarioExistente == null)
             throw new NotFoundException("Usuario não encontrado.");
-        }
 
         List<Telefone> telefonesExistente = usuarioExistente.getTelefones();
 
@@ -222,9 +224,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO updateTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO) {
         Usuario usuarioExistente = usuarioRepository.findById(usuarioId);
 
-        if (usuarioExistente == null) {
+        if (usuarioExistente == null)
             throw new NotFoundException("Usuario não encontrado.");
-        }
 
         List<Telefone> telefonesExistente = usuarioExistente.getTelefones();
 

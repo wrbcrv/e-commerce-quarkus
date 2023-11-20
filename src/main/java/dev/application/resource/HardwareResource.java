@@ -7,6 +7,7 @@ import org.jboss.logging.Logger;
 import dev.application.dto.HardwareDTO;
 import dev.application.application.Result;
 import dev.application.dto.HardwareResponseDTO;
+import dev.application.model.Categoria;
 import dev.application.service.FileService;
 import dev.application.service.HardwareService;
 import jakarta.inject.Inject;
@@ -177,5 +178,17 @@ public class HardwareResource {
         responseBuilder.header("Content-Disposition", "attachment;filename=" + imageName);
 
         return responseBuilder.build();
+    }
+
+    @GET
+    @Path("/categorias")
+    public Response getCategorias() {
+        return Response.ok(Categoria.values()).build();
+    }
+
+    @GET
+    @Path("/status")
+    public Response getStatus() {
+        return Response.ok(dev.application.model.Status.values()).build();
     }
 }
