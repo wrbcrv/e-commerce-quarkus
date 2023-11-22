@@ -1,12 +1,15 @@
 package dev.application.resource;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import dev.application.dto.HardwareDTO;
 import dev.application.application.Result;
 import dev.application.dto.HardwareResponseDTO;
+import dev.application.form.HardwareImageForm;
 import dev.application.model.Categoria;
 import dev.application.service.FileService;
 import dev.application.service.HardwareService;
@@ -16,6 +19,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -178,6 +182,21 @@ public class HardwareResource {
         responseBuilder.header("Content-Disposition", "attachment;filename=" + imageName);
 
         return responseBuilder.build();
+    }
+
+    @PATCH
+    @Path("image/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response saveImage(@MultipartForm HardwareImageForm hardwareImageForm) {
+      try {
+        fileService.save(hardwareImageForm.getId(), hardwareImageForm.getImageName(), hardwareImageForm.getImage());
+        
+        return Response.noContent().build();
+      } catch (IOException e) {
+        Result result = new Result(e.getMessage());
+
+        return Response.status(Status.CONFLICT).entity(result).build();
+      }
     }
 
     @GET
