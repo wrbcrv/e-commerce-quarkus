@@ -1,12 +1,8 @@
 package dev.application.model;
 
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -15,95 +11,89 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Usuario extends DefaultEntity {
 
-    private String nome;
-    private String sobrenome;
-    private String cpf;
-    private String rg;
-    private String login;
-    private String senha;
+  private String nome;
+  private String sobrenome;
+  private String cpf;
+  private String rg;
+  private String login;
+  private String senha;
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_telefone"))
+  private List<Telefone> telefones;
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_endereco"))
+  private List<Endereco> enderecos;
+  private Perfil perfil;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "usuario_telefone", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_telefone"))
-    private List<Telefone> telefones;
+  public String getNome() {
+    return nome;
+  }
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_endereco"))
-    private List<Endereco> enderecos;
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
 
-    @ElementCollection
-    @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "id_usuario", referencedColumnName = "id"))
-    @Column(name = "perfil", length = 30)
-    private Set<Perfil> perfis;
+  public String getSobrenome() {
+    return sobrenome;
+  }
 
-    public String getNome() {
-        return nome;
-    }
+  public void setSobrenome(String sobrenome) {
+    this.sobrenome = sobrenome;
+  }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+  public String getCpf() {
+    return cpf;
+  }
 
-    public String getSobrenome() {
-        return sobrenome;
-    }
+  public void setCpf(String cpf) {
+    this.cpf = cpf;
+  }
 
-    public void setSobrenome(String sobrenome) {
-        this.sobrenome = sobrenome;
-    }
+  public String getRg() {
+    return rg;
+  }
 
-    public String getCpf() {
-        return cpf;
-    }
+  public void setRg(String rg) {
+    this.rg = rg;
+  }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+  public String getLogin() {
+    return login;
+  }
 
-    public String getRg() {
-        return rg;
-    }
+  public void setLogin(String login) {
+    this.login = login;
+  }
 
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
+  public String getSenha() {
+    return senha;
+  }
 
-    public String getLogin() {
-        return login;
-    }
+  public void setSenha(String senha) {
+    this.senha = senha;
+  }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
+  public List<Telefone> getTelefones() {
+    return telefones;
+  }
 
-    public String getSenha() {
-        return senha;
-    }
+  public void setTelefones(List<Telefone> telefones) {
+    this.telefones = telefones;
+  }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+  public List<Endereco> getEnderecos() {
+    return enderecos;
+  }
 
-    public List<Telefone> getTelefones() {
-        return telefones;
-    }
+  public void setEnderecos(List<Endereco> enderecos) {
+    this.enderecos = enderecos;
+  }
 
-    public void setTelefones(List<Telefone> telefones) {
-        this.telefones = telefones;
-    }
+  public Perfil getPerfil() {
+    return perfil;
+  }
 
-    public List<Endereco> getEnderecos() {
-        return enderecos;
-    }
-
-    public void setEnderecos(List<Endereco> enderecos) {
-        this.enderecos = enderecos;
-    }
-
-    public Set<Perfil> getPerfis() {
-        return perfis;
-    }
-
-    public void setPerfis(Set<Perfil> perfis) {
-        this.perfis = perfis;
-    }
+  public void setPerfil(Perfil perfil) {
+    this.perfil = perfil;
+  }
 }

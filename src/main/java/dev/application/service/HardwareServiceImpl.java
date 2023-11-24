@@ -17,6 +17,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
@@ -37,7 +38,7 @@ public class HardwareServiceImpl implements HardwareService {
 
     @Override
     @Transactional
-    public HardwareResponseDTO create(HardwareDTO hardwareDTO) throws ConstraintViolationException {
+    public HardwareResponseDTO create(@Valid HardwareDTO hardwareDTO) throws ConstraintViolationException {
         validate(hardwareDTO);
 
         Hardware entity = new Hardware();

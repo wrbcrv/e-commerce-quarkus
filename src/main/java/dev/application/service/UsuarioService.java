@@ -22,7 +22,7 @@ public interface UsuarioService {
     
     UsuarioResponseDTO findByLogin(String login);
 
-    UsuarioResponseDTO findByLoginAndSenha(String login, String nome);
+    public UsuarioResponseDTO findByLoginAndSenha(String login, String senha);
 
     List<UsuarioResponseDTO> findByNome(String nome, int page, int pageSize);
 

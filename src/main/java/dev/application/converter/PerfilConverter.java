@@ -5,15 +5,15 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
-public class PerfilConverter implements AttributeConverter<Perfil, String> {
+public class PerfilConverter implements AttributeConverter<Perfil, Integer> {
 
-    @Override
-    public String convertToDatabaseColumn(Perfil perfil) {
-        return perfil == null ? null : perfil.getLabel();
-    }
+  @Override
+  public Integer convertToDatabaseColumn(Perfil perfil) {
+    return (perfil == null ? null : perfil.getId());
+  }
 
-    @Override
-    public Perfil convertToEntityAttribute(String label) {
-        return label == null ? null : Perfil.valueOf(label.toUpperCase());
-    }
+  @Override
+  public Perfil convertToEntityAttribute(Integer id) {
+    return Perfil.valueOf(id);
+  }
 }

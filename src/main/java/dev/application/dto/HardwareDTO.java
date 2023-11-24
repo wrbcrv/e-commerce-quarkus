@@ -6,31 +6,31 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record HardwareDTO(
-        @NotNull(message = "O campo Marca deve ser informado.")
+        @NotNull(message = "Marca é obrigatório")
         Long idMarca,
 
-        @NotBlank(message = "O campo Nome deve ser informado.")
+        @NotBlank(message = "Nome é obrigatório")
         String nome,
 
-        @NotNull(message = "O campo Preço deve ser informado.")
+        @NotNull(message = "Preço é obrigatório")
         Float preco,
 
-        @NotNull(message = "O campo Estoque deve ser informado.")
+        @NotNull(message = "Estoque é obrigatório")
         int estoque,
 
-        @NotBlank(message = "O campo Modelo deve ser informado.")
+        @NotBlank(message = "Modelo é obrigatório")
         String modelo,
 
-        @NotNull(message = "O campo Fabricante deve ser informado.")
+        @NotNull(message = "Fabricante é obrigatório")
         Long idFabricante,
 
-        @NotNull(message = "O campo Lançamento deve ser informado.")
+        @NotNull(message = "Lançamento é obrigatório")
         LocalDate lancamento,
         
-        @NotNull(message = "O campo Categoria deve ser informado.")
+        @NotNull(message = "Categoria é obrigatório")
         Integer idCategoria,
 
-        @NotNull(message = "O campo Status deve ser informado.")
+        @NotNull(message = "Status é obrigatório")
         Integer idStatus,
         
         String imageName) {

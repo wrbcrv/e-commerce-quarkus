@@ -1,7 +1,6 @@
 package dev.application.dto;
 
 import java.util.List;
-import java.util.Set;
 
 import dev.application.model.Perfil;
 import dev.application.model.Usuario;
@@ -16,7 +15,7 @@ public record UsuarioResponseDTO(
         String senha,
         List<TelefoneDTO> telefones,
         List<EnderecoDTO> enderecos,
-        Set<Perfil> perfis) {
+        Perfil perfil) {
 
     public static UsuarioResponseDTO valueOf(Usuario usuario) {
         if (usuario == null)
@@ -44,6 +43,6 @@ public record UsuarioResponseDTO(
                 usuario.getSenha(),
                 telefoneDTOs,
                 enderecoDTOs,
-                usuario.getPerfis());
+                usuario.getPerfil());
     }
 }

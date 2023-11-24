@@ -12,21 +12,22 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class JwtServiceImpl implements JwtService {
 
-    private static final Duration EXPIRATION_TIME = Duration.ofHours(24);
+  private static final Duration EXPIRATION_TIME = Duration.ofHours(24);
 
-    @Override
-    public String generateJwt(UsuarioResponseDTO dto) {
-        Instant now = Instant.now();
-        Instant expiryDate = now.plus(EXPIRATION_TIME);
+  @Override
+  public String generateJwt(UsuarioResponseDTO dto) {
+    Instant now = Instant.now();
+    Instant expiryDate = now.plus(EXPIRATION_TIME);
 
-        Set<String> roles = new HashSet<String>();
-        roles.add("Admin");
-        roles.add("User");
+    Set<String> roles = new HashSet<String>();
 
-        return Jwt.issuer("unitins-jwt")
-                .subject(dto.login())
-                .groups(roles)
-                .expiresAt(expiryDate)
-                .sign();
-    }
+    roles.add(dto.perfil().getLabel());
+
+    return Jwt.issuer("unitins-jwt")
+        .subject(dto.login())
+        .groups(roles)
+        .expiresAt(expiryDate)
+        .sign();
+  }
+
 }

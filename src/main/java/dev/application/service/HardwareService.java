@@ -4,10 +4,11 @@ import java.util.List;
 
 import dev.application.dto.HardwareDTO;
 import dev.application.dto.HardwareResponseDTO;
+import jakarta.validation.Valid;
 
 public interface HardwareService {
 
-    HardwareResponseDTO create(HardwareDTO dto);
+    HardwareResponseDTO create(@Valid HardwareDTO dto);
 
     HardwareResponseDTO update(Long id, HardwareDTO dto);
 
