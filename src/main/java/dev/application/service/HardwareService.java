@@ -27,4 +27,6 @@ public interface HardwareService {
     long count();
 
     long countByNome(String nome);
+
+    public byte[] createReportHardwares(String filter);
 }

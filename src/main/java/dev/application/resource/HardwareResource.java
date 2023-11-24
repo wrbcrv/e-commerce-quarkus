@@ -49,7 +49,7 @@ public class HardwareResource {
     LOG.infof("Inserindo um hardware: %s", dto.nome());
 
     HardwareResponseDTO hardware = hardwareService.create(dto);
-    
+
     LOG.infof("Hardware (%d) criado com sucesso.", hardware.id());
 
     return Response.status(Status.CREATED).entity(hardware).build();
@@ -198,5 +198,17 @@ public class HardwareResource {
   @Path("/status")
   public Response getStatus() {
     return Response.ok(dev.application.model.Status.values()).build();
+  }
+
+  @GET
+  @Path("/relatorios")
+  @Produces("application/pdf")
+  public Response gerarRelatorioPDF(@QueryParam("nome") @DefaultValue("") String nome) {
+    byte[] pdf = hardwareService.createReportHardwares(nome);
+
+    ResponseBuilder responseBuilder = Response.ok(pdf);
+    responseBuilder.header("Content-Disposition", "attachment;filename=relatorio.pdf");
+
+    return responseBuilder.build();
   }
 }
