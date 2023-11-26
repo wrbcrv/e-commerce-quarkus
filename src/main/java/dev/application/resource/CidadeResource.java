@@ -29,125 +29,125 @@ import jakarta.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 public class CidadeResource {
 
-    @Inject
-    CidadeService cidadeService;
+  @Inject
+  CidadeService cidadeService;
 
-    private static final Logger LOG = Logger.getLogger(CidadeResource.class);
+  private static final Logger LOG = Logger.getLogger(CidadeResource.class);
 
-    @POST
-    public Response create(CidadeDTO dto) {
-        LOG.infof("Cadastrando uma nova cidade: %s", dto.nome());
-        
-        Result result = null;
-        
-        try {
-            CidadeResponseDTO cidade = cidadeService.create(dto);
-            LOG.infof("Cidade (%d) cadastrada com sucesso.", cidade.id());
+  @POST
+  public Response create(CidadeDTO dto) {
+    LOG.infof("Cadastrando uma nova cidade: %s", dto.nome());
 
-            return Response.status(Status.CREATED).entity(cidade).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao cadastrar uma cidade.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
+    Result result = null;
 
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+    try {
+      CidadeResponseDTO cidade = cidadeService.create(dto);
+      LOG.infof("Cidade (%d) cadastrada com sucesso.", cidade.id());
+
+      return Response.status(Status.CREATED).entity(cidade).build();
+    } catch (ConstraintViolationException e) {
+      LOG.error("Erro ao cadastrar uma cidade.");
+      LOG.debug(e.getMessage());
+      result = new Result(e.getConstraintViolations());
+    } catch (Exception e) {
+      LOG.fatal("Erro sem identificacao: " + e.getMessage());
+      result = new Result(e.getMessage(), false);
     }
 
-    @PUT
-    @Path("/{id}")
-    public Response update(@PathParam("id") Long id, CidadeDTO dto) {
-        LOG.infof("Atualizando cidade com ID: %d", id);
+    return Response.status(Status.NOT_FOUND).entity(result).build();
+  }
 
-        try {
-            CidadeResponseDTO cidade = cidadeService.update(id, dto);
-            LOG.infof("Cidade com ID (%d) atualizada com sucesso.", id);
+  @PUT
+  @Path("/{id}")
+  public Response update(@PathParam("id") Long id, CidadeDTO dto) {
+    LOG.infof("Atualizando cidade com ID: %d", id);
 
-            return Response.ok(cidade).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao atualizar a cidade.");
-            LOG.debug(e.getMessage());
+    try {
+      CidadeResponseDTO cidade = cidadeService.update(id, dto);
+      LOG.infof("Cidade com ID (%d) atualizada com sucesso.", id);
 
-            Result result = new Result(e.getConstraintViolations());
+      return Response.ok(cidade).build();
+    } catch (ConstraintViolationException e) {
+      LOG.error("Erro ao atualizar a cidade.");
+      LOG.debug(e.getMessage());
 
-            return Response.status(Status.NOT_FOUND).entity(result).build();
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificação ao atualizar a cidade: " + e.getMessage());
+      Result result = new Result(e.getConstraintViolations());
 
-            Result result = new Result(e.getMessage(), false);
+      return Response.status(Status.NOT_FOUND).entity(result).build();
+    } catch (Exception e) {
+      LOG.fatal("Erro sem identificação ao atualizar a cidade: " + e.getMessage());
 
-            return Response.status(Status.NOT_FOUND).entity(result).build();
-        }
+      Result result = new Result(e.getMessage(), false);
+
+      return Response.status(Status.NOT_FOUND).entity(result).build();
     }
+  }
 
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) {
-        LOG.infof("Excluindo cidade com ID: %d", id);
+  @DELETE
+  @Path("/{id}")
+  public Response delete(@PathParam("id") Long id) {
+    LOG.infof("Excluindo cidade com ID: %d", id);
 
-        try {
-            cidadeService.delete(id);
-            LOG.infof("Cidade com ID (%d) excluída com sucesso.", id);
+    try {
+      cidadeService.delete(id);
+      LOG.infof("Cidade com ID (%d) excluída com sucesso.", id);
 
-            return Response.status(Status.NO_CONTENT).build();
-        } catch (Exception e) {
-            LOG.fatal("Erro ao excluir a cidade com ID: " + id);
-            LOG.debug(e.getMessage());
+      return Response.status(Status.NO_CONTENT).build();
+    } catch (Exception e) {
+      LOG.fatal("Erro ao excluir a cidade com ID: " + id);
+      LOG.debug(e.getMessage());
 
-            Result result = new Result(e.getMessage(), false);
+      Result result = new Result(e.getMessage(), false);
 
-            return Response.status(Status.NOT_FOUND).entity(result).build();
-        }
+      return Response.status(Status.NOT_FOUND).entity(result).build();
     }
+  }
 
-    @GET
-    public List<CidadeResponseDTO> findAll(
-            @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+  @GET
+  public List<CidadeResponseDTO> findAll(
+      @QueryParam("page") @DefaultValue("0") int page,
+      @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
 
-        LOG.info("Buscando todas as cidades.");
-        LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
+    LOG.info("Buscando todas as cidades.");
+    LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
 
-        return cidadeService.findAll(page, pageSize);
-    }
+    return cidadeService.findAll(page, pageSize);
+  }
 
-    @GET
-    @Path("/{id}")
-    public CidadeResponseDTO findById(@PathParam("id") Long id) {
-        LOG.info("Buscando cidade por ID: " + id);
+  @GET
+  @Path("/{id}")
+  public CidadeResponseDTO findById(@PathParam("id") Long id) {
+    LOG.info("Buscando cidade por ID: " + id);
 
-        return cidadeService.findById(id);
-    }
+    return cidadeService.findById(id);
+  }
 
-    @GET
-    @Path("/count")
-    public long count() {
-        LOG.info("Contando o número total de cidades.");
+  @GET
+  @Path("/count")
+  public long count() {
+    LOG.info("Contando o número total de cidades.");
 
-        return cidadeService.count();
-    }
+    return cidadeService.count();
+  }
 
-    @GET
-    @Path("/search/{nome}/count")
-    public long count(@PathParam("nome") String nome) {
-        LOG.info("Contando o número de cidades com o nome: " + nome);
+  @GET
+  @Path("/search/{nome}/count")
+  public long count(@PathParam("nome") String nome) {
+    LOG.info("Contando o número de cidades com o nome: " + nome);
 
-        return cidadeService.countByNome(nome);
-    }
+    return cidadeService.countByNome(nome);
+  }
 
-    @GET
-    @Path("/search/{nome}")
-    public List<CidadeResponseDTO> search(
-            @PathParam("nome") String nome,
-            @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+  @GET
+  @Path("/search/{nome}")
+  public List<CidadeResponseDTO> search(
+      @PathParam("nome") String nome,
+      @QueryParam("page") @DefaultValue("0") int page,
+      @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
 
-        LOG.info("Buscando cidades com o nome: " + nome);
-        LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
+    LOG.info("Buscando cidades com o nome: " + nome);
+    LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
 
-        return cidadeService.findByNome(nome, page, pageSize);
-    }
+    return cidadeService.findByNome(nome, page, pageSize);
+  }
 }

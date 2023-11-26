@@ -1,6 +1,9 @@
 INSERT INTO usuario (login, senha, perfil)
 VALUES ('admin', '670O1PvrZN/9M4jaH8LZGBXvu+O2HeAPE1IAH8iSzSY+JbkNaFdyizUFaKOZMNRhDzj97kONYDRA8ZsuA9/6pg==', 1);
 
+INSERT INTO usuario(login, senha, perfil)
+VALUES ('user', 'tgVssM8/cKeSQqqkpBKacO04xhPMKwNbO9otmNTD7VvrP59UZtopMGbKtMHuHuJ4Rjt9MC1w7zgUOLqcpQr8Gg==', 2);
+
 INSERT INTO fornecedor (nome) 
 VALUES ('NVidia');
 

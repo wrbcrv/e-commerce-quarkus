@@ -29,125 +29,125 @@ import jakarta.ws.rs.core.Response.Status;
 @Produces(MediaType.APPLICATION_JSON)
 public class FabricanteResource {
 
-    @Inject
-    FabricanteService fabricanteService;
+  @Inject
+  FabricanteService fabricanteService;
 
-    private static final Logger LOG = Logger.getLogger(FabricanteResource.class);
+  private static final Logger LOG = Logger.getLogger(FabricanteResource.class);
 
-    @POST
-    public Response create(FabricanteDTO dto) {
-        LOG.infof("Cadastrando um novo fabricante: %s", dto.nome());
+  @POST
+  public Response create(FabricanteDTO dto) {
+    LOG.infof("Cadastrando um novo fabricante: %s", dto.nome());
 
-        Result result = null;
-        
-        try {
-            FabricanteResponseDTO fabricante = fabricanteService.create(dto);
-            LOG.infof("Fabricante (%d) cadastrado com sucesso.", fabricante.id());
+    Result result = null;
 
-            return Response.status(Status.CREATED).entity(fabricante).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao cadastrar um fabricante.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificação: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
+    try {
+      FabricanteResponseDTO fabricante = fabricanteService.create(dto);
+      LOG.infof("Fabricante (%d) cadastrado com sucesso.", fabricante.id());
 
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+      return Response.status(Status.CREATED).entity(fabricante).build();
+    } catch (ConstraintViolationException e) {
+      LOG.error("Erro ao cadastrar um fabricante.");
+      LOG.debug(e.getMessage());
+      result = new Result(e.getConstraintViolations());
+    } catch (Exception e) {
+      LOG.fatal("Erro sem identificação: " + e.getMessage());
+      result = new Result(e.getMessage(), false);
     }
 
-    @PUT
-    @Path("/{id}")
-    public Response update(@PathParam("id") Long id, FabricanteDTO dto) {
-        LOG.infof("Atualizando fabricante com ID: %d", id);
+    return Response.status(Status.NOT_FOUND).entity(result).build();
+  }
 
-        try {
-            FabricanteResponseDTO fabricante = fabricanteService.update(id, dto);
-            LOG.infof("Fabricante com ID (%d) atualizado com sucesso.", id);
+  @PUT
+  @Path("/{id}")
+  public Response update(@PathParam("id") Long id, FabricanteDTO dto) {
+    LOG.infof("Atualizando fabricante com ID: %d", id);
 
-            return Response.ok(fabricante).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao atualizar o fabricante.");
-            LOG.debug(e.getMessage());
+    try {
+      FabricanteResponseDTO fabricante = fabricanteService.update(id, dto);
+      LOG.infof("Fabricante com ID (%d) atualizado com sucesso.", id);
 
-            Result result = new Result(e.getConstraintViolations());
+      return Response.ok(fabricante).build();
+    } catch (ConstraintViolationException e) {
+      LOG.error("Erro ao atualizar o fabricante.");
+      LOG.debug(e.getMessage());
 
-            return Response.status(Status.NOT_FOUND).entity(result).build();
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificação ao atualizar o fabricante: " + e.getMessage());
+      Result result = new Result(e.getConstraintViolations());
 
-            Result result = new Result(e.getMessage(), false);
+      return Response.status(Status.NOT_FOUND).entity(result).build();
+    } catch (Exception e) {
+      LOG.fatal("Erro sem identificação ao atualizar o fabricante: " + e.getMessage());
 
-            return Response.status(Status.NOT_FOUND).entity(result).build();
-        }
+      Result result = new Result(e.getMessage(), false);
+
+      return Response.status(Status.NOT_FOUND).entity(result).build();
     }
+  }
 
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) {
-        LOG.infof("Excluindo fabricante com ID: %d", id);
+  @DELETE
+  @Path("/{id}")
+  public Response delete(@PathParam("id") Long id) {
+    LOG.infof("Excluindo fabricante com ID: %d", id);
 
-        try {
-            fabricanteService.delete(id);
-            LOG.infof("Fabricante com ID (%d) excluído com sucesso.", id);
+    try {
+      fabricanteService.delete(id);
+      LOG.infof("Fabricante com ID (%d) excluído com sucesso.", id);
 
-            return Response.status(Status.NO_CONTENT).build();
-        } catch (Exception e) {
-            LOG.fatal("Erro ao excluir o fabricante com ID: " + id);
-            LOG.debug(e.getMessage());
+      return Response.status(Status.NO_CONTENT).build();
+    } catch (Exception e) {
+      LOG.fatal("Erro ao excluir o fabricante com ID: " + id);
+      LOG.debug(e.getMessage());
 
-            Result result = new Result(e.getMessage(), false);
+      Result result = new Result(e.getMessage(), false);
 
-            return Response.status(Status.NOT_FOUND).entity(result).build();
-        }
+      return Response.status(Status.NOT_FOUND).entity(result).build();
     }
+  }
 
-    @GET
-    public List<FabricanteResponseDTO> findAll(
-            @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+  @GET
+  public List<FabricanteResponseDTO> findAll(
+      @QueryParam("page") @DefaultValue("0") int page,
+      @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
 
-        LOG.info("Buscando todos os fabricantes.");
-        LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
+    LOG.info("Buscando todos os fabricantes.");
+    LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
 
-        return fabricanteService.findAll(page, pageSize);
-    }
+    return fabricanteService.findAll(page, pageSize);
+  }
 
-    @GET
-    @Path("/{id}")
-    public FabricanteResponseDTO findById(@PathParam("id") Long id) {
-        LOG.info("Buscando fabricante por ID: " + id);
+  @GET
+  @Path("/{id}")
+  public FabricanteResponseDTO findById(@PathParam("id") Long id) {
+    LOG.info("Buscando fabricante por ID: " + id);
 
-        return fabricanteService.findById(id);
-    }
+    return fabricanteService.findById(id);
+  }
 
-    @GET
-    @Path("/count")
-    public long count() {
-        LOG.info("Contando o número total de fabricantes.");
+  @GET
+  @Path("/count")
+  public long count() {
+    LOG.info("Contando o número total de fabricantes.");
 
-        return fabricanteService.count();
-    }
+    return fabricanteService.count();
+  }
 
-    @GET
-    @Path("/search/{nome}/count")
-    public long count(@PathParam("nome") String nome) {
-        LOG.info("Contando o número de fabricantes com o nome: " + nome);
+  @GET
+  @Path("/search/{nome}/count")
+  public long count(@PathParam("nome") String nome) {
+    LOG.info("Contando o número de fabricantes com o nome: " + nome);
 
-        return fabricanteService.countByNome(nome);
-    }
+    return fabricanteService.countByNome(nome);
+  }
 
-    @GET
-    @Path("/search/{nome}")
-    public List<FabricanteResponseDTO> search(
-            @PathParam("nome") String nome,
-            @QueryParam("page") @DefaultValue("0") int page,
-            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+  @GET
+  @Path("/search/{nome}")
+  public List<FabricanteResponseDTO> search(
+      @PathParam("nome") String nome,
+      @QueryParam("page") @DefaultValue("0") int page,
+      @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
 
-        LOG.info("Buscando fabricantes com o nome: " + nome);
-        LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
+    LOG.info("Buscando fabricantes com o nome: " + nome);
+    LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
 
-        return fabricanteService.findByNome(nome, page, pageSize);
-    }
+    return fabricanteService.findByNome(nome, page, pageSize);
+  }
 }

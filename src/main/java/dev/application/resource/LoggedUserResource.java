@@ -18,19 +18,19 @@ import jakarta.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class LoggedUserResource {
 
-    @Inject
-    JsonWebToken jsonWebToken;
+  @Inject
+  JsonWebToken jsonWebToken;
 
-    @Inject
-    UsuarioService usuarioService;
+  @Inject
+  UsuarioService usuarioService;
 
-    @GET
-    @RolesAllowed({ "Admin", "User" })
-    public Response getUsuario() {
-        String login = jsonWebToken.getSubject();
+  @GET
+  @RolesAllowed({ "Admin", "User" })
+  public Response getUsuario() {
+    String login = jsonWebToken.getSubject();
 
-        UsuarioResponseDTO usuarioResponseDTO = usuarioService.findByLogin(login);
+    UsuarioResponseDTO usuarioResponseDTO = usuarioService.findByLogin(login);
 
-        return Response.ok(usuarioResponseDTO).build();
-    }
+    return Response.ok(usuarioResponseDTO).build();
+  }
 }
