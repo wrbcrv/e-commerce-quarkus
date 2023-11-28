@@ -31,5 +31,7 @@ public record UsuarioDTO(
     List<EnderecoDTO> enderecos,
     
     @NotNull(message = "idPerfis não pode ser nulo.")
-    Integer idPerfil) {
+    Integer idPerfil,
+    
+    String imageName) {
 }

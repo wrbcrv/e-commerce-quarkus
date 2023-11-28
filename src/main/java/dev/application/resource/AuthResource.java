@@ -13,6 +13,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,14 +30,19 @@ public class AuthResource {
   JwtService jwtService;
 
   @POST
-  public Response login(@Valid AuthDTO dto) {
+  @Produces(MediaType.TEXT_PLAIN)
+  public Response login(@Valid AuthDTO authDTO) {
+    String hash = hashService.getHashSenha(authDTO.senha());
 
-    String hashSenha = hashService.getHashSenha(dto.senha());
+    UsuarioResponseDTO usuario = service.findByLoginAndSenha(authDTO.login(), hash);
 
-    UsuarioResponseDTO result = service.findByLoginAndSenha(dto.login(), hashSenha);
+    if (usuario == null)
+      return Response.status(Status.NOT_FOUND)
+          .entity("Usuário não encontrado.")
+          .build();
 
-    String token = jwtService.generateJwt(result);
-
-    return Response.ok().header("Authorization", token).build();
+    return Response.ok()
+        .header("Authorization", jwtService.generateJwt(usuario))
+        .build();
   }
 }

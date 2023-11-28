@@ -24,6 +24,7 @@ public class Usuario extends DefaultEntity {
   @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_endereco"))
   private List<Endereco> enderecos;
   private Perfil perfil;
+  private String imageName;
 
   public String getNome() {
     return nome;
@@ -95,5 +96,13 @@ public class Usuario extends DefaultEntity {
 
   public void setPerfil(Perfil perfil) {
     this.perfil = perfil;
+  }
+
+  public String getImageName() {
+    return imageName;
+  }
+
+  public void setImageName(String imageName) {
+    this.imageName = imageName;
   }
 }

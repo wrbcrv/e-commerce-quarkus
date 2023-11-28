@@ -15,7 +15,8 @@ public record UsuarioResponseDTO(
         String senha,
         List<TelefoneDTO> telefones,
         List<EnderecoDTO> enderecos,
-        Perfil perfil) {
+        Perfil perfil,
+        String imageName) {
 
     public static UsuarioResponseDTO valueOf(Usuario usuario) {
         if (usuario == null)
@@ -43,6 +44,7 @@ public record UsuarioResponseDTO(
                 usuario.getSenha(),
                 telefoneDTOs,
                 enderecoDTOs,
-                usuario.getPerfil());
+                usuario.getPerfil(),
+                usuario.getImageName());
     }
 }

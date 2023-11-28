@@ -1,4 +1,4 @@
-package dev.application.service;
+package dev.application.service.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,12 +15,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-public class HardwareFileServiceImpl implements FileService {
+public class HardwareFileServiceImpl implements HardwareFileService {
 
   private final String PATH_USER = System.getProperty("user.home")
       + File.separator + "api"
-      + File.separator + "images"
-      + File.separator + "hardware" + File.separator;
+      + File.separator + "images" + File.separator;
 
   @Inject
   HardwareRepository hardwareRepository;
@@ -38,9 +37,9 @@ public class HardwareFileServiceImpl implements FileService {
     }
   }
 
-  public String saveImage(byte[] image, String imageName) throws IOException {
+  private String saveImage(byte[] image, String imageName) throws IOException {
     String mimeType = Files.probeContentType(new File(imageName).toPath());
-    List<String> mimeTypeList = Arrays.asList("image/png", "image/jpg", "image/gif");
+    List<String> mimeTypeList = Arrays.asList("image/png", "image/jpeg", "image/jpg", "image/gif");
 
     if (!mimeTypeList.contains(mimeType))
       throw new IOException("Tipo de imagem não suportado.");
@@ -50,8 +49,7 @@ public class HardwareFileServiceImpl implements FileService {
 
     File directory = new File(PATH_USER);
     if (!directory.exists())
-      ;
-    directory.mkdirs();
+      directory.mkdirs();
 
     String fileName = UUID.randomUUID() + "." + mimeType.substring(mimeType.lastIndexOf("/") + 1);
     String path = PATH_USER + fileName;

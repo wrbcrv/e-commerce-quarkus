@@ -192,6 +192,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
   @Override
   @Transactional
+  public UsuarioResponseDTO saveImage(Long id, String imageName) {
+    Usuario entity = usuarioRepository.findById(id);
+    entity.setImageName(imageName);
+
+    return UsuarioResponseDTO.valueOf(entity);
+  }
+
+  @Override
+  @Transactional
   public UsuarioResponseDTO createTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO) {
     Usuario usuarioExistente = usuarioRepository.findById(usuarioId);
 

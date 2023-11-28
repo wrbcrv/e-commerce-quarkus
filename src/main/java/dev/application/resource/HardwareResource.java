@@ -9,10 +9,10 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import dev.application.dto.HardwareDTO;
 import dev.application.application.Result;
 import dev.application.dto.HardwareResponseDTO;
-import dev.application.form.HardwareImageForm;
+import dev.application.form.ImageForm;
 import dev.application.model.Categoria;
-import dev.application.service.FileService;
 import dev.application.service.HardwareService;
+import dev.application.service.file.HardwareFileService;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -40,7 +40,7 @@ public class HardwareResource {
   HardwareService hardwareService;
 
   @Inject
-  FileService fileService;
+  HardwareFileService fileService;
 
   private static final Logger LOG = Logger.getLogger(HardwareResource.class);
 
@@ -174,15 +174,15 @@ public class HardwareResource {
   }
 
   @PATCH
-  @Path("image/upload")
+  @Path("/image/upload")
   @Consumes(MediaType.MULTIPART_FORM_DATA)
-  public Response saveImage(@MultipartForm HardwareImageForm hardwareImageForm) {
+  public Response saveImage(@MultipartForm ImageForm imageForm) {
     try {
-      fileService.save(hardwareImageForm.getId(), hardwareImageForm.getImageName(), hardwareImageForm.getImage());
+      fileService.save(imageForm.getId(), imageForm.getImageName(), imageForm.getImage());
 
       return Response.noContent().build();
     } catch (IOException e) {
-      Result result = new Result(e.getMessage());
+      Result result = new Result(e.getMessage(), false);
 
       return Response.status(Status.CONFLICT).entity(result).build();
     }

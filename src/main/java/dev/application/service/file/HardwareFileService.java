@@ -1,9 +1,9 @@
-package dev.application.service;
+package dev.application.service.file;
 
 import java.io.File;
 import java.io.IOException;
 
-public interface FileService {
+public interface HardwareFileService {
 
     void save(Long id, String imageName, byte[] image) throws IOException;
 

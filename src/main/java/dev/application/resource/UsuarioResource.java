@@ -1,16 +1,20 @@
 package dev.application.resource;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import dev.application.application.Result;
 import dev.application.dto.EnderecoDTO;
 import dev.application.dto.TelefoneDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
+import dev.application.form.ImageForm;
 import dev.application.model.Perfil;
 import dev.application.service.UsuarioService;
+import dev.application.service.file.UsuarioFileService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -19,6 +23,7 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -27,6 +32,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
 @Path("/usuarios")
@@ -36,6 +42,9 @@ public class UsuarioResource {
 
   @Inject
   UsuarioService service;
+
+  @Inject
+  UsuarioFileService usuarioFileService;
 
   private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
 
@@ -247,6 +256,31 @@ public class UsuarioResource {
     LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
 
     return service.findByNome(nome, page, pageSize);
+  }
+
+  @GET
+  @Path("/image/download/{imageName}")
+  @Produces(MediaType.APPLICATION_OCTET_STREAM)
+  public Response download(@PathParam("imageName") String imageName) {
+    ResponseBuilder responseBuilder = Response.ok(usuarioFileService.download(imageName));
+    responseBuilder.header("Content-Disposition", "attachment;filename=" + imageName);
+
+    return responseBuilder.build();
+  }
+
+  @PATCH
+  @Path("/image/upload")
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  public Response saveImage(@MultipartForm ImageForm imageForm) {
+    try {
+      usuarioFileService.save(imageForm.getId(), imageForm.getImageName(), imageForm.getImage());
+
+      return Response.noContent().build();
+    } catch (IOException e) {
+      Result result = new Result(e.getMessage(), false);
+
+      return Response.status(Status.CONFLICT).entity(result).build();
+    }
   }
 
   @GET

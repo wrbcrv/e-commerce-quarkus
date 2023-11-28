@@ -1,8 +1,8 @@
-INSERT INTO usuario (login, senha, perfil)
-VALUES ('admin', '670O1PvrZN/9M4jaH8LZGBXvu+O2HeAPE1IAH8iSzSY+JbkNaFdyizUFaKOZMNRhDzj97kONYDRA8ZsuA9/6pg==', 1);
+INSERT INTO usuario (login, senha, perfil, imageName)
+VALUES ('admin', '670O1PvrZN/9M4jaH8LZGBXvu+O2HeAPE1IAH8iSzSY+JbkNaFdyizUFaKOZMNRhDzj97kONYDRA8ZsuA9/6pg==', 1, 'profile-user_64572.png');
 
-INSERT INTO usuario(login, senha, perfil)
-VALUES ('user', 'tgVssM8/cKeSQqqkpBKacO04xhPMKwNbO9otmNTD7VvrP59UZtopMGbKtMHuHuJ4Rjt9MC1w7zgUOLqcpQr8Gg==', 2);
+INSERT INTO usuario(login, senha, perfil, imageName)
+VALUES ('user', 'tgVssM8/cKeSQqqkpBKacO04xhPMKwNbO9otmNTD7VvrP59UZtopMGbKtMHuHuJ4Rjt9MC1w7zgUOLqcpQr8Gg==', 2, 'profile-user_64572.png');
 
 INSERT INTO fornecedor (nome) 
 VALUES ('NVidia');

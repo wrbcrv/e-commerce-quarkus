@@ -4,7 +4,7 @@ import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import jakarta.ws.rs.FormParam;
 
-public class HardwareImageForm {
+public class ImageForm {
 
   @FormParam("id")
   private Long id;

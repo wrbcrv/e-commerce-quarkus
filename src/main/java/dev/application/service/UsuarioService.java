@@ -26,6 +26,8 @@ public interface UsuarioService {
 
     List<UsuarioResponseDTO> findByNome(String nome, int page, int pageSize);
 
+    UsuarioResponseDTO saveImage(Long id, String imageName);
+
     UsuarioResponseDTO createTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
 
     UsuarioResponseDTO updateTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
