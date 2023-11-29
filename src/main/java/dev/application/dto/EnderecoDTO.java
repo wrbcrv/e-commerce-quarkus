@@ -4,30 +4,45 @@ import dev.application.model.Endereco;
 import jakarta.validation.constraints.NotBlank;
 
 public record EnderecoDTO(
-        Long id,
-        @NotBlank(message = "O campo Logradouro deve ser informado.")
-        String logradouro,
+    Long id,
 
-        @NotBlank(message = "O campo Número deve ser informado.")
-        String numero,
+    @NotBlank(message = "Npme é obrigatório") 
+    String nome,
 
-        @NotBlank(message = "O campo Complemento deve ser informado.")
-        String complemento,
+    @NotBlank(message = "Sobrenome é obrigatório") 
+    String sobrenome,
 
-        @NotBlank(message = "O campo Bairro deve ser informado.")
-        String bairro,
-        
-        @NotBlank(message = "O campo CEP deve ser informado.")
-        String cep) {
+    @NotBlank(message = "CEP é obrigatório") 
+    String cep,
 
-    public static EnderecoDTO valueOf(Endereco endereco) {
-        return new EnderecoDTO(
-            endereco.getId(),
-            endereco.getLogradouro(),
-            endereco.getNumero(),
-            endereco.getComplemento(),
-            endereco.getBairro(),
-            endereco.getCep()
-        );
-    }
+    @NotBlank(message = "Endereço é obrigatório") 
+    String endereco,
+
+    @NotBlank(message = "Número é obrigatório") 
+    String numero,
+
+    @NotBlank(message = "Bairro é obrigatório") 
+    String bairro,
+
+    @NotBlank(message = "Complemento é obrigatório") 
+    String complemento,
+
+    CidadeResponseDTO cidade,
+
+    @NotBlank(message = "Telefone é obrigatório") 
+    String telefone) {
+
+  public static EnderecoDTO valueOf(Endereco endereco) {
+    return new EnderecoDTO(
+        endereco.getId(),
+        endereco.getNome(),
+        endereco.getSobrenome(),
+        endereco.getCep(),
+        endereco.getEndereco(),
+        endereco.getNumero(),
+        endereco.getBairro(),
+        endereco.getComplemento(),
+        CidadeResponseDTO.valueOf(endereco.getCidade()),
+        endereco.getTelefone());
+  }
 }

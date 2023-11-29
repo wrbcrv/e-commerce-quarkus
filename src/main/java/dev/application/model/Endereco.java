@@ -1,59 +1,93 @@
 package dev.application.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Endereco extends DefaultEntity {
 
-    @Column(length = 100)
-    private String logradouro;
-    @Column(length = 100)
-    private String numero;
-    @Column(length = 100)
-    private String complemento;
-    @Column(length = 100)
-    private String bairro;
-    @Column(length = 9)
-    private String cep;
+  private String nome;
+  private String sobrenome;
+  private String cep;
+  private String endereco;
+  private String numero;
+  private String bairro;
+  private String complemento;
+  @ManyToOne
+  @JoinColumn(name = "id_cidade")
+  private Cidade cidade;
+  private String telefone;
 
-    public String getLogradouro() {
-        return logradouro;
-    }
+  public String getNome() {
+    return nome;
+  }
 
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
 
-    public String getNumero() {
-        return numero;
-    }
+  public String getSobrenome() {
+    return sobrenome;
+  }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
+  public void setSobrenome(String sobrenome) {
+    this.sobrenome = sobrenome;
+  }
 
-    public String getComplemento() {
-        return complemento;
-    }
+  public String getCep() {
+    return cep;
+  }
 
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
+  public void setCep(String cep) {
+    this.cep = cep;
+  }
 
-    public String getBairro() {
-        return bairro;
-    }
+  public String getEndereco() {
+    return endereco;
+  }
 
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
+  public void setEndereco(String endereco) {
+    this.endereco = endereco;
+  }
 
-    public String getCep() {
-        return cep;
-    }
+  public String getNumero() {
+    return numero;
+  }
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+  public void setNumero(String numero) {
+    this.numero = numero;
+  }
+
+  public String getBairro() {
+    return bairro;
+  }
+
+  public void setBairro(String bairro) {
+    this.bairro = bairro;
+  }
+
+  public String getComplemento() {
+    return complemento;
+  }
+
+  public void setComplemento(String complemento) {
+    this.complemento = complemento;
+  }
+
+  public Cidade getCidade() {
+    return cidade;
+  }
+
+  public void setCidade(Cidade cidade) {
+    this.cidade = cidade;
+  }
+
+  public String getTelefone() {
+    return telefone;
+  }
+
+  public void setTelefone(String telefone) {
+    this.telefone = telefone;
+  }
 }

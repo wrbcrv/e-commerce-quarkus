@@ -23,9 +23,6 @@ public record UsuarioDTO(
 
     @NotBlank(message = "Senha é obrigatório")
     String senha,
-    
-//  @NotNull(message = "Informe o(s) telefone(s).")
-    List<TelefoneDTO> telefones,
 
 //  @NotNull(message = "Informe o(s) endereço(s).")
     List<EnderecoDTO> enderecos,

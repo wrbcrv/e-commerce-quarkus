@@ -8,7 +8,6 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import dev.application.application.Result;
 import dev.application.dto.EnderecoDTO;
-import dev.application.dto.TelefoneDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
 import dev.application.form.ImageForm;
@@ -113,63 +112,6 @@ public class UsuarioResource {
     LOG.info("Buscando usuário por ID: " + id);
 
     return service.findById(id);
-  }
-
-  @POST
-  @Path("/{id}/telefones")
-  @Transactional
-  public Response createTelefones(List<TelefoneDTO> telefonesDTO, @PathParam("id") Long id) {
-    LOG.infof("Associando telefones ao usuário com ID: %d", id);
-
-    try {
-      UsuarioResponseDTO usuarioAtualizado = service.createTelefones(id, telefonesDTO);
-      LOG.infof("Telefones associados ao usuário com ID: %d", id);
-
-      return Response.ok(usuarioAtualizado).build();
-    } catch (NotFoundException e) {
-      LOG.error("Erro ao associar telefones ao usuário.");
-      LOG.debug(e.getMessage());
-
-      return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
-    }
-  }
-
-  @PUT
-  @Transactional
-  @Path("/{id}/telefones")
-  public Response updateTelefones(List<TelefoneDTO> telefonesDTO, @PathParam("id") Long id) {
-    LOG.infof("Atualizando telefones do usuário com ID: %d", id);
-
-    try {
-      UsuarioResponseDTO usuarioAtualizado = service.updateTelefones(id, telefonesDTO);
-      LOG.infof("Telefones do usuário com ID: %d atualizados com sucesso", id);
-
-      return Response.ok(usuarioAtualizado).build();
-    } catch (NotFoundException e) {
-      LOG.error("Erro ao atualizar os telefones do usuário.");
-      LOG.debug(e.getMessage());
-
-      return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
-    }
-  }
-
-  @DELETE
-  @Path("/{userId}/telefones/{telefoneId}")
-  @Transactional
-  public Response removeTelefone(@PathParam("userId") Long userId, @PathParam("telefoneId") Long telefoneId) {
-    LOG.infof("Removendo telefone com ID: %d do usuário com ID: %d", telefoneId, userId);
-
-    try {
-      UsuarioResponseDTO usuarioAtualizado = service.removeTelefones(userId, telefoneId);
-      LOG.infof("Telefone com ID: %d removido do usuário com ID: %d", telefoneId, userId);
-
-      return Response.ok(usuarioAtualizado).build();
-    } catch (NotFoundException e) {
-      LOG.error("Erro ao remover telefone do usuário.");
-      LOG.debug(e.getMessage());
-
-      return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
-    }
   }
 
   @POST
@@ -287,5 +229,11 @@ public class UsuarioResource {
   @Path("/perfis")
   public Response getPerfis() {
     return Response.ok(Perfil.values()).build();
+  }
+
+  @GET
+  @Path("/enderecos/{id}")
+  public Response getEnderecos(@PathParam("id") Long id) {
+    return Response.ok(service.getEnderecos(id)).build();
   }
 }

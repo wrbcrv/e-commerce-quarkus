@@ -3,7 +3,6 @@ package dev.application.service;
 import java.util.List;
 
 import dev.application.dto.EnderecoDTO;
-import dev.application.dto.TelefoneDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
 import jakarta.validation.Valid;
@@ -28,11 +27,7 @@ public interface UsuarioService {
 
     UsuarioResponseDTO saveImage(Long id, String imageName);
 
-    UsuarioResponseDTO createTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
-
-    UsuarioResponseDTO updateTelefones(Long usuarioId, List<TelefoneDTO> telefonesDTO);
-
-    UsuarioResponseDTO removeTelefones(Long usuarioId, Long telefoneId);
+    List<EnderecoDTO> getEnderecos(Long id);
 
     UsuarioResponseDTO createEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
 

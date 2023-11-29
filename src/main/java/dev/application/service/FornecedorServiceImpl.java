@@ -52,7 +52,7 @@ public class FornecedorServiceImpl implements FornecedorService {
 
             for (EnderecoDTO enderecoDTO : fornecedorDTO.enderecos()) {
                 Endereco endereco = new Endereco();
-                endereco.setLogradouro(enderecoDTO.logradouro());
+                /* endereco.setLogradouro(enderecoDTO.logradouro()); */
                 endereco.setNumero(enderecoDTO.numero());
                 endereco.setComplemento(enderecoDTO.complemento());
                 endereco.setBairro(enderecoDTO.bairro());
@@ -81,7 +81,7 @@ public class FornecedorServiceImpl implements FornecedorService {
             boolean foundEndereco = false;
             for (Endereco endereco : enderecos) {
                 if (endereco.getId().equals(enderecoDTO.id())) {
-                    endereco.setLogradouro(enderecoDTO.logradouro());
+                    /* endereco.setLogradouro(enderecoDTO.logradouro()); */
                     endereco.setNumero(enderecoDTO.numero());
                     endereco.setComplemento(enderecoDTO.complemento());
                     endereco.setBairro(enderecoDTO.bairro());
@@ -93,7 +93,7 @@ public class FornecedorServiceImpl implements FornecedorService {
 
             if (!foundEndereco) {
                 Endereco endereco = new Endereco();
-                endereco.setLogradouro(enderecoDTO.logradouro());
+                /* endereco.setLogradouro(enderecoDTO.logradouro()); */
                 endereco.setNumero(enderecoDTO.numero());
                 endereco.setComplemento(enderecoDTO.complemento());
                 endereco.setBairro(enderecoDTO.bairro());
@@ -149,7 +149,7 @@ public class FornecedorServiceImpl implements FornecedorService {
 
         for (EnderecoDTO enderecoDTO : enderecosDTO) {
             Endereco endereco = new Endereco();
-            endereco.setLogradouro(enderecoDTO.logradouro());
+            /* endereco.setLogradouro(enderecoDTO.logradouro()); */
             endereco.setNumero(enderecoDTO.numero());
             endereco.setComplemento(enderecoDTO.complemento());
             endereco.setBairro(enderecoDTO.bairro());
@@ -180,7 +180,7 @@ public class FornecedorServiceImpl implements FornecedorService {
 
             for (EnderecoDTO enderecoDTO : enderecosDTO) {
                 if (endereco.getId().equals(enderecoDTO.id())) {
-                    endereco.setLogradouro(enderecoDTO.logradouro());
+                    /* endereco.setLogradouro(enderecoDTO.logradouro()); */
                     endereco.setNumero(enderecoDTO.numero());
                     endereco.setComplemento(enderecoDTO.complemento());
                     endereco.setBairro(enderecoDTO.bairro());
@@ -201,7 +201,7 @@ public class FornecedorServiceImpl implements FornecedorService {
             boolean foundEndereco = false;
             for (Endereco endereco : enderecos) {
                 if (endereco.getId().equals(enderecoDTO.id())) {
-                    endereco.setLogradouro(enderecoDTO.logradouro());
+                    /* endereco.setLogradouro(enderecoDTO.logradouro()); */
                     endereco.setNumero(enderecoDTO.numero());
                     endereco.setComplemento(enderecoDTO.complemento());
                     endereco.setBairro(enderecoDTO.bairro());
@@ -215,7 +215,7 @@ public class FornecedorServiceImpl implements FornecedorService {
 
             if (!foundEndereco) {
                 Endereco endereco = new Endereco();
-                endereco.setLogradouro(enderecoDTO.logradouro());
+                /* endereco.setLogradouro(enderecoDTO.logradouro()); */
                 endereco.setNumero(enderecoDTO.numero());
                 endereco.setComplemento(enderecoDTO.complemento());
                 endereco.setBairro(enderecoDTO.bairro());

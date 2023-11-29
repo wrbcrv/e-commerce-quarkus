@@ -1,8 +1,8 @@
-INSERT INTO usuario (login, senha, perfil, imageName)
-VALUES ('admin', '670O1PvrZN/9M4jaH8LZGBXvu+O2HeAPE1IAH8iSzSY+JbkNaFdyizUFaKOZMNRhDzj97kONYDRA8ZsuA9/6pg==', 1, 'profile-user_64572.png');
+INSERT INTO usuario (nome, login, senha, perfil, imageName)
+VALUES ('Administrador', 'admin', '670O1PvrZN/9M4jaH8LZGBXvu+O2HeAPE1IAH8iSzSY+JbkNaFdyizUFaKOZMNRhDzj97kONYDRA8ZsuA9/6pg==', 1, 'profile-user_64572.png');
 
-INSERT INTO usuario(login, senha, perfil, imageName)
-VALUES ('user', 'tgVssM8/cKeSQqqkpBKacO04xhPMKwNbO9otmNTD7VvrP59UZtopMGbKtMHuHuJ4Rjt9MC1w7zgUOLqcpQr8Gg==', 2, 'profile-user_64572.png');
+INSERT INTO usuario (nome, sobrenome, cpf, rg, login, senha, perfil, imageName)
+VALUES  ('Werbton', 'Carvalho', '123.456.789-01', '1234567-8', 'werbton98@gmail.com', 'PEVo2OQjeN+6+Wfsk5h9C65ROwcgSyCKH8lmSiprI7XsDkpElUMTXmQ5wXkypwgHm5MfR27v1wlmgodmje5HLA==', 2, 'IMG_20231001_104743.png');
 
 INSERT INTO fornecedor (nome) 
 VALUES ('NVidia');
@@ -108,6 +108,24 @@ VALUES (6, 6, 'Mouse Logitech G Pro Wireless Gaming', 6, '2022-09-05', 3, 1, 'pr
 
 INSERT INTO hardware (id, id_marca, modelo, id_fabricante, lancamento, categoria, status, imageName)
 VALUES (7, 7, 'Processador AMD Ryzen 9 5900X 12-core, 24-thread', 7, '2022-10-10', 2, 1, 'processador-amd-ryzen-9-5900x-cache-70mb-3-8ghz-4-7ghz-max-turbo-am4-100-100000061wof_1604585280_gg.jpg');
+
+INSERT INTO estado (nome, sigla)
+VALUES ('Tocantins', 'TO');
+
+INSERT INTO cidade (nome, id_estado)
+VALUES ('Palmas', 1);
+
+INSERT INTO endereco (nome, sobrenome, cep, endereco, numero, bairro, complemento, id_cidade, telefone)
+VALUES ('Werbton', 'Carvalho', '12345-678', 'Avenida das Flores e das Árvores Frondosas', '456', 'Centro da Cidade', 'Apartamento 301, Bloco C, Torre Alta', 1, '(555) 123-4567');
+
+INSERT INTO endereco (nome, sobrenome, cep, endereco, numero, bairro, complemento, id_cidade, telefone)
+VALUES ('Werbton', 'Carvalho', '98765-432', 'Praça Histórica da Serenidade e dos Antigos Casarões', '101', 'Vila Histórica', 'Sem complemento', 1, '(555) 234-5678');
+
+INSERT INTO usuario_endereco (id_usuario, id_endereco)
+VALUES (2, 1);
+
+INSERT INTO usuario_endereco (id_usuario, id_endereco)
+VALUES (2, 2);
 
 /* 
 INSERT INTO estado (nome, sigla) 
