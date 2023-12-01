@@ -162,12 +162,12 @@ public class HardwareServiceImpl implements HardwareService {
   }
 
   @Override
-  public byte[] createReportHardwares(String filter) {
+  public byte[] createPdfReports(String filter) {
     List<Hardware> lista = hardwareRepository.findByNome(filter).list();
-    return gerarRelatorioPDF(lista);
+    return generatePdfReport(lista);
   }
 
-  public static byte[] gerarRelatorioPDF(List<Hardware> hardwareList) {
+  public static byte[] generatePdfReport(List<Hardware> hardwareList) {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
     try (PdfDocument pdfDocument = new PdfDocument(new PdfWriter(baos))) {

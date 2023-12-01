@@ -203,8 +203,8 @@ public class HardwareResource {
   @GET
   @Path("/relatorios")
   @Produces("application/pdf")
-  public Response gerarRelatorioPDF(@QueryParam("nome") @DefaultValue("") String nome) {
-    byte[] pdf = hardwareService.createReportHardwares(nome);
+  public Response generatePdfReport(@QueryParam("filter") @DefaultValue("") String filter) {
+    byte[] pdf = hardwareService.createPdfReports(filter);
 
     ResponseBuilder responseBuilder = Response.ok(pdf);
     responseBuilder.header("Content-Disposition", "attachment;filename=relatorio.pdf");

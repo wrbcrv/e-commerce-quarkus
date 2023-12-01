@@ -28,5 +28,5 @@ public interface HardwareService {
 
     long countByNome(String nome);
 
-    public byte[] createReportHardwares(String filter);
+    public byte[] createPdfReports(String filter);
 }
