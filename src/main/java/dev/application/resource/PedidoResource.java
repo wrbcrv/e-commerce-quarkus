@@ -33,9 +33,7 @@ public class PedidoResource {
   @POST
   @RolesAllowed({ "Admin", "User" })
   public Response insert(PedidoDTO dto) {
-
     String login = jwt.getSubject();
-
     PedidoResponseDTO retorno = service.insert(dto, login);
 
     return Response.status(201).entity(retorno).build();
@@ -44,6 +42,6 @@ public class PedidoResource {
   @GET
   @RolesAllowed({ "Admin", "User" })
   public Response findAll() {
-    return Response.ok(service.findByAll()).build();
+    return Response.ok(service.findAll()).build();
   }
 }

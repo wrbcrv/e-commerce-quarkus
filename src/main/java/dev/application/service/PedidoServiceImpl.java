@@ -70,12 +70,12 @@ public class PedidoServiceImpl implements PedidoService {
   }
 
   @Override
-  public List<PedidoResponseDTO> findByAll() {
+  public List<PedidoResponseDTO> findAll() {
     return pedidoRepository.listAll().stream().map(e -> PedidoResponseDTO.valueOf(e)).toList();
   }
 
   @Override
-  public List<PedidoResponseDTO> findByAll(String login) {
+  public List<PedidoResponseDTO> findAll(String login) {
     return pedidoRepository.listAll().stream().map(e -> PedidoResponseDTO.valueOf(e)).toList();
   }
 }

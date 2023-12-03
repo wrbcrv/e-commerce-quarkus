@@ -1,21 +1,25 @@
 package dev.application.dto;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import dev.application.model.Pedido;
 
 public record PedidoResponseDTO(
     Long id,
-    LocalDateTime data,
+    String data,
     UsuarioResponseDTO usuario,
     Double total,
     List<ItemResponseDTO> itens) {
 
   public static PedidoResponseDTO valueOf(Pedido pedido) {
+    String formattedData = pedido.getData() != null
+        ? pedido.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))
+        : null;
+
     return new PedidoResponseDTO(
         pedido.getId(),
-        pedido.getData(),
+        formattedData,
         UsuarioResponseDTO.valueOf(pedido.getUsuario()),
         pedido.getTotal(),
         ItemResponseDTO.valueOf(pedido.getItens()));
