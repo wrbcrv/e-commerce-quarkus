@@ -10,6 +10,7 @@ import dev.application.dto.PedidoResponseDTO;
 import dev.application.model.Hardware;
 import dev.application.model.Item;
 import dev.application.model.Pedido;
+import dev.application.repository.EnderecoRepository;
 import dev.application.repository.HardwareRepository;
 import dev.application.repository.PedidoRepository;
 import dev.application.repository.UsuarioRepository;
@@ -28,6 +29,9 @@ public class PedidoServiceImpl implements PedidoService {
 
   @Inject
   PedidoRepository pedidoRepository;
+
+  @Inject
+  EnderecoRepository enderecoRepository;
 
   @Override
   @Transactional
@@ -57,6 +61,8 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     pedido.setUsuario(usuarioRepository.findByLogin(login));
+    
+    pedido.setEndereco(enderecoRepository.findById(pedidoDTO.idEndereco()));
 
     pedidoRepository.persist(pedido);
 

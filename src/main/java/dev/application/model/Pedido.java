@@ -19,6 +19,9 @@ public class Pedido extends DefaultEntity {
   @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "pedido")
   private List<Item> itens;
   private Double total;
+  @ManyToOne
+  @JoinColumn(name = "id_endereco")
+  private Endereco endereco;
 
   public LocalDateTime getData() {
     return data;
@@ -50,5 +53,13 @@ public class Pedido extends DefaultEntity {
 
   public void setTotal(Double total) {
     this.total = total;
+  }
+
+  public Endereco getEndereco() {
+    return endereco;
+  }
+
+  public void setEndereco(Endereco endereco) {
+    this.endereco = endereco;
   }
 }
