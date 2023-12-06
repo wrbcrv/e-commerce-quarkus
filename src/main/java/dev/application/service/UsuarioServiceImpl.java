@@ -3,6 +3,7 @@ package dev.application.service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import dev.application.dto.EnderecoDTO;
@@ -13,6 +14,7 @@ import dev.application.model.Endereco;
 import dev.application.model.Perfil;
 import dev.application.model.Usuario;
 import dev.application.repository.CidadeRepository;
+import dev.application.repository.EnderecoRepository;
 import dev.application.repository.UsuarioRepository;
 import dev.application.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -33,6 +35,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
   @Inject
   CidadeRepository cidadeRepository;
+
+  @Inject
+  EnderecoRepository enderecoRepository;
 
   @Override
   @Transactional
@@ -195,6 +200,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     for (EnderecoDTO enderecoDTO : enderecosDTO) {
       Endereco novoEndereco = new Endereco();
 
+      novoEndereco.setNome(enderecoDTO.nome());
+      novoEndereco.setSobrenome(enderecoDTO.sobrenome());
       novoEndereco.setCep(enderecoDTO.cep());
       novoEndereco.setEndereco(enderecoDTO.endereco());
       novoEndereco.setNumero(enderecoDTO.numero());
@@ -218,71 +225,37 @@ public class UsuarioServiceImpl implements UsuarioService {
 
   @Override
   @Transactional
-  public UsuarioResponseDTO updateEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO) {
+  public UsuarioResponseDTO updateEndereco(Long usuarioId, Long enderecoId, EnderecoDTO enderecoDTO) {
     Usuario usuarioExistente = usuarioRepository.findById(usuarioId);
 
     if (usuarioExistente == null) {
-      throw new NotFoundException("Usuario não encontrado.");
+      throw new NotFoundException("Usuário não encontrado.");
     }
 
-    List<Endereco> enderecosExistente = usuarioExistente.getEnderecos();
+    Optional<Endereco> enderecoOptional = usuarioExistente.getEnderecos().stream()
+        .filter(endereco -> endereco.getId().equals(enderecoId))
+        .findFirst();
 
-    Iterator<Endereco> iterator = enderecosExistente.iterator();
-    while (iterator.hasNext()) {
-      Endereco endereco = iterator.next();
-      boolean enderecoEncontrado = false;
+    if (enderecoOptional.isPresent()) {
+      Endereco enderecoExistente = enderecoOptional.get();
 
-      for (EnderecoDTO enderecoDTO : enderecosDTO) {
-        if (endereco.getId().equals(enderecoDTO.id())) {
+      enderecoExistente.setNome(enderecoDTO.nome());
+      enderecoExistente.setSobrenome(enderecoDTO.sobrenome());
+      enderecoExistente.setCep(enderecoDTO.cep());
+      enderecoExistente.setEndereco(enderecoDTO.endereco());
+      enderecoExistente.setNumero(enderecoDTO.numero());
+      enderecoExistente.setBairro(enderecoDTO.bairro());
+      enderecoExistente.setComplemento(enderecoDTO.complemento());
 
-          endereco.setCep(enderecoDTO.cep());
-          endereco.setEndereco(enderecoDTO.endereco());
-          endereco.setNumero(enderecoDTO.numero());
-          endereco.setBairro(enderecoDTO.bairro());
-          endereco.setComplemento(enderecoDTO.complemento());
-          endereco.setTelefone(enderecoDTO.telefone());
+      Cidade cidade = cidadeRepository.findById(enderecoDTO.cidade().id());
 
-          enderecoEncontrado = true;
+      if (cidade == null)
+        throw new NotFoundException("Cidade não encontrada");
 
-          break;
-        }
-      }
-
-      if (!enderecoEncontrado) {
-        iterator.remove();
-      }
-    }
-
-    for (EnderecoDTO enderecoDTO : enderecosDTO) {
-      boolean enderecoEncontrado = false;
-      for (Endereco endereco : enderecosExistente) {
-        if (endereco.getId().equals(enderecoDTO.id())) {
-
-          endereco.setCep(enderecoDTO.cep());
-          endereco.setEndereco(enderecoDTO.endereco());
-          endereco.setNumero(enderecoDTO.numero());
-          endereco.setBairro(enderecoDTO.bairro());
-          endereco.setComplemento(enderecoDTO.complemento());
-          endereco.setTelefone(enderecoDTO.telefone());
-
-          enderecoEncontrado = true;
-
-          break;
-        }
-      }
-
-      if (!enderecoEncontrado) {
-        Endereco novoEndereco = new Endereco();
-
-        novoEndereco.setCep(enderecoDTO.cep());
-        novoEndereco.setEndereco(enderecoDTO.endereco());
-        novoEndereco.setNumero(enderecoDTO.numero());
-        novoEndereco.setBairro(enderecoDTO.bairro());
-        novoEndereco.setComplemento(enderecoDTO.complemento());
-        novoEndereco.setTelefone(enderecoDTO.telefone());
-
-        usuarioExistente.getEnderecos().add(novoEndereco);
-      }
+      enderecoExistente.setCidade(cidade);
+      enderecoExistente.setTelefone(enderecoDTO.telefone());
+    } else {
+      throw new NotFoundException("Endereço não encontrado para o usuário especificado.");
     }
 
     usuarioRepository.persist(usuarioExistente);
@@ -325,11 +298,22 @@ public class UsuarioServiceImpl implements UsuarioService {
   }
 
   @Override
-  public List<EnderecoDTO> getEnderecos(Long id) {
-    Usuario usuario = usuarioRepository.findById(id);
-    if (usuario == null)
-      throw new NotFoundException("Usuario não encontrado.");
+  public EnderecoDTO findEnderecoByUsuarioId(Long usuarioId, Long enderecoId) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
 
-    return usuario.getEnderecos().stream().map(e -> EnderecoDTO.valueOf(e)).collect(Collectors.toList());
+    if (usuario == null) {
+      throw new NotFoundException("Usuário não encontrado.");
+    }
+
+    Optional<Endereco> optional = usuario.getEnderecos().stream()
+        .filter(endereco -> endereco.getId().equals(enderecoId))
+        .findFirst();
+
+    if (optional.isPresent()) {
+      Endereco endereco = optional.get();
+      return EnderecoDTO.valueOf(endereco); 
+    } else {
+      throw new NotFoundException("Endereço não encontrado para o usuário especificado.");
+    }
   }
 }

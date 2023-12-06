@@ -1,6 +1,7 @@
 package dev.application.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,5 +34,5 @@ public record HardwareDTO(
         @NotNull(message = "Status é obrigatório")
         Integer idStatus,
         
-        String imageName) {
+        List<String> imageNames) {
 }

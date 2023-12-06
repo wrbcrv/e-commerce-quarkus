@@ -27,11 +27,11 @@ public interface UsuarioService {
 
     UsuarioResponseDTO saveImage(Long id, String imageName);
 
-    List<EnderecoDTO> getEnderecos(Long id);
+    EnderecoDTO findEnderecoByUsuarioId(Long usuarioId, Long enderecoId);
 
     UsuarioResponseDTO createEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
 
-    UsuarioResponseDTO updateEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
+    UsuarioResponseDTO updateEndereco(Long usuarioId, Long enderecoId, EnderecoDTO enderecosDTO);
 
     UsuarioResponseDTO removeEnderecos(Long usuarioId, Long enderecoId);
 

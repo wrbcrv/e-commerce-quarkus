@@ -135,17 +135,18 @@ public class UsuarioResource {
 
   @PUT
   @Transactional
-  @Path("/{id}/enderecos")
-  public Response updateEnderecos(List<EnderecoDTO> enderecosDTO, @PathParam("id") Long id) {
-    LOG.infof("Atualizando endereços do usuário com ID: %d", id);
+  @Path("/{usuarioId}/enderecos/{enderecoId}")
+  public Response updateEndereco(@PathParam("usuarioId") Long usuarioId, @PathParam("enderecoId") Long enderecoId,
+      EnderecoDTO enderecoDTO) {
+    LOG.infof("Atualizando endereço do usuário com ID: %d, Endereço ID: %d", usuarioId, enderecoId);
 
     try {
-      UsuarioResponseDTO usuarioAtualizado = service.updateEnderecos(id, enderecosDTO);
-      LOG.infof("Endereços do usuário com ID: %d atualizados com sucesso", id);
+      UsuarioResponseDTO usuarioAtualizado = service.updateEndereco(usuarioId, enderecoId, enderecoDTO);
+      LOG.infof("Endereço do usuário com ID: %d, Endereço ID: %d atualizado com sucesso", usuarioId, enderecoId);
 
       return Response.ok(usuarioAtualizado).build();
     } catch (NotFoundException e) {
-      LOG.error("Erro ao atualizar os endereços do usuário.");
+      LOG.error("Erro ao atualizar o endereço do usuário.");
       LOG.debug(e.getMessage());
 
       return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
@@ -232,8 +233,9 @@ public class UsuarioResource {
   }
 
   @GET
-  @Path("/enderecos/{id}")
-  public Response getEnderecos(@PathParam("id") Long id) {
-    return Response.ok(service.getEnderecos(id)).build();
+  @Path("{usuarioId}/enderecos/{enderecoId}")
+  public Response getEnderecoByUsuarioId(@PathParam("usuarioId") Long usuarioId,
+      @PathParam("enderecoId") Long enderecoId) {
+    return Response.ok(service.findEnderecoByUsuarioId(usuarioId, enderecoId)).build();
   }
 }
