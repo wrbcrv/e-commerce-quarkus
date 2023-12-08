@@ -4,6 +4,7 @@ import java.util.List;
 
 import dev.application.dto.CartaoDTO;
 import dev.application.dto.EnderecoDTO;
+import dev.application.dto.HardwareResponseDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
 import jakarta.validation.Valid;
@@ -45,4 +46,10 @@ public interface UsuarioService {
     long count();
 
     long countByNome(String nome);
+
+    public UsuarioResponseDTO addFavorito(Long usuarioId, Long hardwareId);
+
+    public List<HardwareResponseDTO> getFavoritos(Long usuarioId);
+
+    public UsuarioResponseDTO deleteFavorito(Long usuarioId, Long hardwareId);
 }

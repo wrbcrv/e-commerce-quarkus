@@ -7,17 +7,20 @@ import java.util.stream.Collectors;
 
 import dev.application.dto.CartaoDTO;
 import dev.application.dto.EnderecoDTO;
+import dev.application.dto.HardwareResponseDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
 import dev.application.model.Cartao;
 import dev.application.model.Cidade;
 import dev.application.model.Endereco;
+import dev.application.model.Hardware;
 import dev.application.model.Perfil;
 import dev.application.model.Tipo;
 import dev.application.model.Usuario;
 import dev.application.repository.CartaoRepository;
 import dev.application.repository.CidadeRepository;
 import dev.application.repository.EnderecoRepository;
+import dev.application.repository.HardwareRepository;
 import dev.application.repository.UsuarioRepository;
 import dev.application.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -44,6 +47,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
   @Inject
   CartaoRepository creditoRepository;
+
+  @Inject
+  HardwareRepository hardwareRepository;
 
   @Override
   @Transactional
@@ -253,7 +259,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     for (CartaoDTO dto : cartaoDTO) {
       Cartao cartao = new Cartao();
-      
+
       cartao.setTipo(Tipo.valueOf(dto.idTipo()));
       cartao.setNumero(dto.numero());
       cartao.setCvv(dto.cvv());
@@ -353,5 +359,72 @@ public class UsuarioServiceImpl implements UsuarioService {
     } else {
       throw new NotFoundException("Endereço não encontrado para o usuário especificado.");
     }
+  }
+
+  @Override
+  @Transactional
+  public UsuarioResponseDTO addFavorito(Long usuarioId, Long hardwareId) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+
+    if (usuario == null) {
+      throw new NotFoundException("Usuário não encontrado.");
+    }
+
+    Hardware hardware = hardwareRepository.findById(hardwareId);
+
+    if (hardware == null) {
+      throw new NotFoundException("Hardware não encontrado.");
+    }
+
+    List<Hardware> favoritos = usuario.getFavoritos();
+
+    if (!favoritos.contains(hardware)) {
+      favoritos.add(hardware);
+      usuarioRepository.persist(usuario);
+    }
+
+    return UsuarioResponseDTO.valueOf(usuario);
+  }
+
+  @Override
+  public List<HardwareResponseDTO> getFavoritos(Long usuarioId) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+
+    if (usuario == null) {
+      throw new NotFoundException("Usuário não encontrado.");
+    }
+
+    List<Hardware> favoritos = usuario.getFavoritos();
+
+    List<HardwareResponseDTO> favoritosDTO = favoritos.stream()
+        .map(HardwareResponseDTO::valueOf)
+        .collect(Collectors.toList());
+
+    return favoritosDTO;
+  }
+
+  @Override
+  @Transactional
+  public UsuarioResponseDTO deleteFavorito(Long usuarioId, Long hardwareId) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+
+    if (usuario == null) {
+      throw new NotFoundException("Usuário não encontrado.");
+    }
+
+    Hardware hardware = hardwareRepository.findById(hardwareId);
+
+    if (hardware == null) {
+      throw new NotFoundException("Hardware não encontrado.");
+    }
+
+    List<Hardware> favoritos = usuario.getFavoritos();
+
+    if (favoritos.contains(hardware)) {
+      favoritos.remove(hardware);
+      usuarioRepository.persist(usuario);
+    }
+
+    return UsuarioResponseDTO.valueOf(usuario);
   }
 }

@@ -9,6 +9,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import dev.application.application.Result;
 import dev.application.dto.CartaoDTO;
 import dev.application.dto.EnderecoDTO;
+import dev.application.dto.HardwareResponseDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
 import dev.application.form.ImageForm;
@@ -278,5 +279,41 @@ public class UsuarioResource {
   public Response getEnderecoByUsuarioId(@PathParam("usuarioId") Long usuarioId,
       @PathParam("enderecoId") Long enderecoId) {
     return Response.ok(service.findEnderecoByUsuarioId(usuarioId, enderecoId)).build();
+  }
+
+  @PUT
+  @Transactional
+  @Path("/{usuarioId}/favoritos/{hardwareId}")
+  public Response addFavorito(@PathParam("usuarioId") Long usuarioId, @PathParam("hardwareId") Long hardwareId) {
+    try {
+      UsuarioResponseDTO usuario = service.addFavorito(usuarioId, hardwareId);
+      return Response.ok(usuario).build();
+    } catch (NotFoundException e) {
+      return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+    }
+  }
+
+  @GET
+  @Transactional
+  @Path("/{usuarioId}/favoritos")
+  public Response getFavoritos(@PathParam("usuarioId") Long usuarioId) {
+    try {
+      List<HardwareResponseDTO> favoritos = service.getFavoritos(usuarioId);
+      return Response.ok(favoritos).build();
+    } catch (NotFoundException e) {
+      return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+    }
+  }
+
+  @DELETE
+  @Transactional
+  @Path("/{usuarioId}/favoritos/{hardwareId}")
+  public Response deleteFavorito(@PathParam("usuarioId") Long usuarioId, @PathParam("hardwareId") Long hardwareId) {
+    try {
+      UsuarioResponseDTO usuario = service.deleteFavorito(usuarioId, hardwareId);
+      return Response.ok(usuario).build();
+    } catch (NotFoundException e) {
+      return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
+    }
   }
 }
