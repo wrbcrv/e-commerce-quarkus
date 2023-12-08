@@ -1,72 +1,87 @@
-# topicos2-2023-2
+# GLWare - Back-End (Java / Quarkus)
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Olá! seja bem vindo(a) ao código back-end do "GLWare: E-Commerce de Peças de Hardware". Este repositório contém o código fonte e a lógica do servidor desenvolvido com o framework Quarkus e linguagem de Programação Java. Este projeto foi criado para a disciplina de Tópicos em Programação II do curso Bacharelado de Sistemas de Informação pela Universidade Estadual do Tocantins - UNITINS.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Descrição
 
-## Running the application in dev mode
+Este projeto consiste na base do sistema back-end do GLWare, responsável pelo gerenciamento e oferta de funcionalidades para o e-commerce de peças de hardware. Ele inclui módulos para:
 
-You can run your application in dev mode that enables live coding using:
+- Gerenciamento de Usuário;
+- Gerenciamento de Produto;
+- Cupons e Descontos;
+- Descrições com imagens;
+- Gerenciamento de Fornecedor;
+- Gerencimanento de Marca;
+- Gerenciamento e Processamento de Pedidos.
+
+## Executando a aplicação no modo de desenvolvimento
+
+Você pode executar sua aplicação no modo de desenvolvimento, que permite codificação ao vivo usando:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+> **_NOTA:_**  O Quarkus agora vem com uma Interface de Desenvolvedor (Dev UI), disponível apenas no modo de desenvolvimento em http://localhost:8080/q/dev/.
 
-## Packaging and running the application
 
-The application can be packaged using:
+## Empacotando e executando a aplicação
+
+A aplicação pode ser empacotada usando:
 ```shell script
 ./mvnw package
 ```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+Isso produz o arquivo quarkus-run.jar no diretório target/quarkus-app/.
+Lembre-se de que não é um über-jar porque as dependências são copiadas para o diretório target/quarkus-app/lib/.
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+A aplicação agora pode ser executada usando `java -jar target/quarkus-app/quarkus-run.jar`.
 
-If you want to build an _über-jar_, execute the following command:
+Se desejar construir um über-jar, execute o seguinte comando:
 ```shell script
 ./mvnw package -Dquarkus.package.type=uber-jar
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+A aplicação, empacotada como um über-jar, pode ser executada usando `java -jar target/*-runner.jar`.
 
-## Creating a native executable
+## Criando um executável nativo
 
-You can create a native executable using: 
+Você pode criar um executável nativo usando: 
 ```shell script
 ./mvnw package -Pnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+Ou, se não tiver o GraalVM instalado, pode executar a construção do executável nativo em um contêiner usando: 
 ```shell script
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/topicos2-2023-2-1.0.0-SNAPSHOT-runner`
+Em seguida, pode executar seu executável nativo com: `./target/topicos2-2023-2-1.0.0-SNAPSHOT-runner`
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+Se quiser aprender mais sobre a criação de executáveis nativos, consulte https://quarkus.io/guides/maven-tooling.
 
-## Related Guides
+## Guias Relacionados
 
-- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- RESTEasy Classic ([guide](https://quarkus.io/guides/resteasy)): REST endpoint framework implementing Jakarta REST and more
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+- SmallRye OpenAPI ([guia](https://quarkus.io/guides/openapi-swaggerui)): Documente suas APIs REST com OpenAPI - inclui o Swagger UI.
+- Hibernate ORM with Panache ([guia](https://quarkus.io/guides/hibernate-orm-panache)): Simplifique seu código de persistência para o Hibernate ORM via active record ou o padrão de repositório.
+- RESTEasy Classic ([guia](https://quarkus.io/guides/resteasy)): Framework de endpoints REST que implementa Jakarta REST e mais.
+- JDBC Driver - PostgreSQL ([guia](https://quarkus.io/guides/datasource)): Conecte-se ao banco de dados PostgreSQL via JDBC.
 
-## Provided Code
+## Código Fornecido
 
 ### Hibernate ORM
 
-Create your first JPA entity
+Crie sua primeira entidade JPA
 
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
+[Seção de guia relacionada...](https://quarkus.io/guides/hibernate-orm)
 
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
+[Seção relacionada ao Hibernate com Panache...](https://quarkus.io/guides/hibernate-orm-panache)
 
 ### RESTEasy JAX-RS
 
-Easily start your RESTful Web Services
+Inicie facilmente seus serviços web RESTful
 
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+[Seção de guia relacioada...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+
+## Autores
+
+- [Guilherme Rio Belo Correia Pereira](https://github.com/GuilhermeRioBel02)
+- [Werbton Carvalho da Rocha Filho](https://github.com/wrbcrv)
