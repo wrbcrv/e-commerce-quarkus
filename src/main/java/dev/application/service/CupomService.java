@@ -17,11 +17,7 @@ public interface CupomService {
 
         CupomResponseDTO findById(Long id);
 
-        List<CupomResponseDTO> findByCodigo(String codigo, int page, int pageSize);
+        CupomResponseDTO findByCodigo(String codigo);
 
         long count();
-
-        long countByCodigo(String codigo);
-
-        CupomResponseDTO associateHardware(Long cupomId, Long hardwareId);
 }

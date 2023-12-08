@@ -24,11 +24,14 @@ public record UsuarioDTO(
     @NotBlank(message = "Senha é obrigatório")
     String senha,
 
-//  @NotNull(message = "Informe o(s) endereço(s).")
     List<EnderecoDTO> enderecos,
     
-    @NotNull(message = "idPerfis não pode ser nulo.")
+    List<CartaoResponseDTO> cartoes,
+
+    @NotNull(message = "Perfil é obrigatório.")
     Integer idPerfil,
+
+    List<HardwareResponseDTO> favoritos,
     
     String imageName) {
 }

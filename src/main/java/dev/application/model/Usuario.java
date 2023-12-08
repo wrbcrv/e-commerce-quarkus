@@ -20,7 +20,14 @@ public class Usuario extends DefaultEntity {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinTable(name = "usuario_endereco", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_endereco"))
   private List<Endereco> enderecos;
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinTable(name = "usuario_cartao", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_cartao"))
+  private List<Cartao> cartoes;
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinTable(name = "usuario_favoritos", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_favorito"))
+  private List<Hardware> favoritos;
   private Perfil perfil;
+
   private String imageName;
 
   public String getNome() {
@@ -75,6 +82,14 @@ public class Usuario extends DefaultEntity {
     return enderecos;
   }
 
+  public List<Cartao> getCartoes() {
+    return cartoes;
+  }
+
+  public void setCartoes(List<Cartao> cartoes) {
+    this.cartoes = cartoes;
+  }
+
   public void setEnderecos(List<Endereco> enderecos) {
     this.enderecos = enderecos;
   }
@@ -85,6 +100,14 @@ public class Usuario extends DefaultEntity {
 
   public void setPerfil(Perfil perfil) {
     this.perfil = perfil;
+  }
+
+  public List<Hardware> getFavoritos() {
+    return favoritos;
+  }
+
+  public void setFavoritos(List<Hardware> favoritos) {
+    this.favoritos = favoritos;
   }
 
   public String getImageName() {

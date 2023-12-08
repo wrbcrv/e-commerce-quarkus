@@ -207,19 +207,4 @@ public class FornecedorResource {
 
     return fornecedorService.findByNome(nome, page, pageSize);
   }
-
-  @POST
-  @Path("/{fornecedorId}/associate-hardware/{hardwareId}")
-  public Response associateHardware(
-      @PathParam("fornecedorId") Long fornecedorId,
-      @PathParam("hardwareId") Long hardwareId) {
-
-    LOG.infof("Associando hardware com (ID: %d) ao fornecedor (ID: %d)" + hardwareId, fornecedorId);
-
-    FornecedorResponseDTO hardware = fornecedorService.associateHardware(fornecedorId, hardwareId);
-
-    LOG.infof("Hardware (ID: %d) associado com sucesso ao fornecedor (ID: %d): " + fornecedorId, hardwareId);
-
-    return Response.ok(hardware).build();
-  }
 }

@@ -2,6 +2,7 @@ package dev.application.service;
 
 import java.util.List;
 
+import dev.application.dto.CartaoDTO;
 import dev.application.dto.EnderecoDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
@@ -34,6 +35,12 @@ public interface UsuarioService {
     UsuarioResponseDTO updateEndereco(Long usuarioId, Long enderecoId, EnderecoDTO enderecosDTO);
 
     UsuarioResponseDTO removeEnderecos(Long usuarioId, Long enderecoId);
+
+    UsuarioResponseDTO createCartao(Long usuarioId, List<CartaoDTO> cartaoDTO);
+
+    UsuarioResponseDTO updateCartao(Long usuarioId, Long cartaoId, CartaoDTO cartaoDTO);
+
+    UsuarioResponseDTO deleteCartao(Long usuarioId, Long cartaoId);
 
     long count();
 

@@ -131,38 +131,8 @@ public class CupomResource {
   }
 
   @GET
-  @Path("/search/{codigo}/count")
-  public long count(@PathParam("codigo") String codigo) {
-    LOG.info("Contando o número de cupons com o código: " + codigo);
-
-    return cupomService.countByCodigo(codigo);
-  }
-
-  @GET
   @Path("/search/{codigo}")
-  public List<CupomResponseDTO> search(
-      @PathParam("codigo") String codigo,
-      @QueryParam("page") @DefaultValue("0") int page,
-      @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando cupons com o código: " + codigo);
-    LOG.debug("Método search chamado com código=" + codigo + ", page=" + page + " e pageSize=" + pageSize);
-
-    return cupomService.findByCodigo(codigo, page, pageSize);
-  }
-
-  @POST
-  @Path("/{cupomId}/associate-hardware/{hardwareId}")
-  public Response associarCupom(
-      @PathParam("cupomId") Long cupomId,
-      @PathParam("hardwareId") Long hardwareId) {
-
-    LOG.infof("Associando cupom (ID: %d) ao hardware (ID: %d)", cupomId, hardwareId);
-
-    CupomResponseDTO hardware = cupomService.associateHardware(cupomId, hardwareId);
-
-    LOG.infof("Cupom (ID: %d) associado com sucesso ao hardware (ID: %d)", cupomId, hardwareId);
-
-    return Response.ok(hardware).build();
+  public CupomResponseDTO search(@PathParam("codigo") String codigo) {
+    return cupomService.findByCodigo(codigo);
   }
 }

@@ -74,6 +74,7 @@ public class HardwareServiceImpl implements HardwareService {
     entity.setEstoque(hardwareDTO.estoque());
     entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
     entity.setStatus(Status.valueOf(hardwareDTO.idStatus()));
+    entity.setDescricao(hardwareDTO.descricao());
 
     hardwareRepository.persist(entity);
 
@@ -96,6 +97,7 @@ public class HardwareServiceImpl implements HardwareService {
     entity.setEstoque(hardwareDTO.estoque());
     entity.setCategoria(Categoria.valueOf(hardwareDTO.idCategoria()));
     entity.setStatus(Status.valueOf(hardwareDTO.idStatus()));
+    entity.setDescricao(hardwareDTO.descricao());
 
     return HardwareResponseDTO.valueOf(entity);
   }

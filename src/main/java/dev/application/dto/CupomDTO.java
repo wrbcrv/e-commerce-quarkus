@@ -1,7 +1,6 @@
 package dev.application.dto;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,8 +19,5 @@ public record CupomDTO(
         LocalDate termino,
 
         @NotNull(message = "O campo Desconto deve ser informado.")
-        int desconto,
-
-        @NotNull(message = "Informe o(s) hardware(s) associados")
-        List<HardwareDTO> hardwares) {
+        int desconto) {
 }

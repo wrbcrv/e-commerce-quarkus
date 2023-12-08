@@ -12,6 +12,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -43,5 +44,12 @@ public class PedidoResource {
   @RolesAllowed({ "Admin", "User" })
   public Response findAll() {
     return Response.ok(service.findAll()).build();
+  }
+
+  @GET
+  @Path("/{id}")
+  @RolesAllowed({ "Admin", "User" })
+  public Response findById(@PathParam("id") Long id) {
+    return Response.ok(service.findById(id)).build();
   }
 }

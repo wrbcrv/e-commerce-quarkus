@@ -11,7 +11,9 @@ public record PedidoResponseDTO(
     UsuarioResponseDTO usuario,
     Double total,
     List<ItemResponseDTO> itens,
-    EnderecoDTO endereco) {
+    EnderecoDTO endereco,
+    CartaoResponseDTO cartao,
+    List<CupomResponseDTO> cupons) {
 
   public static PedidoResponseDTO valueOf(Pedido pedido) {
     String formattedData = pedido.getData() != null
@@ -24,6 +26,8 @@ public record PedidoResponseDTO(
         UsuarioResponseDTO.valueOf(pedido.getUsuario()),
         pedido.getTotal(),
         ItemResponseDTO.valueOf(pedido.getItens()),
-        EnderecoDTO.valueOf(pedido.getEndereco()));
+        EnderecoDTO.valueOf(pedido.getEndereco()),
+        CartaoResponseDTO.valueOf(pedido.getCartao()),
+        CupomResponseDTO.valueOf(pedido.getCupom()));
   }
 }

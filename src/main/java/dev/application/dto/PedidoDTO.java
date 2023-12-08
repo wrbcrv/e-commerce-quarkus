@@ -8,5 +8,10 @@ public record PedidoDTO(
     List<ItemDTO> itens,
 
     @NotNull(message = "Endereço é obrigatório")
-    Long idEndereco) {
+    Long idEndereco,
+    
+    @NotNull
+    Long idCartao,
+    
+    List<CupomDTO> cupons) {
 }

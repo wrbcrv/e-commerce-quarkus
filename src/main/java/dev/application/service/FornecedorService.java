@@ -29,6 +29,4 @@ public interface FornecedorService {
         long count();
 
         long countByNome(String nome);
-
-        FornecedorResponseDTO associateHardware(Long fornecedorId, Long hardwareId);
 }

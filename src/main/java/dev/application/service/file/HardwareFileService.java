@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public interface HardwareFileService {
 
-    void save(Long id, String imageName, byte[] image) throws IOException;
+    void save(Long id, String imageNames, byte[] images) throws IOException;
 
     File download(String fileName);
 }

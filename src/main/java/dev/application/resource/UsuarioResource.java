@@ -7,13 +7,16 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import dev.application.application.Result;
+import dev.application.dto.CartaoDTO;
 import dev.application.dto.EnderecoDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
 import dev.application.form.ImageForm;
 import dev.application.model.Perfil;
+import dev.application.model.Tipo;
 import dev.application.service.UsuarioService;
 import dev.application.service.file.UsuarioFileService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -172,6 +175,38 @@ public class UsuarioResource {
     }
   }
 
+  @POST
+  @Transactional
+  @Path("/{usuarioId}/cartoes")
+  @RolesAllowed({ "User" })
+  public Response createCartao(@PathParam("usuarioId") Long usuarioId, List<CartaoDTO> cartao)
+      throws ConstraintViolationException {
+    UsuarioResponseDTO usuario = service.createCartao(usuarioId, cartao);
+
+    return Response.ok(usuario).build();
+  }
+
+  @PUT
+  @Transactional
+  @RolesAllowed({ "User" })
+  @Path("/{usuarioId}/cartoes/{cartaoId}")
+  public Response updateCartao(@PathParam("usuarioId") Long usuarioId, @PathParam("cartaoId") Long cartaoId,
+      CartaoDTO cartaoDTO) {
+    UsuarioResponseDTO usuario = service.updateCartao(usuarioId, cartaoId, cartaoDTO);
+
+    return Response.ok(usuario).build();
+  }
+
+  @DELETE
+  @Transactional
+  @RolesAllowed({ "User" })
+  @Path("/{usuarioId}/cartoes/{cartaoId}")
+  public Response deleteCartao(@PathParam("usuarioId") Long usuarioId, @PathParam("cartaoId") Long cartaoId) {
+    UsuarioResponseDTO usuario = service.deleteCartao(usuarioId, cartaoId);
+
+    return Response.ok(usuario).build();
+  }
+
   @GET
   @Path("/count")
   public long count() {
@@ -230,6 +265,12 @@ public class UsuarioResource {
   @Path("/perfis")
   public Response getPerfis() {
     return Response.ok(Perfil.values()).build();
+  }
+
+  @GET
+  @Path("/tipos")
+  public Response getTipos() {
+    return Response.ok(Tipo.values()).build();
   }
 
   @GET

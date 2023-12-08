@@ -1,18 +1,21 @@
 package dev.application.service;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import dev.application.dto.CartaoDTO;
 import dev.application.dto.EnderecoDTO;
 import dev.application.dto.UsuarioDTO;
 import dev.application.dto.UsuarioResponseDTO;
+import dev.application.model.Cartao;
 import dev.application.model.Cidade;
 import dev.application.model.Endereco;
 import dev.application.model.Perfil;
+import dev.application.model.Tipo;
 import dev.application.model.Usuario;
+import dev.application.repository.CartaoRepository;
 import dev.application.repository.CidadeRepository;
 import dev.application.repository.EnderecoRepository;
 import dev.application.repository.UsuarioRepository;
@@ -39,9 +42,15 @@ public class UsuarioServiceImpl implements UsuarioService {
   @Inject
   EnderecoRepository enderecoRepository;
 
+  @Inject
+  CartaoRepository creditoRepository;
+
   @Override
   @Transactional
   public UsuarioResponseDTO create(@Valid UsuarioDTO usuarioDTO) throws ConstraintViolationException {
+    if (usuarioRepository.findByLogin(usuarioDTO.login()) != null)
+      throw new ValidationException("login", "O login informado já existe, informe outro.");
+
     Usuario usuario = new Usuario();
 
     usuario.setNome(usuarioDTO.nome());
@@ -50,26 +59,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     usuario.setRg(usuarioDTO.rg());
     usuario.setLogin(usuarioDTO.login());
     usuario.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
-
-    if (usuarioDTO.enderecos() != null && !usuarioDTO.enderecos().isEmpty()) {
-      usuario.setEnderecos(new ArrayList<Endereco>());
-
-      for (EnderecoDTO enderecoDTO : usuarioDTO.enderecos()) {
-        Endereco endereco = new Endereco();
-
-        usuario.setNome(enderecoDTO.nome());
-        usuario.setSobrenome(enderecoDTO.sobrenome());
-        endereco.setCep(enderecoDTO.cep());
-        endereco.setEndereco(enderecoDTO.endereco());
-        endereco.setNumero(enderecoDTO.numero());
-        endereco.setBairro(enderecoDTO.bairro());
-        endereco.setComplemento(enderecoDTO.complemento());
-        endereco.setTelefone(enderecoDTO.telefone());
-
-        usuario.getEnderecos().add(endereco);
-      }
-    }
-
     usuario.setPerfil(Perfil.valueOf(usuarioDTO.idPerfil()));
 
     usuarioRepository.persist(usuario);
@@ -88,41 +77,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     usuarioExistente.setRg(usuarioDTO.rg());
     usuarioExistente.setLogin(usuarioDTO.login());
     usuarioExistente.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
-
-    List<Endereco> enderecosExistente = usuarioExistente.getEnderecos();
-    List<EnderecoDTO> enderecosDTO = usuarioDTO.enderecos();
-
-    for (EnderecoDTO enderecoDTO : enderecosDTO) {
-      boolean enderecoEncontrado = false;
-      for (Endereco endereco : enderecosExistente) {
-        if (endereco.getId().equals(enderecoDTO.id())) {
-
-          endereco.setCep(enderecoDTO.cep());
-          endereco.setEndereco(enderecoDTO.endereco());
-          endereco.setNumero(enderecoDTO.numero());
-          endereco.setBairro(enderecoDTO.bairro());
-          endereco.setComplemento(enderecoDTO.complemento());
-          endereco.setTelefone(enderecoDTO.telefone());
-
-          enderecoEncontrado = true;
-
-          break;
-        }
-      }
-
-      if (!enderecoEncontrado) {
-        Endereco novoEndereco = new Endereco();
-
-        novoEndereco.setCep(enderecoDTO.cep());
-        novoEndereco.setEndereco(enderecoDTO.endereco());
-        novoEndereco.setNumero(enderecoDTO.numero());
-        novoEndereco.setBairro(enderecoDTO.bairro());
-        novoEndereco.setComplemento(enderecoDTO.complemento());
-        novoEndereco.setTelefone(enderecoDTO.telefone());
-
-        usuarioExistente.getEnderecos().add(novoEndereco);
-      }
-    }
+    usuarioExistente.setPerfil(Perfil.valueOf(usuarioDTO.idPerfil()));
 
     usuarioRepository.persist(usuarioExistente);
 
@@ -288,6 +243,89 @@ public class UsuarioServiceImpl implements UsuarioService {
   }
 
   @Override
+  public UsuarioResponseDTO createCartao(Long usuarioId, List<CartaoDTO> cartaoDTO) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+
+    if (usuario == null)
+      throw new NotFoundException("Usuário não encontrado.");
+
+    List<Cartao> existingCartao = usuario.getCartoes();
+
+    for (CartaoDTO dto : cartaoDTO) {
+      Cartao cartao = new Cartao();
+      
+      cartao.setTipo(Tipo.valueOf(dto.idTipo()));
+      cartao.setNumero(dto.numero());
+      cartao.setCvv(dto.cvv());
+      cartao.setValidade(dto.validade());
+      cartao.setTitular(dto.titular());
+      cartao.setCpf(dto.cpf());
+
+      existingCartao.add(cartao);
+    }
+
+    usuarioRepository.persist(usuario);
+
+    return UsuarioResponseDTO.valueOf(usuario);
+  }
+
+  @Override
+  @Transactional
+  public UsuarioResponseDTO updateCartao(Long usuarioId, Long cartaoId, CartaoDTO cartaoDTO) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+
+    if (usuario == null) {
+      throw new NotFoundException("Usuário não encontrado.");
+    }
+
+    Optional<Cartao> optional = usuario.getCartoes().stream().filter(cartao -> cartao.getId().equals(cartaoId))
+        .findFirst();
+
+    if (optional.isPresent()) {
+      Cartao cartao = optional.get();
+
+      cartao.setTipo(Tipo.valueOf(cartaoDTO.idTipo()));
+      cartao.setNumero(cartaoDTO.numero());
+      cartao.setCvv(cartaoDTO.cvv());
+      cartao.setValidade(cartaoDTO.validade());
+      cartao.setTitular(cartaoDTO.titular());
+      cartao.setCpf(cartaoDTO.cpf());
+
+    } else {
+      throw new NotFoundException("Cartão não encontrado para o usuário especificado.");
+    }
+
+    usuarioRepository.persist(usuario);
+
+    return UsuarioResponseDTO.valueOf(usuario);
+  }
+
+  @Override
+  public UsuarioResponseDTO deleteCartao(Long usuarioId, Long cartaoId) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+
+    if (usuario == null)
+      throw new NotFoundException("Usuario não encontrado.");
+
+    List<Cartao> cartoes = usuario.getCartoes();
+
+    Iterator<Cartao> iterator = cartoes.iterator();
+
+    while (iterator.hasNext()) {
+      Cartao cartao = iterator.next();
+
+      if (cartao.getId().equals(cartaoId)) {
+        iterator.remove();
+        usuarioRepository.persist(usuario);
+
+        return UsuarioResponseDTO.valueOf(usuario);
+      }
+    }
+
+    throw new NotFoundException("Endereco não encontrado para este usuário.");
+  }
+
+  @Override
   public long count() {
     return usuarioRepository.count();
   }
@@ -311,7 +349,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     if (optional.isPresent()) {
       Endereco endereco = optional.get();
-      return EnderecoDTO.valueOf(endereco); 
+      return EnderecoDTO.valueOf(endereco);
     } else {
       throw new NotFoundException("Endereço não encontrado para o usuário especificado.");
     }

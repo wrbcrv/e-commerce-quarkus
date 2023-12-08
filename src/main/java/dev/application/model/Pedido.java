@@ -6,6 +6,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -22,6 +24,12 @@ public class Pedido extends DefaultEntity {
   @ManyToOne
   @JoinColumn(name = "id_endereco")
   private Endereco endereco;
+  @ManyToOne
+  @JoinColumn(name = "id_cartao")
+  private Cartao cartao;
+  @ManyToMany
+  @JoinTable(name = "pedido_cupom_associacao", joinColumns = @JoinColumn(name = "pedido_id"), inverseJoinColumns = @JoinColumn(name = "cupom_id"))
+  private List<Cupom> cupom;
 
   public LocalDateTime getData() {
     return data;
@@ -61,5 +69,21 @@ public class Pedido extends DefaultEntity {
 
   public void setEndereco(Endereco endereco) {
     this.endereco = endereco;
+  }
+
+  public Cartao getCartao() {
+    return cartao;
+  }
+
+  public void setCartao(Cartao cartao) {
+    this.cartao = cartao;
+  }
+
+  public List<Cupom> getCupom() {
+    return cupom;
+  }
+
+  public void setCupom(List<Cupom> cupom) {
+    this.cupom = cupom;
   }
 }

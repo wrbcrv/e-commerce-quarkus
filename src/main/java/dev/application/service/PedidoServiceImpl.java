@@ -4,12 +4,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.application.dto.CupomDTO;
 import dev.application.dto.ItemDTO;
 import dev.application.dto.PedidoDTO;
 import dev.application.dto.PedidoResponseDTO;
+import dev.application.model.Cupom;
 import dev.application.model.Hardware;
 import dev.application.model.Item;
 import dev.application.model.Pedido;
+import dev.application.repository.CartaoRepository;
+import dev.application.repository.CupomRepository;
 import dev.application.repository.EnderecoRepository;
 import dev.application.repository.HardwareRepository;
 import dev.application.repository.PedidoRepository;
@@ -17,6 +21,7 @@ import dev.application.repository.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class PedidoServiceImpl implements PedidoService {
@@ -33,6 +38,12 @@ public class PedidoServiceImpl implements PedidoService {
   @Inject
   EnderecoRepository enderecoRepository;
 
+  @Inject
+  CartaoRepository cartaoRepository;
+
+  @Inject
+  CupomRepository cupomRepository;
+
   @Override
   @Transactional
   public PedidoResponseDTO insert(PedidoDTO pedidoDTO, String login) {
@@ -44,9 +55,10 @@ public class PedidoServiceImpl implements PedidoService {
 
     for (ItemDTO itemDto : pedidoDTO.itens())
       total += (itemDto.preco() * itemDto.quantidade());
-    pedido.setTotal(total);
 
+    pedido.setTotal(total);
     pedido.setItens(new ArrayList<Item>());
+
     for (ItemDTO itemDto : pedidoDTO.itens()) {
       Item item = new Item();
       item.setPreco(itemDto.preco());
@@ -60,14 +72,34 @@ public class PedidoServiceImpl implements PedidoService {
       pedido.getItens().add(item);
     }
 
+    pedido.setCupom(new ArrayList<Cupom>());
+    Double descontoTotal = 0.0;
+
+    for (CupomDTO cupomDTO : pedidoDTO.cupons()) {
+      Cupom cupom = cupomRepository.findByCodigo(cupomDTO.codigo());
+      if (cupom != null) {
+        cupom.setDescricao(cupomDTO.descricao());
+        cupom.setInicio(cupomDTO.inicio());
+        cupom.setTermino(cupomDTO.termino());
+        cupom.setDesconto(cupomDTO.desconto());
+        pedido.getCupom().add(cupom);
+
+        descontoTotal += cupom.getDesconto();
+      } else {
+        throw new NotFoundException("Cupom não encontrado para o código: " + cupomDTO.codigo());
+      }
+    }
+
+    Double totalComDesconto = total - descontoTotal;
+
     pedido.setUsuario(usuarioRepository.findByLogin(login));
-    
     pedido.setEndereco(enderecoRepository.findById(pedidoDTO.idEndereco()));
+    pedido.setCartao(cartaoRepository.findById(pedidoDTO.idCartao()));
+    pedido.setTotal(totalComDesconto);
 
     pedidoRepository.persist(pedido);
 
     return PedidoResponseDTO.valueOf(pedido);
-
   }
 
   @Override

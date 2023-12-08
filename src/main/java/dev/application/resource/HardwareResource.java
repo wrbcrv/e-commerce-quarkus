@@ -6,10 +6,10 @@ import java.util.List;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
-import dev.application.dto.HardwareDTO;
 import dev.application.application.Result;
+import dev.application.dto.HardwareDTO;
 import dev.application.dto.HardwareResponseDTO;
-import dev.application.form.ImageForm;
+import dev.application.form.HardwareImageForm;
 import dev.application.model.Categoria;
 import dev.application.service.HardwareService;
 import dev.application.service.file.HardwareFileService;
@@ -176,14 +176,13 @@ public class HardwareResource {
   @PATCH
   @Path("/image/upload")
   @Consumes(MediaType.MULTIPART_FORM_DATA)
-  public Response saveImage(@MultipartForm ImageForm imageForm) {
+  public Response saveImages(@MultipartForm HardwareImageForm imageForm) {
     try {
       fileService.save(imageForm.getId(), imageForm.getImageName(), imageForm.getImage());
 
       return Response.noContent().build();
     } catch (IOException e) {
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.CONFLICT).entity(result).build();
     }
   }

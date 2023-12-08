@@ -14,18 +14,29 @@ public record UsuarioResponseDTO(
     String login,
     String senha,
     List<EnderecoDTO> enderecos,
+    List<CartaoResponseDTO> cartoes,
     Perfil perfil,
+    List<HardwareResponseDTO> favoritos,
     String imageName) {
 
   public static UsuarioResponseDTO valueOf(Usuario usuario) {
     if (usuario == null)
       return null;
 
-    List<EnderecoDTO> enderecoDTOs = null;
+    List<EnderecoDTO> enderecos = null;
+
     if (usuario.getEnderecos() != null && !usuario.getEnderecos().isEmpty())
-      enderecoDTOs = usuario.getEnderecos().stream()
-          .map(enderecos -> EnderecoDTO.valueOf(enderecos))
-          .toList();
+      enderecos = usuario.getEnderecos().stream().map(e -> EnderecoDTO.valueOf(e)).toList();
+
+    List<CartaoResponseDTO> cartoes = null;
+
+    if (usuario.getCartoes() != null && !usuario.getCartoes().isEmpty())
+      cartoes = usuario.getCartoes().stream().map(c -> CartaoResponseDTO.valueOf(c)).toList();
+
+    List<HardwareResponseDTO> favoritos = null;
+
+    if (usuario.getFavoritos() != null && !usuario.getFavoritos().isEmpty())
+      favoritos = usuario.getFavoritos().stream().map(c -> HardwareResponseDTO.valueOf(c)).toList();
 
     return new UsuarioResponseDTO(
         usuario.getId(),
@@ -35,8 +46,10 @@ public record UsuarioResponseDTO(
         usuario.getRg(),
         usuario.getLogin(),
         usuario.getSenha(),
-        enderecoDTOs,
+        enderecos,
+        cartoes,
         usuario.getPerfil(),
+        favoritos,
         usuario.getImageName());
   }
 }

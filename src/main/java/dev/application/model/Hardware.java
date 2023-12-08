@@ -2,6 +2,7 @@ package dev.application.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,6 +20,8 @@ public class Hardware extends Produto {
     private LocalDate lancamento;
     private Categoria categoria;
     private Status status;
+    @Column(length = 100000)
+    private String descricao;
     private String imageName;
 
     public String getModelo() {
@@ -69,11 +72,19 @@ public class Hardware extends Produto {
         this.status = status;
     }
 
+    public String getDescricao() {
+      return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+      this.descricao = descricao;
+    }
+
     public String getImageName() {
-        return imageName;
+      return imageName;
     }
 
     public void setImageName(String imageName) {
-        this.imageName = imageName;
+      this.imageName = imageName;
     }
 }
