@@ -6,6 +6,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -23,8 +24,8 @@ public class Usuario extends DefaultEntity {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinTable(name = "usuario_cartao", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_cartao"))
   private List<Cartao> cartoes;
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinTable(name = "usuario_favoritos", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_favorito"))
+  @ManyToMany
+  @JoinTable(name = "usuario_favorito", joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "favorito_id"))
   private List<Hardware> favoritos;
   private Perfil perfil;
 

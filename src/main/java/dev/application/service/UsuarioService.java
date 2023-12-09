@@ -3,6 +3,7 @@ package dev.application.service;
 import java.util.List;
 
 import dev.application.dto.CartaoDTO;
+import dev.application.dto.CartaoResponseDTO;
 import dev.application.dto.EnderecoDTO;
 import dev.application.dto.HardwareResponseDTO;
 import dev.application.dto.UsuarioDTO;
@@ -27,8 +28,6 @@ public interface UsuarioService {
 
     List<UsuarioResponseDTO> findByNome(String nome, int page, int pageSize);
 
-    UsuarioResponseDTO saveImage(Long id, String imageName);
-
     EnderecoDTO findEnderecoByUsuarioId(Long usuarioId, Long enderecoId);
 
     UsuarioResponseDTO createEnderecos(Long usuarioId, List<EnderecoDTO> enderecosDTO);
@@ -36,6 +35,8 @@ public interface UsuarioService {
     UsuarioResponseDTO updateEndereco(Long usuarioId, Long enderecoId, EnderecoDTO enderecosDTO);
 
     UsuarioResponseDTO removeEnderecos(Long usuarioId, Long enderecoId);
+
+    CartaoResponseDTO findCartaoByUsuarioId(Long usuarioId, Long cartaoId);
 
     UsuarioResponseDTO createCartao(Long usuarioId, List<CartaoDTO> cartaoDTO);
 

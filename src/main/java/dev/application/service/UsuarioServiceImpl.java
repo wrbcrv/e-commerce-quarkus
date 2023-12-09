@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import dev.application.dto.CartaoDTO;
+import dev.application.dto.CartaoResponseDTO;
 import dev.application.dto.EnderecoDTO;
 import dev.application.dto.HardwareResponseDTO;
 import dev.application.dto.UsuarioDTO;
@@ -66,6 +67,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     usuario.setLogin(usuarioDTO.login());
     usuario.setSenha(hashServiceImpl.getHashSenha(usuarioDTO.senha()));
     usuario.setPerfil(Perfil.valueOf(usuarioDTO.idPerfil()));
+    usuario.setImageName("profile-user_64572");
 
     usuarioRepository.persist(usuario);
 
@@ -136,15 +138,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     List<Usuario> list = usuarioRepository.findByNome(nome).page(page, pageSize).list();
 
     return list.stream().map(e -> UsuarioResponseDTO.valueOf(e)).collect(Collectors.toList());
-  }
-
-  @Override
-  @Transactional
-  public UsuarioResponseDTO saveImage(Long id, String imageName) {
-    Usuario entity = usuarioRepository.findById(id);
-    entity.setImageName(imageName);
-
-    return UsuarioResponseDTO.valueOf(entity);
   }
 
   @Override
@@ -246,6 +239,26 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     throw new NotFoundException("Endereco não encontrado para este usuário.");
+  }
+
+  @Override
+  public CartaoResponseDTO findCartaoByUsuarioId(Long usuarioId, Long cartaoId) {
+    Usuario usuario = usuarioRepository.findById(usuarioId);
+
+    if (usuario == null) {
+      throw new NotFoundException("Usuário não encontrado.");
+    }
+
+    Optional<Cartao> optional = usuario.getCartoes().stream()
+        .filter(cartao -> cartao.getId().equals(cartaoId))
+        .findFirst();
+
+    if (optional.isPresent()) {
+      Cartao cartao = optional.get();
+      return CartaoResponseDTO.valueOf(cartao);
+    } else {
+      throw new NotFoundException("Endereço não encontrado para o usuário especificado.");
+    }
   }
 
   @Override
