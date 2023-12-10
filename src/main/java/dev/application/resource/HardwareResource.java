@@ -3,7 +3,6 @@ package dev.application.resource;
 import java.io.IOException;
 import java.util.List;
 
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import dev.application.application.Result;
@@ -42,42 +41,23 @@ public class HardwareResource {
   @Inject
   HardwareFileService fileService;
 
-  private static final Logger LOG = Logger.getLogger(HardwareResource.class);
-
   @POST
   public Response create(HardwareDTO dto) {
-    LOG.infof("Inserindo um hardware: %s", dto.nome());
-
     HardwareResponseDTO hardware = hardwareService.create(dto);
-
-    LOG.infof("Hardware (%d) criado com sucesso.", hardware.id());
-
     return Response.status(Status.CREATED).entity(hardware).build();
-
   }
 
   @PUT
   @Path("/{id}")
   public Response update(@PathParam("id") Long id, HardwareDTO dto) {
-    LOG.infof("Atualizando hardware com ID: %d", id);
-
     try {
       HardwareResponseDTO hardware = hardwareService.update(id, dto);
-      LOG.infof("Hardware com ID (%d) atualizado com sucesso.", id);
-
       return Response.ok(hardware).build();
     } catch (ConstraintViolationException e) {
-      LOG.error("Erro ao atualizar o hardware.");
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getConstraintViolations());
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     } catch (Exception e) {
-      LOG.fatal("Erro sem identificação ao atualizar o hardware: " + e.getMessage());
-
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     }
   }
@@ -85,19 +65,11 @@ public class HardwareResource {
   @DELETE
   @Path("/{id}")
   public Response delete(@PathParam("id") Long id) {
-    LOG.infof("Excluindo hardware com ID: %d", id);
-
     try {
       hardwareService.delete(id);
-      LOG.infof("Hardware com ID (%d) excluído com sucesso.", id);
-
       return Response.status(Status.NO_CONTENT).build();
     } catch (Exception e) {
-      LOG.fatal("Erro ao excluir o hardware com ID: " + id);
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     }
   }
@@ -106,34 +78,24 @@ public class HardwareResource {
   public List<HardwareResponseDTO> findAll(
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando todos os hardwares.");
-    LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
-
     return hardwareService.findAll(page, pageSize);
   }
 
   @GET
   @Path("/{id}")
   public HardwareResponseDTO findById(@PathParam("id") Long id) {
-    LOG.info("Buscando hardware por ID: " + id);
-
     return hardwareService.findById(id);
   }
 
   @GET
   @Path("/count")
   public long count() {
-    LOG.info("Contando o número total de hardwares.");
-
     return hardwareService.count();
   }
 
   @GET
   @Path("/search/{nome}/count")
   public long count(@PathParam("nome") String nome) {
-    LOG.info("Contando o número de hardwares com o nome: " + nome);
-
     return hardwareService.countByNome(nome);
   }
 
@@ -143,10 +105,6 @@ public class HardwareResource {
       @PathParam("nome") String nome,
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando hardwares com o nome: " + nome);
-    LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
-
     return hardwareService.findByNome(nome, page, pageSize);
   }
 
@@ -156,10 +114,6 @@ public class HardwareResource {
       @PathParam("modelo") String modelo,
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando hardwares com o modelo: " + modelo);
-    LOG.debug("Método search chamado com modelo=" + modelo + ", page=" + page + " e pageSize=" + pageSize);
-
     return hardwareService.findByModelo(modelo, page, pageSize);
   }
 
@@ -179,7 +133,6 @@ public class HardwareResource {
   public Response saveImages(@MultipartForm HardwareImageForm imageForm) {
     try {
       fileService.save(imageForm.getId(), imageForm.getImageName(), imageForm.getImage());
-
       return Response.noContent().build();
     } catch (IOException e) {
       Result result = new Result(e.getMessage(), false);

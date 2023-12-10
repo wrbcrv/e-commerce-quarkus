@@ -2,8 +2,6 @@ package dev.application.resource;
 
 import java.util.List;
 
-import org.jboss.logging.Logger;
-
 import dev.application.application.Result;
 import dev.application.dto.EnderecoDTO;
 import dev.application.dto.FornecedorDTO;
@@ -35,25 +33,16 @@ public class FornecedorResource {
   @Inject
   FornecedorService fornecedorService;
 
-  private static final Logger LOG = Logger.getLogger(FornecedorResource.class);
-
   @POST
   public Response create(FornecedorDTO dto) {
-    LOG.infof("Cadastrando um novo fornecedor: %s", dto.nome());
-
     Result result = null;
 
     try {
       FornecedorResponseDTO fornecedor = fornecedorService.create(dto);
-      LOG.infof("Fornecedor (%d) cadastrado com sucesso.", fornecedor.id());
-
       return Response.status(Status.CREATED).entity(fornecedor).build();
     } catch (ConstraintViolationException e) {
-      LOG.error("Erro ao cadastrar um fornecedor.");
-      LOG.debug(e.getMessage());
       result = new Result(e.getConstraintViolations());
     } catch (Exception e) {
-      LOG.fatal("Erro sem identificação: " + e.getMessage());
       result = new Result(e.getMessage(), false);
     }
 
@@ -63,25 +52,14 @@ public class FornecedorResource {
   @PUT
   @Path("/{id}")
   public Response update(@PathParam("id") Long id, FornecedorDTO dto) {
-    LOG.infof("Atualizando fornecedor com ID: %d", id);
-
     try {
       FornecedorResponseDTO fornecedor = fornecedorService.update(id, dto);
-      LOG.infof("Fornecedor com ID (%d) atualizado com sucesso.", id);
-
       return Response.ok(fornecedor).build();
     } catch (ConstraintViolationException e) {
-      LOG.error("Erro ao atualizar o fornecedor.");
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getConstraintViolations());
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     } catch (Exception e) {
-      LOG.fatal("Erro sem identificação ao atualizar o fornecedor: " + e.getMessage());
-
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     }
   }
@@ -89,19 +67,11 @@ public class FornecedorResource {
   @DELETE
   @Path("/{id}")
   public Response delete(@PathParam("id") Long id) {
-    LOG.infof("Excluindo fornecedor com ID: %d", id);
-
     try {
       fornecedorService.delete(id);
-      LOG.infof("Fornecedor com ID (%d) excluído com sucesso.", id);
-
       return Response.status(Status.NO_CONTENT).build();
     } catch (Exception e) {
-      LOG.fatal("Erro ao excluir o fornecedor com ID: " + id);
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     }
   }
@@ -110,18 +80,12 @@ public class FornecedorResource {
   public List<FornecedorResponseDTO> findAll(
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando todos os fornecedores.");
-    LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
-
     return fornecedorService.findAll(page, pageSize);
   }
 
   @GET
   @Path("/{id}")
   public FornecedorResponseDTO findById(@PathParam("id") Long id) {
-    LOG.info("Buscando fornecedor por ID: " + id);
-
     return fornecedorService.findById(id);
   }
 
@@ -129,16 +93,10 @@ public class FornecedorResource {
   @Path("/{id}/enderecos")
   @Transactional
   public Response createEnderecos(List<EnderecoDTO> enderecosDTO, @PathParam("id") Long id) {
-    LOG.info("Inserindo endereços para fornecedor com ID: " + id);
-
     try {
       FornecedorResponseDTO fornecedorAtualizado = fornecedorService.createEnderecos(id, enderecosDTO);
-      LOG.info("Endereços inseridos com sucesso para o fornecedor com ID: " + id);
-
       return Response.ok(fornecedorAtualizado).build();
     } catch (NotFoundException e) {
-      LOG.error("Erro ao inserir endereços para o fornecedor com ID: " + id);
-
       return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
     }
   }
@@ -147,16 +105,10 @@ public class FornecedorResource {
   @Transactional
   @Path("/{id}/enderecos")
   public Response updateEnderecos(List<EnderecoDTO> enderecosDTO, @PathParam("id") Long id) {
-    LOG.info("Atualizando endereços para fornecedor com ID: " + id);
-
     try {
       FornecedorResponseDTO fornecedorAtualizado = fornecedorService.updateEnderecos(id, enderecosDTO);
-      LOG.info("Endereços atualizados com sucesso para o fornecedor com ID: " + id);
-
       return Response.ok(fornecedorAtualizado).build();
     } catch (NotFoundException e) {
-      LOG.error("Erro ao atualizar endereços para o fornecedor com ID: " + id);
-
       return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
     }
   }
@@ -165,16 +117,10 @@ public class FornecedorResource {
   @Path("/{userId}/enderecos/{enderecoId}")
   @Transactional
   public Response removeEnderecos(@PathParam("userId") Long userId, @PathParam("enderecoId") Long enderecoId) {
-    LOG.info("Removendo endereço com ID " + enderecoId + " do fornecedor com ID: " + userId);
-
     try {
       FornecedorResponseDTO fornecedorAtualizado = fornecedorService.removeEnderecos(userId, enderecoId);
-      LOG.info("Endereço removido com sucesso do fornecedor com ID: " + userId);
-
       return Response.ok(fornecedorAtualizado).build();
     } catch (NotFoundException e) {
-      LOG.error("Erro ao remover endereço do fornecedor com ID: " + userId);
-
       return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
     }
   }
@@ -182,16 +128,12 @@ public class FornecedorResource {
   @GET
   @Path("/count")
   public long count() {
-    LOG.info("Contando o número total de fornecedores.");
-
     return fornecedorService.count();
   }
 
   @GET
   @Path("/search/{nome}/count")
   public long count(@PathParam("nome") String nome) {
-    LOG.info("Contando o número de fornecedores com o nome: " + nome);
-
     return fornecedorService.countByNome(nome);
   }
 
@@ -201,10 +143,6 @@ public class FornecedorResource {
       @PathParam("nome") String nome,
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando fornecedores com o nome: " + nome);
-    LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
-
     return fornecedorService.findByNome(nome, page, pageSize);
   }
 }

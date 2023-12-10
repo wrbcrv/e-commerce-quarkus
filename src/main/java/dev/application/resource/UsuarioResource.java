@@ -2,7 +2,6 @@ package dev.application.resource;
 
 import java.util.List;
 
-import org.jboss.logging.Logger;
 import dev.application.application.Result;
 import dev.application.dto.CartaoDTO;
 import dev.application.dto.EnderecoDTO;
@@ -39,43 +38,26 @@ public class UsuarioResource {
   @Inject
   UsuarioService service;
 
-  private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
-
   @POST
+  @RolesAllowed({ "Admin", "User" })
   public Response create(UsuarioDTO dto) {
-    LOG.info("Cadastrando um novo usuário: " + dto.nome());
-
     UsuarioResponseDTO usuario = service.create(dto);
-
-    LOG.infof("Usuário (%d) cadastrado com sucesso.", usuario.id());
-
     return Response.status(Status.CREATED).entity(usuario).build();
   }
 
   @PUT
   @Transactional
   @Path("/{id}")
+  @RolesAllowed({ "Admin", "User" })
   public Response update(UsuarioDTO dto, @PathParam("id") Long id) {
-    LOG.infof("Atualizando usuário com ID: %d", id);
-
     try {
       UsuarioResponseDTO usuario = service.update(dto, id);
-      LOG.infof("Usuário com ID (%d) atualizado com sucesso.", id);
-
       return Response.ok(usuario).build();
     } catch (ConstraintViolationException e) {
-      LOG.error("Erro ao atualizar o usuário.");
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getConstraintViolations());
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     } catch (Exception e) {
-      LOG.fatal("Erro sem identificação ao atualizar o usuário com ID: " + id);
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     }
   }
@@ -83,46 +65,35 @@ public class UsuarioResource {
   @DELETE
   @Transactional
   @Path("/{id}")
+  @RolesAllowed({ "Admin", "User" })
   public void delete(@PathParam("id") Long id) {
-    LOG.infof("Excluindo usuário com ID: %d", id);
-
     service.delete(id);
   }
 
   @GET
+  @RolesAllowed({ "Admin" })
   public List<UsuarioResponseDTO> findAll(
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando todos os usuários.");
-    LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
-
     return service.findAll(page, pageSize);
   }
 
   @GET
   @Path("/{id}")
+  @RolesAllowed({ "Admin" })
   public UsuarioResponseDTO findById(@PathParam("id") Long id) {
-    LOG.info("Buscando usuário por ID: " + id);
-
     return service.findById(id);
   }
 
   @POST
   @Path("/{id}/enderecos")
   @Transactional
+  @RolesAllowed({ "User" })
   public Response createEnderecos(List<EnderecoDTO> enderecosDTO, @PathParam("id") Long id) {
-    LOG.infof("Associando endereços ao usuário com ID: %d", id);
-
     try {
       UsuarioResponseDTO usuarioAtualizado = service.createEnderecos(id, enderecosDTO);
-      LOG.infof("Endereços associados ao usuário com ID: %d", id);
-
       return Response.ok(usuarioAtualizado).build();
     } catch (NotFoundException e) {
-      LOG.error("Erro ao associar endereços ao usuário.");
-      LOG.debug(e.getMessage());
-
       return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
     }
   }
@@ -130,19 +101,13 @@ public class UsuarioResource {
   @PUT
   @Transactional
   @Path("/{usuarioId}/enderecos/{enderecoId}")
+  @RolesAllowed({ "User" })
   public Response updateEndereco(@PathParam("usuarioId") Long usuarioId, @PathParam("enderecoId") Long enderecoId,
       EnderecoDTO enderecoDTO) {
-    LOG.infof("Atualizando endereço do usuário com ID: %d, Endereço ID: %d", usuarioId, enderecoId);
-
     try {
       UsuarioResponseDTO usuarioAtualizado = service.updateEndereco(usuarioId, enderecoId, enderecoDTO);
-      LOG.infof("Endereço do usuário com ID: %d, Endereço ID: %d atualizado com sucesso", usuarioId, enderecoId);
-
       return Response.ok(usuarioAtualizado).build();
     } catch (NotFoundException e) {
-      LOG.error("Erro ao atualizar o endereço do usuário.");
-      LOG.debug(e.getMessage());
-
       return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
     }
   }
@@ -150,24 +115,19 @@ public class UsuarioResource {
   @DELETE
   @Path("/{userId}/enderecos/{enderecoId}")
   @Transactional
+  @RolesAllowed({ "User" })
   public Response removeEnderecos(@PathParam("userId") Long userId, @PathParam("enderecoId") Long enderecoId) {
-    LOG.infof("Removendo endereço com ID: %d do usuário com ID: %d", enderecoId, userId);
-
     try {
       UsuarioResponseDTO usuarioAtualizado = service.removeEnderecos(userId, enderecoId);
-      LOG.infof("Endereço com ID: %d removido do usuário com ID: %d", enderecoId, userId);
-
       return Response.ok(usuarioAtualizado).build();
     } catch (NotFoundException e) {
-      LOG.error("Erro ao remover endereço do usuário.");
-      LOG.debug(e.getMessage());
-
       return Response.status(Status.NOT_FOUND).entity(e.getMessage()).build();
     }
   }
 
   @GET
   @Path("{usuarioId}/cartoes/{cartaoId}")
+  @RolesAllowed({ "User" })
   public Response getCartaoByUsuarioId(@PathParam("usuarioId") Long usuarioId,
       @PathParam("cartaoId") Long cartaoId) {
     return Response.ok(service.findCartaoByUsuarioId(usuarioId, cartaoId)).build();
@@ -207,47 +167,45 @@ public class UsuarioResource {
 
   @GET
   @Path("/count")
+  @RolesAllowed({ "Admin" })
   public long count() {
-    LOG.info("Contando o número total de usuários.");
-
     return service.count();
   }
 
   @GET
   @Path("/search/{nome}/count")
+  @RolesAllowed({ "Admin" })
   public long count(@PathParam("nome") String nome) {
-    LOG.info("Contando o número de usuários com o nome: " + nome);
-
     return service.countByNome(nome);
   }
 
   @GET
   @Path("/search/{nome}")
+  @RolesAllowed({ "Admin" })
   public List<UsuarioResponseDTO> search(
       @PathParam("nome") String nome,
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando usuários com o nome: " + nome);
-    LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
-
     return service.findByNome(nome, page, pageSize);
   }
 
   @GET
   @Path("/perfis")
+  @RolesAllowed({ "Admin", "User" })
   public Response getPerfis() {
     return Response.ok(Perfil.values()).build();
   }
 
   @GET
   @Path("/tipos")
+  @RolesAllowed({ "Admin", "User" })
   public Response getTipos() {
     return Response.ok(Tipo.values()).build();
   }
 
   @GET
   @Path("{usuarioId}/enderecos/{enderecoId}")
+  @RolesAllowed({ "User" })
   public Response getEnderecoByUsuarioId(@PathParam("usuarioId") Long usuarioId,
       @PathParam("enderecoId") Long enderecoId) {
     return Response.ok(service.findEnderecoByUsuarioId(usuarioId, enderecoId)).build();
@@ -256,6 +214,7 @@ public class UsuarioResource {
   @PUT
   @Transactional
   @Path("/{usuarioId}/favoritos/{hardwareId}")
+  @RolesAllowed({ "User" })
   public Response addFavorito(@PathParam("usuarioId") Long usuarioId, @PathParam("hardwareId") Long hardwareId) {
     try {
       UsuarioResponseDTO usuario = service.addFavorito(usuarioId, hardwareId);
@@ -268,6 +227,7 @@ public class UsuarioResource {
   @GET
   @Transactional
   @Path("/{usuarioId}/favoritos")
+  @RolesAllowed({ "User" })
   public Response getFavoritos(@PathParam("usuarioId") Long usuarioId) {
     try {
       List<HardwareResponseDTO> favoritos = service.getFavoritos(usuarioId);
@@ -280,6 +240,7 @@ public class UsuarioResource {
   @DELETE
   @Transactional
   @Path("/{usuarioId}/favoritos/{hardwareId}")
+  @RolesAllowed({ "User" })
   public Response deleteFavorito(@PathParam("usuarioId") Long usuarioId, @PathParam("hardwareId") Long hardwareId) {
     try {
       UsuarioResponseDTO usuario = service.deleteFavorito(usuarioId, hardwareId);

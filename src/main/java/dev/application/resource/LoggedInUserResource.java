@@ -16,7 +16,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/logged")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class LoggedUserResource {
+public class LoggedInUserResource {
 
   @Inject
   JsonWebToken jsonWebToken;

@@ -2,8 +2,6 @@ package dev.application.resource;
 
 import java.util.List;
 
-import org.jboss.logging.Logger;
-
 import dev.application.application.Result;
 import dev.application.dto.EstadoDTO;
 import dev.application.dto.EstadoResponseDTO;
@@ -32,41 +30,23 @@ public class EstadoResource {
   @Inject
   EstadoService estadoService;
 
-  private static final Logger LOG = Logger.getLogger(EstadoResource.class);
-
   @POST
   public Response create(EstadoDTO dto) {
-    LOG.infof("Cadastrando um novo estado: %s", dto.nome());
-
     EstadoResponseDTO estado = estadoService.create(dto);
-
-    LOG.infof("Estado (%d) cadastrado com sucesso.", estado.id());
-
     return Response.status(Status.CREATED).entity(estado).build();
   }
 
   @PUT
   @Path("/{id}")
   public Response update(@PathParam("id") Long id, EstadoDTO dto) {
-    LOG.infof("Atualizando estado com ID: %d", id);
-
     try {
       EstadoResponseDTO estado = estadoService.update(id, dto);
-      LOG.infof("Estado com ID (%d) atualizado com sucesso.", id);
-
       return Response.ok(estado).build();
     } catch (ConstraintViolationException e) {
-      LOG.error("Erro ao atualizar o estado.");
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getConstraintViolations());
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     } catch (Exception e) {
-      LOG.fatal("Erro sem identificação ao atualizar o estado: " + e.getMessage());
-
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     }
   }
@@ -74,19 +54,11 @@ public class EstadoResource {
   @DELETE
   @Path("/{id}")
   public Response delete(@PathParam("id") Long id) {
-    LOG.infof("Excluindo estado com ID: %d", id);
-
     try {
       estadoService.delete(id);
-      LOG.infof("Estado com ID (%d) excluído com sucesso.", id);
-
       return Response.status(Status.NO_CONTENT).build();
     } catch (Exception e) {
-      LOG.fatal("Erro ao excluir o estado com ID: " + id);
-      LOG.debug(e.getMessage());
-
       Result result = new Result(e.getMessage(), false);
-
       return Response.status(Status.NOT_FOUND).entity(result).build();
     }
   }
@@ -95,34 +67,24 @@ public class EstadoResource {
   public List<EstadoResponseDTO> findAll(
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando todos os estados.");
-    LOG.debug("Método findAll chamado com page=" + page + " e pageSize=" + pageSize);
-
     return estadoService.findAll(page, pageSize);
   }
 
   @GET
   @Path("/{id}")
   public EstadoResponseDTO findById(@PathParam("id") Long id) {
-    LOG.info("Buscando estado por ID: " + id);
-
     return estadoService.findById(id);
   }
 
   @GET
   @Path("/count")
   public long count() {
-    LOG.info("Contando o número total de estados.");
-
     return estadoService.count();
   }
 
   @GET
   @Path("/search/{nome}/count")
   public long count(@PathParam("nome") String nome) {
-    LOG.info("Contando o número de estados com o nome: " + nome);
-
     return estadoService.countByNome(nome);
   }
 
@@ -132,10 +94,6 @@ public class EstadoResource {
       @PathParam("nome") String nome,
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
-
-    LOG.info("Buscando estados com o nome: " + nome);
-    LOG.debug("Método search chamado com nome=" + nome + ", page=" + page + " e pageSize=" + pageSize);
-
     return estadoService.findByNome(nome, page, pageSize);
   }
 }
