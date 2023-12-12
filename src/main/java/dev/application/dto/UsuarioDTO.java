@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public record UsuarioDTO(
     @NotBlank(message = "Nome é obrigatório")
@@ -13,6 +14,7 @@ public record UsuarioDTO(
     String sobrenome,
 
     @NotBlank(message = "CPF é obrigatório")
+    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", message = "CPF inválido")
     String cpf,
     
     @NotBlank(message = "RG é obrigatório")

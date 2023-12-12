@@ -11,7 +11,6 @@ import dev.application.dto.UsuarioResponseDTO;
 import dev.application.model.Perfil;
 import dev.application.model.Tipo;
 import dev.application.service.UsuarioService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -39,7 +38,6 @@ public class UsuarioResource {
   UsuarioService service;
 
   @POST
-  @RolesAllowed({ "Admin", "User" })
   public Response create(UsuarioDTO dto) {
     UsuarioResponseDTO usuario = service.create(dto);
     return Response.status(Status.CREATED).entity(usuario).build();
@@ -48,7 +46,6 @@ public class UsuarioResource {
   @PUT
   @Transactional
   @Path("/{id}")
-  @RolesAllowed({ "Admin", "User" })
   public Response update(UsuarioDTO dto, @PathParam("id") Long id) {
     try {
       UsuarioResponseDTO usuario = service.update(dto, id);
@@ -65,13 +62,11 @@ public class UsuarioResource {
   @DELETE
   @Transactional
   @Path("/{id}")
-  @RolesAllowed({ "Admin", "User" })
   public void delete(@PathParam("id") Long id) {
     service.delete(id);
   }
 
   @GET
-  @RolesAllowed({ "Admin" })
   public List<UsuarioResponseDTO> findAll(
       @QueryParam("page") @DefaultValue("0") int page,
       @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
@@ -80,7 +75,6 @@ public class UsuarioResource {
 
   @GET
   @Path("/{id}")
-  @RolesAllowed({ "Admin" })
   public UsuarioResponseDTO findById(@PathParam("id") Long id) {
     return service.findById(id);
   }
@@ -88,7 +82,6 @@ public class UsuarioResource {
   @POST
   @Path("/{id}/enderecos")
   @Transactional
-  @RolesAllowed({ "User" })
   public Response createEnderecos(List<EnderecoDTO> enderecosDTO, @PathParam("id") Long id) {
     try {
       UsuarioResponseDTO usuarioAtualizado = service.createEnderecos(id, enderecosDTO);
@@ -101,7 +94,6 @@ public class UsuarioResource {
   @PUT
   @Transactional
   @Path("/{usuarioId}/enderecos/{enderecoId}")
-  @RolesAllowed({ "User" })
   public Response updateEndereco(@PathParam("usuarioId") Long usuarioId, @PathParam("enderecoId") Long enderecoId,
       EnderecoDTO enderecoDTO) {
     try {
@@ -115,7 +107,6 @@ public class UsuarioResource {
   @DELETE
   @Path("/{userId}/enderecos/{enderecoId}")
   @Transactional
-  @RolesAllowed({ "User" })
   public Response removeEnderecos(@PathParam("userId") Long userId, @PathParam("enderecoId") Long enderecoId) {
     try {
       UsuarioResponseDTO usuarioAtualizado = service.removeEnderecos(userId, enderecoId);
@@ -127,7 +118,6 @@ public class UsuarioResource {
 
   @GET
   @Path("{usuarioId}/cartoes/{cartaoId}")
-  @RolesAllowed({ "User" })
   public Response getCartaoByUsuarioId(@PathParam("usuarioId") Long usuarioId,
       @PathParam("cartaoId") Long cartaoId) {
     return Response.ok(service.findCartaoByUsuarioId(usuarioId, cartaoId)).build();
@@ -136,7 +126,6 @@ public class UsuarioResource {
   @POST
   @Transactional
   @Path("/{usuarioId}/cartoes")
-  @RolesAllowed({ "User" })
   public Response createCartao(@PathParam("usuarioId") Long usuarioId, List<CartaoDTO> cartao)
       throws ConstraintViolationException {
     UsuarioResponseDTO usuario = service.createCartao(usuarioId, cartao);
@@ -146,7 +135,6 @@ public class UsuarioResource {
 
   @PUT
   @Transactional
-  @RolesAllowed({ "User" })
   @Path("/{usuarioId}/cartoes/{cartaoId}")
   public Response updateCartao(@PathParam("usuarioId") Long usuarioId, @PathParam("cartaoId") Long cartaoId,
       CartaoDTO cartaoDTO) {
@@ -157,7 +145,6 @@ public class UsuarioResource {
 
   @DELETE
   @Transactional
-  @RolesAllowed({ "User" })
   @Path("/{usuarioId}/cartoes/{cartaoId}")
   public Response deleteCartao(@PathParam("usuarioId") Long usuarioId, @PathParam("cartaoId") Long cartaoId) {
     UsuarioResponseDTO usuario = service.deleteCartao(usuarioId, cartaoId);
@@ -167,21 +154,18 @@ public class UsuarioResource {
 
   @GET
   @Path("/count")
-  @RolesAllowed({ "Admin" })
   public long count() {
     return service.count();
   }
 
   @GET
   @Path("/search/{nome}/count")
-  @RolesAllowed({ "Admin" })
   public long count(@PathParam("nome") String nome) {
     return service.countByNome(nome);
   }
 
   @GET
   @Path("/search/{nome}")
-  @RolesAllowed({ "Admin" })
   public List<UsuarioResponseDTO> search(
       @PathParam("nome") String nome,
       @QueryParam("page") @DefaultValue("0") int page,
@@ -191,21 +175,18 @@ public class UsuarioResource {
 
   @GET
   @Path("/perfis")
-  @RolesAllowed({ "Admin", "User" })
   public Response getPerfis() {
     return Response.ok(Perfil.values()).build();
   }
 
   @GET
   @Path("/tipos")
-  @RolesAllowed({ "Admin", "User" })
   public Response getTipos() {
     return Response.ok(Tipo.values()).build();
   }
 
   @GET
   @Path("{usuarioId}/enderecos/{enderecoId}")
-  @RolesAllowed({ "User" })
   public Response getEnderecoByUsuarioId(@PathParam("usuarioId") Long usuarioId,
       @PathParam("enderecoId") Long enderecoId) {
     return Response.ok(service.findEnderecoByUsuarioId(usuarioId, enderecoId)).build();
@@ -214,7 +195,6 @@ public class UsuarioResource {
   @PUT
   @Transactional
   @Path("/{usuarioId}/favoritos/{hardwareId}")
-  @RolesAllowed({ "User" })
   public Response addFavorito(@PathParam("usuarioId") Long usuarioId, @PathParam("hardwareId") Long hardwareId) {
     try {
       UsuarioResponseDTO usuario = service.addFavorito(usuarioId, hardwareId);
@@ -227,7 +207,6 @@ public class UsuarioResource {
   @GET
   @Transactional
   @Path("/{usuarioId}/favoritos")
-  @RolesAllowed({ "User" })
   public Response getFavoritos(@PathParam("usuarioId") Long usuarioId) {
     try {
       List<HardwareResponseDTO> favoritos = service.getFavoritos(usuarioId);
@@ -240,7 +219,6 @@ public class UsuarioResource {
   @DELETE
   @Transactional
   @Path("/{usuarioId}/favoritos/{hardwareId}")
-  @RolesAllowed({ "User" })
   public Response deleteFavorito(@PathParam("usuarioId") Long usuarioId, @PathParam("hardwareId") Long hardwareId) {
     try {
       UsuarioResponseDTO usuario = service.deleteFavorito(usuarioId, hardwareId);
